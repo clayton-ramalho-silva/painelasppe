@@ -1,0 +1,328 @@
+// main: ../estilos.less
+
+//configuracoes gerais header
+header{
+    .df;
+    //.sb;
+    .wrap;
+    .column;
+    .bloco-1;
+    .ease-out;
+    .mw(210px);
+    .pf-tl(0,30px, 10000);
+    min-height: 100vh;
+
+    @media only screen and (max-width:1240px){
+        .w(50px)
+    }
+
+    @media only screen and (min-width:1024px){
+        position:fixed;
+        //top:50px;
+    }
+
+    @media only screen and (max-width:768px){
+        .w(80px);
+        .pdl(30px);
+        .translatex(-95px);
+        .bg-color(#f6f6f6);
+        left: 0;
+    }
+
+
+    // configuracao de menu central inicio
+    nav{
+        .df;
+        .full;
+        .wrap;
+        .column;
+        .pdt(50px);
+
+        svg{
+            width: 22px !important;
+            height: auto !important;
+
+
+            path:not(path[fill=none]){
+                fill:@cor1;
+            }
+
+            line{
+                stroke:@cor1;
+            }
+
+        }
+
+
+        span{
+            border-left: 1px solid #D2D2D2;
+            .fw(200);
+            .ease-out;
+            .fs(14px);
+            .pdl(20px);
+            .mgl(20px);
+            .linha(40px);
+            .c(#676767);
+
+        }
+
+
+        a{
+            .df;
+            .pr;
+            .full;
+            .mgb(15px);
+            align-items: center;
+
+            &:before{
+                content:"";
+                .size(0px,100%);
+                .bg-color(@cor1);
+                .pa-tl(0,-30px);
+                .ease-out;
+            }
+
+
+            &.ativo{
+                margin:10px 0 30px;
+            }
+
+            &.ativo, &:hover{
+                span{
+                    .fs(14px);
+                    .fw(bold);
+                    .c(@cor1);
+                    border-left-color:#287FC0;
+                }
+
+                &:before{
+                    width:4px;
+                }
+            }
+
+
+            &:last-child{
+
+
+                .mgb(0px);
+            }
+
+        }
+
+
+    }
+    // configuracao de menu central fim
+
+
+    //botao abrir e fechar menu inicio
+    .btMenu,
+    .btMenuRes{
+        .pa-tr(43px,0);
+        .size(50px);
+        .df;
+        justify-content: center;
+        align-items: center;
+        .borda(50px);
+        .ease-out;
+        .box;
+        .pd(8px);
+        .bg-color(#F6F6F6);
+
+        cursor: pointer;
+
+        b{
+            height: 4px;
+            .bg-color(@cor1);
+            .borda;
+            .ease-out;
+            width:80%;
+            .pr;
+
+
+            &:before{
+                content:"";
+                .size(120%,4px);
+                .pa-tr(-200%,0);
+                .bg-color(@cor1);
+                .ease-out;
+                .borda;
+            }
+            &:after{
+                content:"";
+                .size(80%,4px);
+                .pa-br(-200%,0);
+                .bg-color(@cor1);
+                .ease-out;
+                .borda;
+            }
+        }
+
+        &:hover{
+            .transform(scale(1.1));
+            b{
+
+                &:after, &:before{
+                    width: 100%;
+                }
+
+            }
+        }
+    }
+    //botao abrir e fechar menu fim
+
+    // botao sair inicio
+    .sair{
+        .df;
+        .mgt(60px);
+        .c(darken(red,10));
+        align-items: center;
+
+
+        svg{
+            .size(22px,auto) !important;
+            .c(darken(red,10));
+            fill:darken(red,10);
+        }
+
+        span{
+            .mgl(10px);
+            .fs(15px);
+        }
+
+    }
+    // botao sair fim
+
+
+    // LOGOTIPO inicio
+    .logo{
+        .fs(0px);
+        text-indent: -9999px;
+    }
+    // LOGOTIPO fim
+
+    .menu-site{
+        .pd(52px 0 0);
+
+        @media only screen and (max-width:1240px){
+            .dn;
+        }
+
+    }
+
+    .menu-responsivo{
+        .dn;
+        .linear;
+        .w(50px);
+        .h(100vh);
+        .pd(52px 0 0);
+
+        @media only screen and (max-width:1240px){
+            .db;
+        }
+
+        .logo{
+            .size(35px);
+            background-size: 142px;
+            .bg-color(#fff);
+            .borda(50px);
+            background-position: left center;
+        }
+
+        nav{
+            svg{
+                overflow: visible;
+            }
+
+            a{
+                span{
+                    visibility: hidden;
+                    .op(0);
+                    .transform(translateX(150px));
+                }
+            }
+        }
+
+        .btMenuRes{
+            .dn;
+            right: -76px;
+
+            @media only screen and (max-width:1240px){
+                .df;
+            }
+
+            @media only screen and (max-width:768px){
+                right: -128px;
+            }
+
+            @media only screen and (max-width:768px){
+                right: -108px;
+            }
+
+            b{
+                &:after, &:before{
+                    .full;
+                    right: auto;
+                    left:0;
+                }
+            }
+        }
+
+        .sair{
+
+            span{
+                visibility: hidden;
+                .op(0);
+                .transform(translateX(150px));
+            }
+
+            svg{
+                overflow: visible;
+            }
+        }
+
+    }
+
+    &.aberto{
+        .translatex(0);
+
+        .menu-responsivo{
+            .w(210px);
+            .bg-color(#f6f6f6);
+            .sombra(6px 0px 6px #e1e1e1);
+
+            .btMenuRes{
+                right: -150px;
+            }
+
+            nav{
+
+                a{
+                    span{
+                        visibility: visible;
+                        .op(1);
+                        .transform(translateX(0));
+                    }
+                }
+
+            }
+
+            .sair{
+
+                span{
+                    visibility: visible;
+                    .op(1);
+                    .transform(translateX(0));
+                }
+
+            }
+
+            .logo{
+                .w(140px);
+                .bg-color(#f6f6f6);
+            }
+
+        }
+
+    }
+
+}

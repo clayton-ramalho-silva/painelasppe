@@ -1,0 +1,67 @@
+// main: ../estilos.less
+
+.fechado{
+
+    header{
+        .w(50px);
+
+        .logo{
+            .size(35px);
+            background-size: 142px;
+            .bg-color(#fff);
+            .borda(50px);
+            background-position: left center;
+        }
+
+
+
+        nav{
+            svg{
+                overflow: visible;
+            }
+
+            a{
+                span{
+                    visibility: hidden;
+                    .op(0);
+                    .transform(translateX(150px));
+                }
+            }
+        }
+
+        .btMenu{
+            right:-76px;
+
+            b{
+                &:after, &:before{
+                    right: auto;
+                    left:0;
+                }
+            }
+        }
+
+
+        .sair{
+
+
+            span{
+                visibility: hidden;
+                .op(0);
+                .transform(translateX(150px));
+            }
+
+            svg{
+                overflow: visible;
+            }
+        }
+    }
+
+    main{
+        max-width: calc(100% - 50px);
+    }
+
+    .buscar{
+        margin-left: 70px;
+    }
+
+}

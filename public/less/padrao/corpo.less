@@ -1,0 +1,28 @@
+// main: ../estilos.less
+
+main{
+    .fr;
+    .mgb(30px);
+    .bloco-1;
+    .ease-out;
+    .pd(30px);
+    .borda(30px);
+    .bg-color(#ffffff);
+    .sombra(0 3px 3px fade(#000000,16));
+    //overflow:auto;
+    //height:calc(100vh - 60px);
+    max-width: calc(100% - 220px);
+
+    @media only screen and (max-width:1240px){
+        max-width: calc(100% - 50px);
+    }
+
+    @media only screen and (max-width:768px){
+        max-width: 100%;
+    }
+
+    @media only screen and (max-width:768px){
+        .pd(20px);
+    }
+
+}

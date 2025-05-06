@@ -1,0 +1,42 @@
+// main: ../estilos.less
+
+.alert{
+    .df;
+    .sc;
+    .aic;
+    .box;
+    .column;
+    .lh(1.5);
+    .pd(15px);
+    .w(450px);
+    .fs(15px);
+    .borda(25px);
+    .c(#ffffff);
+    .linear(0.3s);
+    .bg-color(#cccccc);
+    .pf-tr(50px,calc(50% - 225px), 1000000000000);
+    font-family: "Montserrat", Tahoma, Arial, Helvetica, sans-serif;
+
+    &.alert-success{
+       .bg-color(#5faf5d);
+       .bdb(#4a8548, 2px, solid);
+    }
+    &.alert-danger{
+        //.bg-color(#aa2525);
+        .bg-color(#D16463);
+        //.bdb(#7b1c1c, 2px, solid);
+        .bdb(#874342, 2px, solid);
+    }
+
+    b{
+        .ac;
+        .db;
+        .full;
+        .pd(4px 0);
+    }
+
+	-webkit-animation: slide 6s ease-out both;
+	        animation: slide 6s ease-out both;
+
+    &.esconde{.dn;}
+}

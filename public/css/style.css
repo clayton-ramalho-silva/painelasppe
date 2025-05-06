@@ -1,0 +1,128 @@
+td,tr{
+    font-size: 12px;
+}
+
+.dropdown-toggle::after{
+    display: none !important;
+}
+button.dropdown-toggle{
+    background-color: transparent;
+}
+
+.dropdown-menu.show{
+    width: max-content;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16);
+    border: none;
+    padding: 20px;
+    font-size: 13px;
+}
+
+.btn-icon{
+    background-color: transparent;
+}
+
+.tabela-modal-linha{
+    font-size: 12px;
+}
+
+.tabela-modal-header{
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.modal.show .modal-dialog{
+    max-width: fit-content;
+}
+
+.modal.show .modal-dialog .buscar button{
+    background: #F8F8F8;
+    border-radius: 50px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -ms-border-radius: 50px;
+    width: 37px;
+    height: 37px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0px;
+    left: 3px;
+    z-index: 0;
+}
+.modal.show .modal-dialog .buscar svg{
+    width: 18px;
+    height: auto;
+}
+.modal.show .modal-dialog .buscar{
+    position: relative;
+}
+
+.modal.show .modal-dialog .buscar input{
+    height: 40px;
+    width: 100%;
+}
+
+
+.icone-status{
+    color: transparent;
+}
+
+.table>:not(:last-child)>:last-child>* {
+border-bottom-color: transparent;
+}
+
+.svg-status svg{
+    
+    width: 14px !important;
+    height: 14px !important;
+}
+
+input[type=text], input[type=email], input[type=number], input[type=password], input[type=tel]{
+    padding: 10px 20px 10px 20px !important;
+}
+
+input[type=tel]{
+    border-radius: 50px !important;
+    -moz-border-radius: 50px !important;
+    -webkit-border-radius: 50px !important;
+    -ms-border-radius: 50px !important;
+    height: 50px;
+    line-height: 50px;    
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    color: #888888;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16);
+    -moz-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16);
+    -webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16);
+    -ms-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16);
+    font-family: 'Montserrat';
+    font-size: 12px;
+    letter-spacing: 2px;
+    appearance: none;
+}
+
+/*Colocar no CSS Geral*/
+.f-interna {
+    grid-column: span 12 !important;
+order:2;
+}
+
+.sessao .bts-interna {
+    grid-column: span 8;
+    display: flex;
+    gap: 20px;
+order:1;
+}
+
+.btInt{
+font-size:17px;
+height: auto;
+margin-bottom: 0;
+}
+
+.btInt small{
+font-size:11px;
+    margin-top: 5px;
+}

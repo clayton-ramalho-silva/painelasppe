@@ -1,0 +1,189 @@
+// out: ../css/estilos.css, sourcemap: true, compress: true
+
+@import "conf-site";
+@import "reset";
+@import "helpers";
+
+
+@import "topo/topo";
+
+@import "formulario/formulario";
+
+/*Estrutura do Site*/
+
+body{
+    .fonte;
+    .fs(@tamanho-fonte-site);
+    .lh(@linha-site);
+    .c(@cor-fonte-site);
+    .bg-color(#F6F6F6);
+
+    .pd(30px);
+    /*    display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;*/
+
+    letter-spacing: 2px;
+
+    @media (max-width: 480px) {
+        .pd(20px);
+    }
+
+}
+
+img{
+    .img-full;
+}
+
+
+a{
+    text-decoration: none;
+}
+.esconder(@a) when (@a=off){
+    .dn !important;
+}
+
+
+
+
+
+// CONFIRACOES ESPECIAIS =================================
+
+
+
+// INICIO header ----------------------------
+
+@import "./padrao/header";
+
+// FIM header ----------------------------
+
+
+
+
+// INICIO corpo ----------------------------
+
+
+@import "./padrao/corpo";
+
+
+// FIM corpo ----------------------------
+
+
+
+
+
+// INICIO HEADER FECHADO -
+
+@import "./padrao/fechado";
+
+// FIM HEADER FECHADO -
+
+
+
+
+
+//INICIO BLOCOS PADROES (dentro do main) -
+
+@import "./padrao/blocos";
+@import "./padrao/alertas";
+
+
+
+//dashboard ------------
+
+// bloco resumo
+.resumo{
+    .pr;
+    cursor: pointer;
+
+    @media (max-width: 1024px) {
+        grid-column: span 6;
+    }
+
+    @media (max-width: 768px) {
+        grid-column: span 12;
+    }
+
+    &:hover{
+        .sombra(0 3px 3px rgba(0, 0, 0, 0.3));
+    }
+
+    figure{
+        .df;
+        align-items:center;
+        .bloco-1;
+
+        figcaption{
+            .fs(14px);
+            .c(@cor1);
+            letter-spacing: 1px;
+
+            span{
+                .c(@cor2);
+            }
+        }
+
+        svg{
+            .bg-color(@cor3);
+            .borda(50px);
+            .pd(5px);
+            .box;
+            .size(30px);
+            .mgr(10px);
+        }
+    }
+
+
+    h3{
+        .fs(45px);
+        .c(@cor2);
+        .mg(10px 0);
+
+    }
+
+    small{
+        .fs(13px);
+        .c(#676767);
+        letter-spacing: 0.6px;
+    }
+
+
+    &:before{
+        content:"";
+        .size(10px);
+        .bg("seta.png",center,no-repeat);
+        .bg-size(contain);
+        .pa-tr(10px,10px);
+    }
+
+    &:after{
+        content:"";
+        .size(30%,100%);
+        .pa-tr;
+        .bg("graf.png",center right 10px,no-repeat);
+        .bg-size(80%);
+    }
+
+}
+
+
+
+
+
+//dashboard ------------
+
+
+
+
+
+
+//FIM BLOCOS PADROES (dentro do main)-
+
+
+
+
+//INICIO BLOCOS PADROES -
+
+@import "./telas/dashboard";
+
+//FIM BLOCOS PADROES -
