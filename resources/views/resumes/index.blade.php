@@ -234,7 +234,7 @@
                         </div>
                         <div class="col-info">
                             <span class="info-nome">
-                                <strong>{{ $resume->informacoesPessoais->nome }}</strong>
+                                <strong>{{ $resume->informacoesPessoais->nome ?? '' }}</strong>
                             </span>
                             @if ($idadeEmMeses > $limiteEmMeses)
                                 <p class="badge bg-danger">{{ $idadeFormatada }}</p>
@@ -253,15 +253,15 @@
                     </li>
                     <li class="col3">
                         <b>CNH</b>
-                        {{ $resume->informacoesPessoais->cnh }}
+                        {{ $resume->informacoesPessoais->cnh ?? '' }}
                     </li>
                     <li class="col4">
                         <b>Informática</b>
-                        {{ $resume->escolaridade->informatica }}
+                        {{ $resume->escolaridade->informatica ?? '' }}
                     </li>
                     <li class="col5">
                         <b>Inglês</b>
-                        {{ $resume->escolaridade->ingles }}
+                        {{ $resume->escolaridade->ingles ?? '' }}
                     </li>
                     <li class="col6">
                         <b>Entrevista</b>

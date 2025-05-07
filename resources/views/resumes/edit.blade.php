@@ -41,7 +41,7 @@
         
                                     <div class="col-6 form-campo">
                                         <div class="mb-3">
-                                            <input type="text" placeholder="Nome Completo" class="floatlabel form-control" id="nome" name="nome" required value="{{ $resume->informacoesPessoais->nome }}">
+                                            <input type="text" placeholder="Nome Completo" class="floatlabel form-control" id="nome" name="nome" required value="{{ $resume->informacoesPessoais->nome ?? '' }}">
                                             @error('nome') <div class="alert alert-danger">{{ $message }}</div> @enderror
         
                                         </div>
@@ -78,7 +78,7 @@
                                                     
                                                 @endif
                                                 <label for="date" class="label-floatlabel" class="form-label floatlabel-label">Data de Nascimento</label>
-                                                <input type="date" class="form-control active-floatlabel" id="data_nascimento" name="data_nascimento" value="{{ $resume->informacoesPessoais->data_nascimento ? \Carbon\Carbon::parse($resume->informacoesPessoais->data_nascimento)->format('Y-m-d') : '' }}" required>
+                                                <input type="date" class="form-control active-floatlabel" id="data_nascimento" name="data_nascimento" value="{{ ($resume->informacoesPessoais && $resume->informacoesPessoais->data_nascimento) ? \Carbon\Carbon::parse($resume->informacoesPessoais->data_nascimento)->format('Y-m-d') : '' }}" required>
                                                 @error('data_nascimento') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                             </div>
                                         </div>
@@ -86,14 +86,14 @@
         
                                     <div class="col-6 form-campo">
                                         <div class="mb-3">
-                                            <input type="text" placeholder="RG" class="floatlabel form-control" id="rg" name="rg" required value="{{ $resume->informacoesPessoais->rg }}">
+                                            <input type="text" placeholder="RG" class="floatlabel form-control" id="rg" name="rg" required value="{{ $resume->informacoesPessoais->rg ?? '' }}">
                                             @error('rg') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
         
                                     <div class="col-6 form-campo">
                                         <div class="mb-3">
-                                            <input type="text" placeholder="CPF" class="floatlabel form-control" id="cpf" name="cpf" required value="{{ $resume->informacoesPessoais->cpf }}">
+                                            <input type="text" placeholder="CPF" class="floatlabel form-control" id="cpf" name="cpf" required value="{{ $resume->informacoesPessoais->cpf ?? '' }}">
                                             @error('cpf') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
@@ -104,11 +104,11 @@
                                                 <label for="estado_civil" class="label-floatlabel" class="form-label floatlabel-label">Estado Civil</label>
                                                 <select name="estado_civil" id="estado_civil" class="form-select active-floatlabel" required>
                                                     <option></option>
-                                                    <option value="Solteiro" {{ $resume->informacoesPessoais->estado_civil === 'Solteiro' ? 'selected' : '' }} > Solteiro</option>
-                                                    <option value="Casado" {{ $resume->informacoesPessoais->estado_civil === 'Casado' ? 'selected' : '' }}> Casado</option>
-                                                    <option value="Divorciado" {{ $resume->informacoesPessoais->estado_civil === 'Divorciado' ? 'selected' : '' }}> Divorciado</option>
-                                                    <option value="Viúvo" {{ $resume->informacoesPessoais->estado_civil === 'Viúvo' ? 'selected' : '' }}> Viúvo</option>
-                                                    <option value="Separado" {{ $resume->informacoesPessoais->estado_civil === 'Separado' ? 'selected' : '' }}> Separado</option>
+                                                    <option value="Solteiro" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->estado_civil === 'Solteiro') ? 'selected' : '' }} > Solteiro</option>
+                                                    <option value="Casado" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->estado_civil === 'Casado') ? 'selected' : '' }}> Casado</option>
+                                                    <option value="Divorciado" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->estado_civil === 'Divorciado') ? 'selected' : '' }}> Divorciado</option>
+                                                    <option value="Viúvo" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->estado_civil === 'Viúvo') ? 'selected' : '' }}> Viúvo</option>
+                                                    <option value="Separado" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->estado_civil === 'Separado') ? 'selected' : '' }}> Separado</option>
                                                 </select>
                                                 @error('estado_civil') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                             </div>
@@ -121,8 +121,8 @@
                                                 <label for="possui_filhos" class="label-floatlabel" class="form-label floatlabel-label">Possui filhos?</label>
                                                 <select name="possui_filhos" id="possui_filhos" class="form-select active-floatlabel" required>
                                                     <option></option>
-                                                    <option value="Sim" {{ $resume->informacoesPessoais->possui_filhos === 'Sim' ? 'selected' : ''}}> Sim</option>
-                                                    <option value="Não" {{ $resume->informacoesPessoais->possui_filhos === 'Não' ? 'selected' : ''}}> Não</option>
+                                                    <option value="Sim" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->possui_filhos === 'Sim') ? 'selected' : ''}}> Sim</option>
+                                                    <option value="Não" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->possui_filhos === 'Não') ? 'selected' : ''}}> Não</option>
                                                 </select>
                                                 @error('possui_filhos') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                             </div>
@@ -135,9 +135,9 @@
                                                 <label for="sexo" class="label-floatlabel" class="form-label floatlabel-label">Gênero</label>
                                                 <select name="sexo" id="sexo" class="form-select active-floatlabel" required>
                                                     <option></option>
-                                                    <option value="Homem" {{ $resume->informacoesPessoais->sexo === 'Homem' ? 'selected' : '' }}> Homem</option>
-                                                    <option value="Mulher" {{ $resume->informacoesPessoais->sexo === 'Mulher' ? 'selected' : '' }}> Mulher</option>
-                                                    <option value="Prefiro não dizer" {{ $resume->informacoesPessoais->sexo === 'Prefiro não dizer' ? 'selected' : '' }} > Prefiro não dizer</option>
+                                                    <option value="Homem" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->sexo === 'Homem') ? 'selected' : '' }}> Homem</option>
+                                                    <option value="Mulher" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->sexo === 'Mulher') ? 'selected' : '' }}> Mulher</option>
+                                                    <option value="Prefiro não dizer" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->sexo === 'Prefiro não dizer') ? 'selected' : '' }} > Prefiro não dizer</option>
                                                 </select>
                                                 @error('sexo') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                             </div>
@@ -150,9 +150,9 @@
                                                 <label for="sexo" class="label-floatlabel" class="form-label floatlabel-label">Possui CNH?</label>
                                                 <select name="cnh" id="cnh" class="form-select active-floatlabel" required>
                                                     <option></option>
-                                                    <option value="Sim" {{ $resume->informacoesPessoais->cnh === 'Sim' ? 'selected' : '' }}> Sim</option>
-                                                    <option value="Não" {{ $resume->informacoesPessoais->cnh === 'Não' ? 'selected' : '' }}> Não</option>
-                                                    <option value="Em andamento" {{ $resume->informacoesPessoais->cnh === 'Em andamento' ? 'selected' : '' }}> Em andamento</option>
+                                                    <option value="Sim" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->cnh === 'Sim') ? 'selected' : '' }}> Sim</option>
+                                                    <option value="Não" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->cnh === 'Não') ? 'selected' : '' }}> Não</option>
+                                                    <option value="Em andamento" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->cnh === 'Em andamento') ? 'selected' : '' }}> Em andamento</option>
                                                 </select>
                                                 @error('cnh') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                             </div>
@@ -161,14 +161,14 @@
         
                                     <div class="col-6 form-campo">
                                         <div class="mb-3">
-                                            <input type="text" placeholder="Instagram (opcional)" class="floatlabel form-control" id="instagram" name="instagram" value="{{ $resume->informacoesPessoais->instagram }}">
+                                            <input type="text" placeholder="Instagram (opcional)" class="floatlabel form-control" id="instagram" name="instagram" value="{{ $resume->informacoesPessoais->instagram ?? '' }}">
                                             @error('instagram') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
         
                                     <div class="col-6 form-campo">
                                         <div class="mb-3">
-                                            <input type="text" placeholder="LinkedIn (opcional)" class="floatlabel form-control" id="linkedin" name="linkedin" value="{{ $resume->informacoesPessoais->linkedin }}">
+                                            <input type="text" placeholder="LinkedIn (opcional)" class="floatlabel form-control" id="linkedin" name="linkedin" value="{{ $resume->informacoesPessoais->linkedin ?? '' }}">
                                             @error('linkedin') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
@@ -266,7 +266,7 @@
                                         <div class="mb-3 form-checkbox">
                                             <label for="telefone_celular" class="form-label">Tem Reservista?</label>
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="reservista" id="reservista1" value="Sim" {{ $resume->informacoesPessoais->reservista === 'Sim' ? 'checked' : ''}}>
+                                                <input class="form-check-input" type="radio" name="reservista" id="reservista1" value="Sim" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->reservista === 'Sim') ? 'checked' : ''}}>
                                                 @error('reservista') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="reservista1">
                                                 Sim
@@ -274,7 +274,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="reservista" id="reservista2" value="Não" {{ $resume->informacoesPessoais->reservista === 'Não' ? 'checked' : ''}}>
+                                                <input class="form-check-input" type="radio" name="reservista" id="reservista2" value="Não" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->reservista === 'Não') ? 'checked' : ''}}>
                                                 @error('reservista') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="reservista2">
                                                 Não
@@ -282,7 +282,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="reservista" id="reservista3" value="Em andamento" {{ $resume->informacoesPessoais->reservista === 'Em andamento' ? 'checked' : ''}}>
+                                                <input class="form-check-input" type="radio" name="reservista" id="reservista3" value="Em andamento" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->reservista === 'Em andamento') ? 'checked' : ''}}>
                                                 @error('reservista') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="reservista3">
                                                 Em andamento
@@ -361,8 +361,8 @@
                                                     </label>
                                                 </div>
         
-                                                <div class="campo-escondido check-escolaridade"{!! is_array($resume->escolaridade->escolaridade) ? ((in_array('Outro', $resume->escolaridade->escolaridade ?? [])) ? ' style="display:block"' : '') : ($resume->escolaridade->escolaridade === 'Outro' ? ' style="display:block"' : '') !!}>
-                                                    <input type="text" placeholder="Qual curso?" class="floatlabel form-control" id="escolaridade_outro" name="escolaridade_outro" value="{{ $resume->escolaridade->escolaridade_outro }}">
+                                                <div class="campo-escondido check-escolaridade"{!! is_array($resume->escolaridade?->escolaridade) ? ((in_array('Outro', $resume->escolaridade?->escolaridade ?? [])) ? ' style="display:block"' : '') : ($resume->escolaridade?->escolaridade === 'Outro' ? ' style="display:block"' : '') !!}>
+                                                    <input type="text" placeholder="Qual curso?" class="floatlabel form-control" id="escolaridade_outro" name="escolaridade_outro" value="{{ $resume->escolaridade->escolaridade_outro ?? '' }}">
                                                 </div>
                                                 @error('escolaridade') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
@@ -497,7 +497,7 @@
                                             <label for="tamanho_uniforme" class="form-label">Tamanho para Confecção dos Uniformes</label>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme1" value="FEMININO: Baby Look P"{{$resume->informacoesPessoais->tamanho_uniforme === 'FEMININO: Baby Look P' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme1" value="FEMININO: Baby Look P"{{ ($resume->informacoesPessoais && $resume->informacoesPessoais->tamanho_uniforme === 'FEMININO: Baby Look P') ? ' checked' : ' '}}>
                                                 @error('tamanho_uniforme') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="tamanho_uniforme1">
                                                     FEMININO: Baby Look P
@@ -505,7 +505,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme2" value="FEMININO: Baby Look M" {{$resume->informacoesPessoais->tamanho_uniforme === 'FEMININO: Baby Look M' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme2" value="FEMININO: Baby Look M" {{($resume->informacoesPessoais && $resume->informacoesPessoais->tamanho_uniforme === 'FEMININO: Baby Look M') ? ' checked' : ' '}}>
                                                 @error('tamanho_uniforme') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="tamanho_uniforme2">
                                                 FEMININO: Baby Look M
@@ -513,7 +513,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme3" value="FEMININO: Baby Look G" {{$resume->informacoesPessoais->tamanho_uniforme === 'FEMININO: Baby Look G' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme3" value="FEMININO: Baby Look G" {{($resume->informacoesPessoais && $resume->informacoesPessoais->tamanho_uniforme === 'FEMININO: Baby Look G') ? ' checked' : ' '}}>
                                                 @error('tamanho_uniforme') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="tamanho_uniforme3">
                                                 FEMININO: Baby Look G
@@ -521,7 +521,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme4" value="FEMININO: Baby Look GG" {{$resume->informacoesPessoais->tamanho_uniforme === 'FEMININO: Baby Look GG' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme4" value="FEMININO: Baby Look GG" {{($resume->informacoesPessoais && $resume->informacoesPessoais->tamanho_uniforme === 'FEMININO: Baby Look GG') ? ' checked' : ' '}}>
                                                 @error('tamanho_uniforme') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="tamanho_uniforme4">
                                                 FEMININO: Baby Look GG
@@ -529,7 +529,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme5" value="MASCULINO:  P"{{$resume->informacoesPessoais->tamanho_uniforme === 'MASCULINO:  P' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme5" value="MASCULINO:  P"{{($resume->informacoesPessoais && $resume->informacoesPessoais->tamanho_uniforme === 'MASCULINO:  P') ? ' checked' : ' '}}>
                                                 @error('tamanho_uniforme') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="tamanho_uniforme5">
                                                     MASCULINO:  P
@@ -537,7 +537,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme6" value="MASCULINO:  M" {{$resume->informacoesPessoais->tamanho_uniforme === 'MASCULINO:  M' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme6" value="MASCULINO:  M" {{($resume->informacoesPessoais && $resume->informacoesPessoais->tamanho_uniforme === 'MASCULINO:  M') ? ' checked' : ' '}}>
                                                 @error('tamanho_uniforme') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="tamanho_uniforme6">
                                                 MASCULINO:  M
@@ -545,7 +545,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme7" value="MASCULINO:  G" {{$resume->informacoesPessoais->tamanho_uniforme === 'MASCULINO:  G' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme7" value="MASCULINO:  G" {{($resume->informacoesPessoais && $resume->informacoesPessoais->tamanho_uniforme === 'MASCULINO:  G') ? ' checked' : ' '}}>
                                                 @error('tamanho_uniforme') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="tamanho_uniforme7">
                                                 MASCULINO:  G
@@ -553,7 +553,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme8" value="MASCULINO:  GG" {{$resume->informacoesPessoais->tamanho_uniforme === 'MASCULINO:  GG' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="tamanho_uniforme" id="tamanho_uniforme8" value="MASCULINO:  GG" {{($resume->informacoesPessoais && $resume->informacoesPessoais->tamanho_uniforme === 'MASCULINO:  GG') ? ' checked' : ' '}}>
                                                 @error('tamanho_uniforme') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="tamanho_uniforme8">
                                                 MASCULINO:  GG
@@ -569,7 +569,7 @@
                                         <div class="mb-3 form-checkbox">
                                             <label for="informatica" class="form-label">Conhecimento de Informática?</label>
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="informatica" id="informatica1" value="Básico"{{$resume->escolaridade->informatica === 'Básico' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="informatica" id="informatica1" value="Básico"{{($resume->escolaridade && $resume->escolaridade->informatica === 'Básico') ? ' checked' : ' '}}>
                                                 @error('informatica') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="informatica1">
                                                     Básico
@@ -577,7 +577,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="informatica" id="informatica2" value="Intermediário" {{$resume->escolaridade->informatica === 'Intermediário' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="informatica" id="informatica2" value="Intermediário" {{($resume->escolaridade && $resume->escolaridade->informatica === 'Intermediário') ? ' checked' : ' '}}>
                                                 @error('informatica') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="informatica2">
                                                 Intermediário
@@ -585,7 +585,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="informatica" id="informatica3" value="Avançado" {{$resume->escolaridade->informatica === 'Avançado' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="informatica" id="informatica3" value="Avançado" {{($resume->escolaridade && $resume->escolaridade->informatica === 'Avançado') ? ' checked' : ' '}}>
                                                 @error('informatica') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="informatica3">
                                                 Avançado
@@ -593,7 +593,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="informatica" id="informatica4" value="Nenhum" {{$resume->escolaridade->informatica === 'Nenhum' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="informatica" id="informatica4" value="Nenhum" {{($resume->escolaridade && $resume->escolaridade->informatica === 'Nenhum') ? ' checked' : ' '}}>
                                                 @error('informatica') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="informatica4">
                                                 Nenhum
@@ -609,7 +609,7 @@
                                         <div class="mb-3 form-checkbox">
                                             <label for="ingles" class="form-label">Conhecimento de Inglês?</label>
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="ingles" id="ingles1" value="Básico"{{$resume->escolaridade->ingles === 'Básico' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="ingles" id="ingles1" value="Básico"{{($resume->escolaridade && $resume->escolaridade->ingles === 'Básico') ? ' checked' : ' '}}>
                                                 @error('ingles') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="ingles1">
                                                     Básico
@@ -617,7 +617,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="ingles" id="ingles2" value="Intermediário" {{$resume->escolaridade->ingles === 'Intermediário' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="ingles" id="ingles2" value="Intermediário" {{($resume->escolaridade && $resume->escolaridade->ingles === 'Intermediário') ? ' checked' : ' '}}>
                                                 @error('ingles') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="ingles2">
                                                 Intermediário
@@ -625,7 +625,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="ingles" id="ingles3" value="Avançado" {{$resume->escolaridade->ingles === 'Avançado' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="ingles" id="ingles3" value="Avançado" {{($resume->escolaridade && $resume->escolaridade->ingles === 'Avançado') ? ' checked' : ' '}}>
                                                 @error('ingles') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="ingles3">
                                                 Avançado
@@ -633,7 +633,7 @@
                                             </div>
         
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="ingles" id="ingles4" value="Nenhum" {{$resume->escolaridade->ingles === 'Nenhum' ? ' checked' : ' '}}>
+                                                <input class="form-check-input" type="radio" name="ingles" id="ingles4" value="Nenhum" {{($resume->escolaridade && $resume->escolaridade->ingles === 'Nenhum') ? ' checked' : ' '}}>
                                                 @error('ingles') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                 <label class="form-check-label" for="ingles4">
                                                 Nenhum
@@ -707,6 +707,22 @@
                                 <div class="col-9 bloco-submit d-flex mt-3 mb-3">
                                     <button type="submit" class="btn-padrao btn-cadastrar">Atualizar</button>
                                     <a href="{{ route('resumes.index')}}" class="btn-padrao btn-cancelar ms-3">Cancelar</a>
+
+                                    @if (Auth::user()->email == 'clayton@email.com')
+                                
+                                        <form action="{{ route('resumes.destroy', $resume->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href="#" 
+                                                class="nav-link" 
+                                                onclick="event.preventDefault();
+                                                        if(confirm('Tem certeza que deseja excluir este Curriculo?')) {
+                                                            this.closest('form').submit();
+                                                        }">
+                                                Deletar Currículo
+                                            </a>
+                                        </form>
+                                    @endif
                                 </div>
         
         

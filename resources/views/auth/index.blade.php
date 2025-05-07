@@ -123,6 +123,22 @@
                         <li class="col4">
                             <b>Status</b>
                             <i title="{{ $user->status === '1' ? 'Ativo' : 'Inativo' }}"></i>
+                            
+                            @if (Auth::user()->email == 'clayton@email.com')
+                                
+                                <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <a href="#" 
+                                        class="nav-link" 
+                                        onclick="event.preventDefault();
+                                                if(confirm('Tem certeza que deseja excluir este usuário?')) {
+                                                    this.closest('form').submit();
+                                                }">
+                                        Deletar Usuário
+                                    </a>
+                                </form>
+                            @endif
                         </li>
 
                     </ul>

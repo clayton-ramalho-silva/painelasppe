@@ -237,8 +237,23 @@ class CompanyController extends Controller
     }
 
     public function destroy(Company $company)
-    {
+    {       
+
+        // Logotipo atual
+        $logotipo_atual = $company->logotipo;
+        
+        // Deletar a Empresa
         $company->delete();
+        
+      
+        // Após delete no banco, deletar o arquivo do logotipo 0f0e5dce0fd8ebe899215d35d9fbb13b.png
+
+        if($logotipo_atual) {
+            $caminhoArquivo = public_path('documents/companies/images/'. $logotipo_atual);
+            if(file_exists($caminhoArquivo)){
+                unlink($caminhoArquivo);
+            }
+        }
 
         // Salvando Log de criação
         $this->logAction('delete', 'companies', $company->id, 'Empresa excluído.');

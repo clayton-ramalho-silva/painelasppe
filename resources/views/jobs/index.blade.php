@@ -281,7 +281,23 @@
                             
                                 @default
                                     
-                            @endswitch                            
+                            @endswitch  
+                            
+                            @if (Auth::user()->email == 'clayton@email.com')
+                                
+                                <form action="{{ route('jobs.destroy', $job->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <a href="#" 
+                                        class="nav-link" 
+                                        onclick="event.preventDefault();
+                                                if(confirm('Tem certeza que deseja excluir esta Vaga?')) {
+                                                    this.closest('form').submit();
+                                                }">
+                                        Deletar Vaga
+                                    </a>
+                                </form>
+                            @endif
                         </li>
 
                     </ul>

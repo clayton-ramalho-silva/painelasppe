@@ -412,9 +412,11 @@
                                                         </li>
                                                         <li class="col2">
                                                             <b>Tipo de Vaga</b>
-                                                            @foreach ($curriculo->vagas_interesse as $vaga)
-                                                                {{$vaga}},
-                                                            @endforeach
+                                                            @if (is_array($curriculo->vagas_interesse))
+                                                                @foreach ($curriculo->vagas_interesse as $vaga)
+                                                                    {{$vaga}},
+                                                                @endforeach                                                                
+                                                            @endif
                                                         </li>
                                                         <li class="col3">
                                                             <b>CNH</b>

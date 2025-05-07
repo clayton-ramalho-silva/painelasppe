@@ -284,6 +284,7 @@ class JobController extends Controller
 
     public function destroy(Job $job)
     {
+        //dd($job);
         $job->delete();
 
         // Salvar Log de atualização

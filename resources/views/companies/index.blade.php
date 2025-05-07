@@ -140,6 +140,21 @@
                         <li class="col5">
                             <b>Status</b>
                             <i title="{{ $company->status === 'inativo' ? 'Inativo' : 'Ativo' }}"></i>
+                            @if (Auth::user()->email == 'clayton@email.com')
+                                
+                                <form action="{{ route('companies.destroy', $company->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <a href="#" 
+                                        class="nav-link" 
+                                        onclick="event.preventDefault();
+                                                if(confirm('Tem certeza que deseja excluir esta Empresa?')) {
+                                                    this.closest('form').submit();
+                                                }">
+                                        Deletar Empresa
+                                    </a>
+                                </form>
+                            @endif
                         </li>
 
                     </ul>

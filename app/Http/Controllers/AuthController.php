@@ -154,7 +154,7 @@ class AuthController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            //'password' => 'required|confirmed|min:8',
+            'password' => 'confirmed', //'required|confirmed|min:8',
             'role' => 'required|in:admin,recruiter',
             'image' => 'file|mimes:jpg,jpeg,png|max:2048'
         ],
@@ -163,6 +163,7 @@ class AuthController extends Controller
             'email.required'     => 'Preencha o e-mail',
             'email.email'        => 'Preencha um e-mail válido',
             'email.unique'       => 'O e-mail informado já está cadastrado',
+            'password.confirmed' => 'Senhas diferentes. ',            
             'role'               => 'Selecione o perfil do usuário',
         ]);
 
@@ -202,6 +203,7 @@ class AuthController extends Controller
 
     public function destroy(User $user)
     {
+        //dd($user);
         $user->delete();
 
         // Salvando Log de criação

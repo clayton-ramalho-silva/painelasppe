@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Interview;
 use App\Models\Job;
 use App\Models\Resume;
 use App\Models\Selection;
@@ -478,6 +479,51 @@ class ResumeController extends Controller
 
     public function destroy(Resume $resume)
     {
+        // Excluindo arquivo fisico curriculo
+        if($resume->curriculo_doc){
+            $curriculo_path = public_path('documents/resumes/curriculos/'. $resume->curriculo_doc);
+            if(file_exists($curriculo_path)){
+                unlink($curriculo_path);
+            }
+        }
+
+        // Excluindo informaçõe pessoais
+        if($resume->informacoesPessoais){
+            $resume->informacoesPessoais->delete();
+        }
+
+        // Excluindo informações academicas
+        if($resume->escolaridade){
+            $resume->escolaridade->delete();
+        }
+
+        // Excluindo informações contato
+        if($resume->contato){
+            $resume->contato->delete();
+        }
+
+        // Excluindo informações entrevista
+        if($resume->interview){
+            $resume->interview->delete();
+        }
+
+        // Excluindo Seleções
+        if($resume->selections->count() > 0){
+            foreach ($resume->selections as $selection){
+                $selection->delete();
+            }
+        }
+
+        // Excluindo observações
+        if($resume->observacoes->count() > 0){
+            foreach($resume->observacoes as $observacoes){
+                $observacoes->delete();
+            }
+        }
+
+        // Removendo associaç~eos com jobs
+        $resume->jobs()->detach();
+    
         $resume->delete();
 
         // Salvando Log de criação
