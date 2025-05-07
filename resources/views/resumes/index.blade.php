@@ -247,9 +247,13 @@
                     </li>
                     <li class="col2">
                         <b>Tipo de Vaga</b>
-                        @foreach ($resume->vagas_interesse as $vaga)
-                            {{$vaga}},
-                        @endforeach
+                        @if ($resume->vagas_interesse && is_array($resume->vagas_interesse))
+                            @foreach ($resume->vagas_interesse as $vaga)
+                                {{$vaga}},
+                            @endforeach                            
+                        @else
+                            Nenhuma vaga de interesse informada.
+                        @endif
                     </li>
                     <li class="col3">
                         <b>CNH</b>

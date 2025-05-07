@@ -18,7 +18,8 @@ class PublicResumeController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([           
+        //dd('chegou');
+        $data = $request->validate([
             'nome' => 'required|string|max:255',
             'data_nascimento' => 'required|date',
             'estado_civil' => 'required|string|max:255',
@@ -28,9 +29,9 @@ class PublicResumeController extends Controller
             'cnh' => 'required|string|max:255',
             //'reservista_outro' => 'required|string|max:255',
             'rg' => 'required|string|max:255',
-            'cpf' => 'required|string|max:255',
-            'instagram' => 'required|string|max:255',
-            'linkedin' => 'required|string|max:255',
+            'cpf' => 'required|string|max:255|unique:personal_info_resumes,cpf',
+            'instagram' => 'nullable|string|max:255',
+            'linkedin' => 'nullable|string|max:255',
             'logradouro' => 'required|string|max:255',
             'numero' => 'required|string|max:255',
             'complemento' => 'nullable|string|max:255',
@@ -38,44 +39,53 @@ class PublicResumeController extends Controller
             'cidade' => 'required|string|max:255',
             'uf' => 'required|string|max:255',
             'cep' => 'required|string|max:255',
-            'email' => 'required|email|unique:contact_resumes,email',            
-            'telefone_residencial' => 'string|max:255', // Telefone de contato
-            'nome_contato' => 'string|max:255',
+            'email' => 'required|email|unique:contact_resumes,email',
+            'telefone_residencial' => 'nullable|string|max:255', // Telefone de contato
+            'nome_contato' => 'nullable|string|max:255',
             'telefone_celular' => 'required|string|max:255',
             'vagas_interesse' => 'nullable',
             'experiencia_profissional' => 'nullable',
-            //'experiencia_profissional_outro' => 'nullable|string|max:255',
-            'escolaridade' => 'nullable|string|max:255',
+            'experiencia_profissional_outro' => 'nullable|string|max:255',
+            //'escolaridade' => 'nullable|string|max:255',
+            'escolaridade' => 'nullable',
             'escolaridade_outro' => 'nullable|string|max:255',
             //'participou_selecao' => 'nullable|string|max:255',
             //'participou_selecao_outro' => 'nullable|string|max:255',
             'foi_jovem_aprendiz' => 'nullable|string|max:255',
             'informatica' => 'required|string|max:255',
             'ingles' => 'required|string|max:255',
-            'tamanho_uniforme' => 'required|string|max:255',            
+            'tamanho_uniforme' => 'required|string|max:255',
             'curriculo_doc' => 'file|mimes:pdf|max:2048',
-            
+        ],[
+            'cpf.unique' =>'Currículo já cadastrado neste CPF.'
         ]);
 
-       // Salvando curriculo no banco e movendo arquivo para pasta.
-       if($request->hasFile('curriculo_doc') && $request->file('curriculo_doc')->isValid()){
-            $file = $request->file('curriculo_doc');
+        //dd($data);
+      // Salvando curriculo no banco e movendo arquivo para pasta.
+      if($request->hasFile('curriculo_doc') && $request->file('curriculo_doc')->isValid()){
 
-            $extension = $file->getClientOriginalExtension();
+        $file = $request->file('curriculo_doc');
 
-            $fileName = md5($file->getClientOriginalName() . microtime()) . '.' . $extension;
+        $extension = $file->getClientOriginalExtension();
 
-            $file->move(public_path('documents/resumes/curriculos'), $fileName);
+        $fileName = md5($file->getClientOriginalName() . microtime()) . '.' . $extension;
 
-            $data['curriculo_doc'] = $fileName;
+        $file->move(public_path('documents/resumes/curriculos'), $fileName);
+
+        $data['curriculo_doc'] = $fileName;
+
+        } else {
+
+            $data['curriculo_doc'] = '';
+
         }
 
         $resume = Resume::create([
             'vagas_interesse' => $data['vagas_interesse'],
             'experiencia_profissional' => $data['experiencia_profissional'],
-            'experiencia_profissional_outro' => '',
-            'participou_selecao' => '',
-            'participou_selecao_outro' => '',
+            'experiencia_profissional_outro' => $data['experiencia_profissional_outro'] ?? '',
+            'participou_selecao' => '', // Cliente pediu para retirar
+            'participou_selecao_outro' => '', // Cliente pediu para retirar
             'foi_jovem_aprendiz' => $data['foi_jovem_aprendiz'],
             'curriculo_doc' => $data['curriculo_doc'],
 
@@ -95,14 +105,13 @@ class PublicResumeController extends Controller
             'instagram' => $data['instagram'],
             'linkedin' => $data['linkedin'],
             'tamanho_uniforme' => $data['tamanho_uniforme'],
-
         ]);
 
         $resume->escolaridade()->create([
             'escolaridade' => $data['escolaridade'],
             'escolaridade_outro' => $data['escolaridade_outro'] ?? '',
             'informatica' => $data['informatica'],
-            'ingles' => $data['ingles'],            
+            'ingles' => $data['ingles'],
 
         ]);
 
@@ -125,6 +134,6 @@ class PublicResumeController extends Controller
         $this->logAction('create', 'jobs', $resume->id, 'Currículo cadastrado pelo candidado com sucesso.');
 
         
-        return redirect()->away('https://www.google.com');
+        return view('publicResume.confirmacao');
     }
 }
