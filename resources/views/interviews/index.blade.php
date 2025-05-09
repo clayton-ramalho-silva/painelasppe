@@ -107,7 +107,8 @@
                     </li>
                     <li class="col2">
                         <b>Tipo de vaga</b>
-                        @foreach ($resume->vagas_interesse as $vaga)
+                        
+                        @foreach ($resume->vagas_interesse ?? [] as $vaga)
                             {{$vaga}},
                         @endforeach
                     </li>

@@ -37,7 +37,7 @@
                                 <option></option>
                                 @if ($resumes->isNotEmpty())
                                     @foreach ($resumes as $resume)
-                                        <option value="{{$resume->id}}">{{ $resume->informacoesPessoais->nome }}</option>
+                                        <option value="{{$resume->id}}">{{ $resume->informacoesPessoais->nome ?? 'N/A' }}</option>
                                     @endforeach
                                 @else
                                     <option value="" disabled>Nenhum candidato disponível para entrevista</option>

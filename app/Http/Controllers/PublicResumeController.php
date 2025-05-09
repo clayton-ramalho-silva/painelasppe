@@ -55,7 +55,7 @@ class PublicResumeController extends Controller
             'informatica' => 'required|string|max:255',
             'ingles' => 'required|string|max:255',
             'tamanho_uniforme' => 'required|string|max:255',
-            'curriculo_doc' => 'file|mimes:pdf|max:2048',
+            'curriculo_doc' => 'required|file|mimes:pdf|max:2048',
         ],[
             'cpf.unique' =>'Currículo já cadastrado neste CPF.'
         ]);

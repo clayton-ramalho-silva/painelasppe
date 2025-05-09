@@ -225,7 +225,7 @@
                                         echo get_estados(old('uf'));
                                         @endphp
                                     </select>
-                                    @error('genero') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                                    @error('uf') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                 </div>
                             </div>
 

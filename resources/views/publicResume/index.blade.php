@@ -18,9 +18,9 @@
   <link href="{{ asset('css/estilos.css') }}" type="text/css" rel="stylesheet"> <meta charset="utf-8">
 
   <style>
-body{
-    background-color: #f6f6f6;
-}
+    body{
+        background-color: #f6f6f6;
+    }
     /* Esconde o input original */
     .file-input {
         display: none;
@@ -210,7 +210,7 @@ body{
     @endif
     <div class="header">
         <div class="container-logo">
-            <a href="/" class="logo">ASPPE - Sistema</a>
+            <a href="https://painelasppe.com.br/cadastro-curriculo" class="logo">ASPPE - Sistema</a>
 
         </div>
         <p class="mb-2 mt-3">Cadastre seu currículo.</p> 
@@ -268,6 +268,7 @@ body{
                                     <div class="col-6 form-campo">
                                         <div class="mb-3">
                                             <input type="text" placeholder="CPF" class="floatlabel form-control" id="cpf" name="cpf" required placeholder="CPF" value="{{old('cpf')}}">
+                                            
                                             @error('cpf') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
@@ -812,7 +813,7 @@ body{
         
                                     {{-- Aceita apenas pdf --}}
                                     <input type="file" id="file-upload" class="file-input"
-                                        accept=".pdf" name="curriculo_doc">
+                                        accept=".pdf" name="curriculo_doc" required>
         
                                     <div class="preview-container mb-3">
         
@@ -860,13 +861,13 @@ body{
 <script src="{{ asset('js/select2.min.js') }}"></script>
 <script>
     var SPMaskBehavior = function (val) {
-    return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00000';
-},
-spOptions = {
-    onKeyPress: function(val, e, field, options) {
-        field.mask(SPMaskBehavior.apply({}, arguments), options);
-    }
-};
+        return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00000';
+    },
+    spOptions = {
+        onKeyPress: function(val, e, field, options) {
+            field.mask(SPMaskBehavior.apply({}, arguments), options);
+        }
+    };
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('file-upload').addEventListener('change', function (event) {
@@ -893,6 +894,9 @@ document.addEventListener("DOMContentLoaded", function () {
 $('#uf').select2({
     placeholder: "Selecione",
 });
+
+//$('#uf').val(result.uf).trigger('change'); // substitui .select2()
+
 $('#estado_civil').select2({
     placeholder: "Selecione",
 });
@@ -946,7 +950,9 @@ $('#cep').on('input', function(){
 
                     $('#cidade').val(result.cidade);
                     $('#bairro').val(result.bairro);
-                    $('#uf').val(result.uf);
+                    //$('#uf').val(result.uf);
+                    $('#uf').val(result.uf).trigger('change');
+
                     $('#logradouro').val(result.rua);
 
                     setTimeout(function(){
@@ -955,7 +961,7 @@ $('#cep').on('input', function(){
 
                 } else if(result.msg === '3'){
 
-                    $.message('CEP enválido, por favor verifique o número informado', 2);
+                    $.message('CEP inválido, por favor verifique o número informado', 2);
 
                 } else {
 
@@ -969,6 +975,9 @@ $('#cep').on('input', function(){
     }
 
 });
+
+
+
 
 $('#escolaridade3').on('click', function(){
 

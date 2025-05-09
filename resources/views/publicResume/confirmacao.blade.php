@@ -149,7 +149,7 @@ body{
     
     <div class="header">
         <div class="container-logo">
-            <a href="/" class="logo">ASPPE - Sistema</a>
+            <a href="https://asppe.org/" class="logo">ASPPE - Sistema</a>
 
         </div>
         <p class="mb-2 mt-3">Cadastre seu currículo.</p> 
@@ -164,7 +164,7 @@ body{
         
                     <h4 class="fw-normal mb-4">Currículo cadastrado com Sucesso!</h4>
                     
-                    <p>Retorne ao site da <a href="#">Asppe!</a></p>
+                    <p>Retorne ao site da <a href="https://asppe.org/">Asppe!</a></p>
                     
                 </div>
         

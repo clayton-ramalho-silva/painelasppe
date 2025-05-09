@@ -13,7 +13,7 @@ if (! function_exists('get_estados')) {
 
     function get_estados($sel='', $tipo=1){
 
-        echo $sel.'|';
+        //echo $sel.'|';
 
         $opcoes  = '';
         $estados = array('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO');
