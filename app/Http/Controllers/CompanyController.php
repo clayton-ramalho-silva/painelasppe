@@ -17,7 +17,19 @@ class CompanyController extends Controller
          */
 
         
+        
         $query = Company::with(['location']);
+
+
+         $form_busca = '';
+        // Filtro nome
+        if ($request->filled('form_busca')){
+            //dd($request->form_busca);
+            $query->where('nome_fantasia', 'like', '%'. $request->form_busca . '%');
+            $form_busca = $request->form_busca;
+
+        }
+
 
         // Filtro cidade
         if ($request->filled('cidade')) {
@@ -73,7 +85,7 @@ class CompanyController extends Controller
         //dd($query->toRawSql());
 
         //$companies = Company::all();
-        return view('companies.index', compact('companies'));
+        return view('companies.index', compact('companies', 'form_busca'));
     }
 
     public function create()

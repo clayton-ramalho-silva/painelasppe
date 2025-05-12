@@ -20,6 +20,25 @@
 
 </section>
 
+
+
+ @if (session('danger'))
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <svg width="30px" height="30px" style="margin-bottom: 10px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <title>danger</title>
+                <g id="Page-1" stroke="none" stroke-width="1" fill="#ffffff" fill-rule="evenodd">
+                    <g id="error-copy" fill="#ffffff" transform="translate(42.666667, 42.666667)">
+                        <path d="M213.333333,3.55271368e-14 C95.51296,3.55271368e-14 3.55271368e-14,95.51296 3.55271368e-14,213.333333 C3.55271368e-14,331.153707 95.51296,426.666667 213.333333,426.666667 C331.153707,426.666667 426.666667,331.153707 426.666667,213.333333 C426.666667,95.51296 331.153707,3.55271368e-14 213.333333,3.55271368e-14 Z M213.333333,384 C119.227947,384 42.6666667,307.43872 42.6666667,213.333333 C42.6666667,119.227947 119.227947,42.6666667 213.333333,42.6666667 C307.43872,42.6666667 384,119.227947 384,213.333333 C384,307.43872 307.438933,384 213.333333,384 Z M240.64,213.333333 L293.973333,160 L272,138.026667 L218.666667,191.36 L165.333333,138.026667 L143.36,160 L196.693333,213.333333 L143.36,266.666667 L165.333333,288.64 L218.666667,235.306667 L272,288.64 L293.973333,266.666667 L240.64,213.333333 Z" id="Shape">
+                        </path>
+                    </g>
+                </g>
+            </svg>
+          <div>
+            {{ session('danger') }}
+          </div>
+        </div>
+    @endif
+
 <section class="sessao">
 
     <article class="f1 container-form-create">
@@ -71,6 +90,7 @@
                             <div class="col-6 form-campo">
                                 <div class="mb-3">
                                     <input type="text" placeholder="CPF" class="floatlabel form-control" id="cpf" name="cpf" required placeholder="CPF">
+                                    <div id="cpf-error" class="d-none alert alert-danger"></div>
                                     @error('cpf') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                 </div>
                             </div>
@@ -807,7 +827,6 @@ $('#tamanho_uniforme').select2({
 });
 
 $('#rg').mask('00.000.000-0');
-$('#cpf').mask('000.000.000-00');
 $('#cep').mask('00000-000');
 $('#telefone_celular').mask('(00) 00000-0000');
 $('#telefone_residencial').mask(SPMaskBehavior, spOptions);
@@ -912,6 +931,89 @@ $("#form-companies-create").validate({
         ingles:"required",
         tamanho_uniforme:"required",
     }
+});
+
+
+// Função para validar CPF
+function validarCPF(cpf) {
+    // Remove caracteres não numéricos
+    cpf = cpf.replace(/[^\d]/g, '');
+    
+    // Verifica se tem 11 dígitos
+    if (cpf.length !== 11) {
+        return false;
+    }
+    
+    // Verifica se todos os dígitos são iguais (ex: 111.111.111-11)
+    if (/^(\d)\1+$/.test(cpf)) {
+        return false;
+    }
+    
+    // Validação do primeiro dígito verificador
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+        soma += parseInt(cpf.charAt(i)) * (10 - i);
+    }
+    let resto = 11 - (soma % 11);
+    let digitoVerificador1 = resto === 10 || resto === 11 ? 0 : resto;
+    
+    if (digitoVerificador1 !== parseInt(cpf.charAt(9))) {
+        return false;
+    }
+    
+    // Validação do segundo dígito verificador
+    soma = 0;
+    for (let i = 0; i < 10; i++) {
+        soma += parseInt(cpf.charAt(i)) * (11 - i);
+    }
+    resto = 11 - (soma % 11);
+    let digitoVerificador2 = resto === 10 || resto === 11 ? 0 : resto;
+    
+    return digitoVerificador2 === parseInt(cpf.charAt(10));
+}
+
+// Aplicar validação ao campo CPF
+$(document).ready(function() {
+    $('#cpf').mask('000.000.000-00');
+    
+    // Validação quando o formulário for enviado
+    $('form').submit(function(event) {
+        const cpf = $('#cpf').val();
+        
+        if (!validarCPF(cpf)) {
+            event.preventDefault();
+            // Adiciona classe de erro e mensagem
+            $('#cpf').addClass('is-invalid');
+            
+            // Verifica se já existe uma mensagem de erro
+            if ($('#cpf-error').length === 0) {
+                $('#cpf').after('<div id="cpf-error" class="alert alert-danger">CPF inválido. Por favor, verifique.</div>');
+            }
+            return false;
+        } else {
+            // Remove mensagens de erro se o CPF for válido
+            $('#cpf').removeClass('is-invalid');
+            $('#cpf-error').remove();
+        }
+    });
+    
+    // Validação em tempo real (opcional)
+    $('#cpf').on('blur', function() {
+        const cpf = $(this).val();
+        
+        // Só valida se o campo estiver completo
+        if (cpf.length === 14) {
+            if (!validarCPF(cpf)) {
+                $(this).addClass('is-invalid');
+                if ($('#cpf-error').length === 0) {
+                    $(this).after('<div id="cpf-error" class="alert alert-danger">CPF inválido. Por favor, verifique.</div>');
+                }
+            } else {
+                $(this).removeClass('is-invalid');
+                $('#cpf-error').remove();
+            }
+        }
+    });
 });
 </script>
 @endpush

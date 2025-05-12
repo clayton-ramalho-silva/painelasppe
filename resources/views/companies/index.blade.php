@@ -140,7 +140,7 @@
                         <li class="col5">
                             <b>Status</b>
                             <i title="{{ $company->status === 'inativo' ? 'Inativo' : 'Ativo' }}"></i>
-                            @if (Auth::user()->email == 'clayton@email.com')
+                            {{-- @if (Auth::user()->email == 'clayton@email.com')
                                 
                                 <form action="{{ route('companies.destroy', $company->id) }}" method="POST">
                                     @csrf
@@ -154,7 +154,7 @@
                                         Deletar Empresa
                                     </a>
                                 </form>
-                            @endif
+                            @endif --}}
                         </li>
 
                     </ul>
@@ -258,7 +258,6 @@ $(document).ready(function() {
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16) !important;
     border-radius: 8px;
 }
-
 
 
 

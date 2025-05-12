@@ -101,7 +101,7 @@
                     </li>
                     <li class="col2">
                         <b>Data</b>
-                        {{ $log->created_at->format('d/m/Y H:i') }}
+                        {{ $log->created_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}
                     </li>
                     <li class="col3">
                         <b>Ação</b>
@@ -162,8 +162,9 @@
     </article>
 
     <article class="f4 bts-interna">
+        @if (Auth::user()->email == 'clayton@email.com')
         <a href="#" class="btInt btExportar">Exportar <small>Exporte em excel</small></a>
-
+        @endif
     </article>
 
 </section>

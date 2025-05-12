@@ -39,7 +39,7 @@
                     <div class="col">
                         <label for="entrevistado" class="form-label">Entrevistado</label>
                         <select name="entrevistado" id="entrevistado" class="form-select">
-                            <optionipva 2025>Todos</option>
+                            <option>Todos</option>
                             <option value="1">Já entrevistado</option>
                             <option value="0">Não entrevistado</option>
                         </select>

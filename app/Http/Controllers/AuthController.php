@@ -60,7 +60,7 @@ class AuthController extends Controller
             'image' => 'file|mimes:jpg,jpeg,png|max:2048'
         ],
         [
-            'nome'               => 'Preencha o nome do usuário',
+            'name'               => 'Preencha o nome do usuário',
             'email.required'     => 'Preencha o e-mail',
             'email.email'        => 'Preencha um e-mail válido',
             'email.unique'       => 'O e-mail informado já está cadastrado',
@@ -98,6 +98,17 @@ class AuthController extends Controller
     {
 
         $query = User::query();
+
+
+        // Formulário Busca Topo
+          $form_busca = '';
+            // Filtro nome
+            if ($request->filled('form_busca')){
+                //dd($request->form_busca);
+                $query->where('name', 'like', '%'. $request->form_busca . '%');
+                $form_busca = $request->form_busca;
+
+            }
 
         // Filtro Função
         if ($request->filled('funcao')){
@@ -141,7 +152,7 @@ class AuthController extends Controller
 
         $users = $query->orderBy('created_at', 'desc')->get();
 
-        return view('auth.index', compact('users'));
+        return view('auth.index', compact('users', 'form_busca'));
     }
 
 

@@ -12,11 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardControler extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
         if ($user->role === 'admin') {
+                                    
             // Dados para o Admin
             $totalJobs = Job::select('qtd_vagas')->sum('qtd_vagas');
             $totalResumes = Resume::count();
@@ -24,15 +25,31 @@ class DashboardControler extends Controller
             $totalRecruiters = User::where('role', 'recruiter')->count();
             $filledJobs = Job::select('filled_positions')->sum('filled_positions');
             $openJobs = Job::where('status', 'aberta')->sum('status');
+            $closedJobs = Job::where('status', 'fechada')->sum('status');
             $totalEmpresasAtivas = Company::where('status', 'ativo')->count();
             $totalEmpresasInativas = Company::where('status', 'inativo')->count();
-            $jobs = Job::with('company')->get();
+            $query = Job::with('company');
+            
+            $form_busca = '';
+            if($request->filled('form_busca')){
+                
+                $query->whereHas('company', function($q) use ($request){
+                    $q->where('nome_fantasia', 'like', '%' . $request->form_busca . '%');
+                });
+
+                $form_busca = $request->form_busca;         
+
+            }
+             $jobs = $query->orderBy('created_at', 'desc')->get();
+
             $resumes = Resume::orderBy('created_at', 'desc')->take(50)->get();
+            //dd ($resumes);
 
             return view('dashboard.admin', compact(
                 'totalJobs', 'totalResumes', 'totalInterviews',
                 'totalRecruiters', 'filledJobs', 'openJobs',
-                'totalEmpresasAtivas', 'totalEmpresasInativas', 'jobs', 'resumes'
+                'totalEmpresasAtivas', 'totalEmpresasInativas', 'jobs', 'resumes', 
+                'form_busca', 'closedJobs'
             ));
         } else {
             // Dados para o Recrutador
@@ -63,6 +80,23 @@ class DashboardControler extends Controller
             $jobs = Job::with('company')->whereHas('recruiters', function($query) use($user){
                 $query->where('recruiter_id', $user->id);
             })->get();
+
+            // O recrutador vê apenas vagas associadas a ele com as empresas
+            // $query = Job::with(['company'])->whereHas('recruiters', function($q) use($user){
+            //     $q->where('recruiter_id', $user->id);
+            // });
+
+            // $form_busca = '';
+            // if($request->filled('form_busca')){
+                
+            //     $query->whereHas('company', function($q) use ($request){
+            //         $q->where('nome_fantasia', 'like', '%' . $request->form_busca . '%');
+            //     });
+
+            //     $form_busca = $request->form_busca;         
+
+            // }
+            //  $jobs = $query->orderBy('created_at', 'desc')->get();
 
             $resumes = Resume::orderBy('created_at', 'desc')->take(50)->get();
             //dd($resumes);

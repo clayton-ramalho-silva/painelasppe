@@ -708,7 +708,7 @@
                                     <button type="submit" class="btn-padrao btn-cadastrar">Atualizar</button>
                                     <a href="{{ route('resumes.index')}}" class="btn-padrao btn-cancelar ms-3">Cancelar</a>
 
-                                    @if (Auth::user()->email == 'clayton@email.com')
+                                    {{-- @if (Auth::user()->email == 'clayton@email.com')
                                 
                                         <form action="{{ route('resumes.destroy', $resume->id) }}" method="POST">
                                             @csrf
@@ -722,7 +722,7 @@
                                                 Deletar Currículo
                                             </a>
                                         </form>
-                                    @endif
+                                    @endif --}}
                                 </div>
         
         

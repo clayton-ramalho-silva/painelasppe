@@ -82,7 +82,7 @@
 
         <h3>{{ $totalJobs }}</h3>
 
-        <small><b>20 vagas</b> inativas</small>
+        <small><b>{{ $closedJobs }} vagas</b> inativas</small>
 
     </article>
 
@@ -97,9 +97,9 @@
             </figcaption>
         </figure>
 
-        <h3>{{ $openJobs }}</h3>
+        <h3>{{ $totalJobs - $filledJobs }}</h3>
 
-        <small><b>20 vagas</b> concluidas</small>
+        <small><b>{{ $filledJobs }}</b> concluidas</small>
 
     </article>
 
@@ -260,6 +260,7 @@
     height: 100vh;
     overflow: scroll;
 }
+
 </style>
 
 @endpush

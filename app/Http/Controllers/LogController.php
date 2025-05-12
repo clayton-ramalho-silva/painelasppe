@@ -7,10 +7,24 @@ use Illuminate\Http\Request;
 
 class LogController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $logs = Log::with('user')->latest()->paginate(20);
 
-        return view('logs.index', compact('logs'));
+         $query = Log::with('user');
+
+
+        // Formulário Busca Topo
+          $form_busca = '';
+            // Filtro nome
+        if($request->filled('form_busca')) {
+            $query->whereHas('user', function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->form_busca . '%');
+            });
+
+            $form_busca = $request->form_busca;
+        }
+        $logs = $query->latest()->paginate(20);
+
+        return view('logs.index', compact('logs','form_busca'));
     }
 }

@@ -283,7 +283,7 @@
                                     
                             @endswitch  
                             
-                            @if (Auth::user()->email == 'clayton@email.com')
+                            {{-- @if (Auth::user()->email == 'clayton@email.com')
                                 
                                 <form action="{{ route('jobs.destroy', $job->id) }}" method="POST">
                                     @csrf
@@ -297,7 +297,7 @@
                                         Deletar Vaga
                                     </a>
                                 </form>
-                            @endif
+                            @endif --}}
                         </li>
 
                     </ul>

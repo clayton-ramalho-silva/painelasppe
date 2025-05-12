@@ -39,6 +39,21 @@ class InterviewController extends Controller
 
         //$query = Resume::query();
 
+        
+
+
+        // Forumulario Busca - nome candidato
+        $form_busca = '';
+        if($request->filled('form_busca')) {
+            
+            $query->whereHas('informacoesPessoais', function($q) use ($request) {
+                $q->where('nome', 'like', '%' . $request->form_busca . '%');
+            });
+
+            $form_busca = $request->form_busca;
+        }
+
+
          // Filtro por nome - Busca pelo nome do candidato
          if($request->filled('nome')) {
             $query->whereHas('informacoesPessoais', function($q) use ($request) {
@@ -51,12 +66,11 @@ class InterviewController extends Controller
 
         //dd($query);
         // Filtro Status
-        if($request->filled('status')){
-            $query->where('status', $request->status);
-            
-        }
-
-        
+        if($request->filled('status')){           
+           $query->where('status', $request->status);            
+        }     
+      
+       
          // Filtro Candidato entrevistado/nao entrevistado/ todos
          if(request()->has('entrevistado')){
             if (request()->entrevistado == '1'){
@@ -96,7 +110,7 @@ class InterviewController extends Controller
         // Implementar paginação
         //$resumes = $query->paginate(50); // Ajustar o numero coforme necessário.
 
-        return view('interviews.index', compact('interviews', 'resumes'));    
+        return view('interviews.index', compact('interviews', 'resumes', 'form_busca'));    
     }
 
     public function show($id)

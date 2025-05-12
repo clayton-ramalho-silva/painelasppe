@@ -75,7 +75,16 @@ class ResumesExport implements FromCollection, WithHeadings, WithMapping, WithCo
     public function map($resume): array
     {
         //$fileUrl = $resume->curriculo_doc ? asset('documents/resumes/curriculos/' . $resume->curriculo_doc) : '';
-        $url_app = 'https://laravel.ldweb.com.br';
+        $url_app = 'https://painelasppe.com.br/';
+        // $escolaridade = $resume->escolaridade->escolaridade;
+
+        // if(is_string($escolaridade) && str_starts_with($escolaridade, '[')){
+        //     // Tenta decodificar como JSON
+        //     $decoded = json_decode($escolaridade, true);
+        //     $escolaridade = is_array($decoded) ? implode(', ', $decoded) : $escolaridade;
+        // }
+
+        // $resultEscolaridade = mb_convert_encoding($escolaridade ?? 'N/A', 'UTF-8', 'auto');
 
         return [
             $resume->id,
@@ -103,6 +112,7 @@ class ResumesExport implements FromCollection, WithHeadings, WithMapping, WithCo
             mb_convert_encoding(optional($resume->contato)->uf ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding(optional($resume->contato)->cep ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding(implode(', ', optional($resume->escolaridade)->escolaridade ?? ['N/A']), 'UTF-8', 'auto'),
+            //$resultEscolaridade,
             mb_convert_encoding(optional($resume->escolaridade)->escolaridade_outro ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding(optional($resume->escolaridade)->informatica ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding(optional($resume->escolaridade)->ingles ?? 'N/A', 'UTF-8', 'auto'),

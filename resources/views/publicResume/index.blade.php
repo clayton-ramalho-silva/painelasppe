@@ -268,7 +268,7 @@
                                     <div class="col-6 form-campo">
                                         <div class="mb-3">
                                             <input type="text" placeholder="CPF" class="floatlabel form-control" id="cpf" name="cpf" required placeholder="CPF" value="{{old('cpf')}}">
-                                            
+                                            <div id="cpf-error" class="d-none alert alert-danger"></div>
                                             @error('cpf') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
@@ -823,7 +823,7 @@
                                         </div>
                                     </div>
         
-                                    <label for="file-upload" class="btn-select-file btn-padrao">Selecionar</label>
+                                    <label for="file-upload" class="btn-select-file btn-padrao">Selecionar</label>                                    
         
                                     @error('curriculo_doc') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                 </div>                                
@@ -847,7 +847,7 @@
 
 
 
-    <!-- JavaScript Libraries -->
+    <!-- JavaScript Libraries  <div id="cpf-error" class="d-none alert alert-danger"></div> -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
@@ -869,33 +869,145 @@
         }
     };
 
+
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById('file-upload').addEventListener('change', function (event) {
+    const fileUpload = document.getElementById('file-upload');
+    
+    // Evento change para quando um arquivo for selecionado
+    fileUpload.addEventListener('change', function (event) {
+        // Remover mensagem de erro se existir
+        removeErrorMessage();
+        
         if (event.target.files.length === 0) {
             return; // Sai da função se nenhum arquivo for selecionado
         }
-
+        
         const file = event.target.files[0]; // Obtém o arquivo selecionado
-
+        
         // Verifica se o arquivo é um PDF
         if (file.type !== "application/pdf") {
-            alert("Por favor, selecione um arquivo PDF.");
+            showErrorMessage("Por favor, selecione um arquivo PDF.");
             event.target.value = ""; // Limpa o campo
             return;
         }
-
+        
         // Atualiza a prévia do documento
         document.getElementById("file-name").textContent = file.name;
         document.getElementById("file-download").href = URL.createObjectURL(file);
         document.getElementById("preview-doc").style.display = "block";
     });
+    
+    // Validação no envio do formulário
+    const form = fileUpload.closest('form');
+    form.addEventListener('submit', function(event) {
+        if (!fileUpload.value) {
+            event.preventDefault(); // Impede o envio do formulário
+            showErrorMessage("O currículo é obrigatório. Por favor, selecione um arquivo PDF.");
+            // Fazer scroll para o campo de upload para chamar atenção do usuário
+            fileUpload.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+    
+    // Função para mostrar mensagem de erro
+    function showErrorMessage(message) {
+        // Remover mensagem anterior se existir
+        removeErrorMessage();
+        
+        // Criar e inserir nova mensagem de erro após o botão de seleção
+        const errorDiv = document.createElement('div');
+        errorDiv.id = 'curriculo-error';
+        errorDiv.className = 'alert alert-danger mt-2';
+        errorDiv.textContent = message;
+        
+        const labelElement = document.querySelector('label[for="file-upload"]');
+        labelElement.insertAdjacentElement('afterend', errorDiv);
+    }
+    
+    // Função para remover mensagem de erro
+    function removeErrorMessage() {
+        const errorElement = document.getElementById('curriculo-error');
+        if (errorElement) {
+            errorElement.remove();
+        }
+    }
 });
+
+
+
+
+
+
+    // Curriculo antigo
+// document.addEventListener("DOMContentLoaded", function () {
+//     document.getElementById('file-upload').addEventListener('change', function (event) {
+//         if (event.target.files.length === 0) {
+//             return; // Sai da função se nenhum arquivo for selecionado
+//         }
+
+//         const file = event.target.files[0]; // Obtém o arquivo selecionado
+
+//         // Verifica se o arquivo é um PDF
+//         if (file.type !== "application/pdf") {
+//             alert("Por favor, selecione um arquivo PDF.");
+//             event.target.value = ""; // Limpa o campo
+//             return;
+//         }
+
+//         // Atualiza a prévia do documento
+//         document.getElementById("file-name").textContent = file.name;
+//         document.getElementById("file-download").href = URL.createObjectURL(file);
+//         document.getElementById("preview-doc").style.display = "block";
+//     });
+// });
+
+// Curriculo antigo fim
+
+// Curriculo novo
+// document.addEventListener("DOMContentLoaded", function () {
+//     const fileInput = document.getElementById('file-upload');
+//     const errorMessage = document.getElementById('file-upload-error');
+//     const form = document.getElementById('curriculo-form');
+
+//     fileInput.addEventListener('change', function (event) {
+//         if (event.target.files.length > 0) {
+//             errorMessage.classList.add('d-none'); // Esconde erro se selecionado corretamente
+
+//             const file = event.target.files[0];
+//             if (file.type !== "application/pdf") {
+//                 alert("Por favor, selecione um arquivo PDF.");
+//                 event.target.value = "";
+//                 return;
+//             }
+
+//             document.getElementById("file-name").textContent = file.name;
+//             document.getElementById("file-download").href = URL.createObjectURL(file);
+//             document.getElementById("preview-doc").style.display = "block";
+//         }
+//     });
+
+//     form.addEventListener('submit', function (e) {
+//         if (fileInput.files.length === 0) {
+//             e.preventDefault(); // Impede envio
+//             errorMessage.classList.remove('d-none'); // Mostra mensagem
+//             fileInput.scrollIntoView({ behavior: 'smooth' });
+//         }
+//     });
+// });
+
+
+
+
+
+// Curriculo novo fim
+
+
+
+
+
 
 $('#uf').select2({
     placeholder: "Selecione",
 });
-
-//$('#uf').val(result.uf).trigger('change'); // substitui .select2()
 
 $('#estado_civil').select2({
     placeholder: "Selecione",
@@ -920,7 +1032,6 @@ $('#tamanho_uniforme').select2({
 });
 
 $('#rg').mask('00.000.000-0');
-$('#cpf').mask('000.000.000-00');
 $('#cep').mask('00000-000');
 $('#telefone_celular').mask('(00) 00000-0000');
 $('#telefone_residencial').mask(SPMaskBehavior, spOptions);
@@ -1030,6 +1141,89 @@ $("#form-companies-create").validate({
         ingles:"required",
         tamanho_uniforme:"required",
     }
+});
+
+
+// Função para validar CPF
+function validarCPF(cpf) {
+    // Remove caracteres não numéricos
+    cpf = cpf.replace(/[^\d]/g, '');
+    
+    // Verifica se tem 11 dígitos
+    if (cpf.length !== 11) {
+        return false;
+    }
+    
+    // Verifica se todos os dígitos são iguais (ex: 111.111.111-11)
+    if (/^(\d)\1+$/.test(cpf)) {
+        return false;
+    }
+    
+    // Validação do primeiro dígito verificador
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+        soma += parseInt(cpf.charAt(i)) * (10 - i);
+    }
+    let resto = 11 - (soma % 11);
+    let digitoVerificador1 = resto === 10 || resto === 11 ? 0 : resto;
+    
+    if (digitoVerificador1 !== parseInt(cpf.charAt(9))) {
+        return false;
+    }
+    
+    // Validação do segundo dígito verificador
+    soma = 0;
+    for (let i = 0; i < 10; i++) {
+        soma += parseInt(cpf.charAt(i)) * (11 - i);
+    }
+    resto = 11 - (soma % 11);
+    let digitoVerificador2 = resto === 10 || resto === 11 ? 0 : resto;
+    
+    return digitoVerificador2 === parseInt(cpf.charAt(10));
+}
+
+// Aplicar validação ao campo CPF
+$(document).ready(function() {
+    $('#cpf').mask('000.000.000-00');
+    
+    // Validação quando o formulário for enviado
+    $('form').submit(function(event) {
+        const cpf = $('#cpf').val();
+        
+        if (!validarCPF(cpf)) {
+            event.preventDefault();
+            // Adiciona classe de erro e mensagem
+            $('#cpf').addClass('is-invalid');
+            
+            // Verifica se já existe uma mensagem de erro
+            if ($('#cpf-error').length === 0) {
+                $('#cpf').after('<div id="cpf-error" class="alert alert-danger">CPF inválido. Por favor, verifique.</div>');
+            }
+            return false;
+        } else {
+            // Remove mensagens de erro se o CPF for válido
+            $('#cpf').removeClass('is-invalid');
+            $('#cpf-error').remove();
+        }
+    });
+    
+    // Validação em tempo real (opcional)
+    $('#cpf').on('blur', function() {
+        const cpf = $(this).val();
+        
+        // Só valida se o campo estiver completo
+        if (cpf.length === 14) {
+            if (!validarCPF(cpf)) {
+                $(this).addClass('is-invalid');
+                if ($('#cpf-error').length === 0) {
+                    $(this).after('<div id="cpf-error" class="alert alert-danger">CPF inválido. Por favor, verifique.</div>');
+                }
+            } else {
+                $(this).removeClass('is-invalid');
+                $('#cpf-error').remove();
+            }
+        }
+    });
 });
 </script>
 

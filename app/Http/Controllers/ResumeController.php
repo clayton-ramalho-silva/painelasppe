@@ -28,6 +28,16 @@ class ResumeController extends Controller
         $query = Resume::query();
         
 
+        // Forumulario Busca - nome candidato
+        $form_busca = '';
+        if($request->filled('form_busca')) {
+            $query->whereHas('informacoesPessoais', function($q) use ($request) {
+                $q->where('nome', 'like', '%' . $request->form_busca . '%');
+            });
+
+            $form_busca = $request->form_busca;
+        }
+
         // Aplica os filtros somente quando fornecidos
         // Filtro por nome - Busca pelo nome do candidato
         if($request->filled('nome')) {
@@ -178,10 +188,13 @@ class ResumeController extends Controller
         //dd($query->toRawSql());
 
         // Implementar paginação
-        $resumes = $query->paginate(50); // Ajustar o numero coforme necessário.
+       $resumes = $query->paginate(50); // Ajustar o numero coforme necessário.    
+        
+       
+
 
         //$resumes = Resume::all();
-        return view('resumes.index', compact('resumes'));
+        return view('resumes.index', compact('resumes', 'form_busca'));
     }
 
     public function show(Resume $resume)

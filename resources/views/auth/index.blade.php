@@ -124,7 +124,7 @@
                             <b>Status</b>
                             <i title="{{ $user->status === '1' ? 'Ativo' : 'Inativo' }}"></i>
                             
-                            @if (Auth::user()->email == 'clayton@email.com')
+                            {{-- @if (Auth::user()->email == 'clayton@email.com')
                                 
                                 <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                     @csrf
@@ -138,7 +138,7 @@
                                         Deletar Usuário
                                     </a>
                                 </form>
-                            @endif
+                            @endif --}}
                         </li>
 
                     </ul>

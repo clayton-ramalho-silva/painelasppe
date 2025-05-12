@@ -52,6 +52,18 @@ class JobController extends Controller
          * Filtros: Setor, Status, Recrutador, Genero, Cidades, UF, Inglês, Informática, Empresa, Salario de tanto a tanto
          */
 
+        // Filtro Formulario de Busca
+        $form_busca = '';
+        if($request->filled('form_busca')){
+            
+            $query->whereHas('company', function($q) use ($request){
+                $q->where('nome_fantasia', 'like', '%' . $request->form_busca . '%');
+            });
+
+            $form_busca = $request->form_busca;         
+
+        }
+
         // Filtro Setor
         if ($request->filled('cargo')) {
 
@@ -175,7 +187,7 @@ class JobController extends Controller
 
         //dd($query->toRawSql());
 
-        return view('jobs.index', compact('jobs', 'companies', 'recruiters'));
+        return view('jobs.index', compact('jobs', 'companies', 'recruiters', 'form_busca'));
 
     }
 
