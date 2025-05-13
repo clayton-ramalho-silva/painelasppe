@@ -170,6 +170,16 @@
                         </select>
                     </div>
 
+                    <div class="col-6 mb-4">
+                        <label for="data_min" class="form-label">Data Cadastro (de):</label>
+                        <input type="date" name="data_min" id="data_min" class="form-control" value="{{ request('data_min') }}">
+                    </div>
+
+                    <div class="col-6 mb-4">
+                        <label for="data_max" class="form-label">Data Cadastro (até):</label>
+                        <input type="date" name="data_max" id="data_max" class="form-control" value="{{ request('data_max') }}">
+                    </div>
+
                     <div class="col mt-1 d-flex justify-content-between">
                         <button type="submit" class="btn btn-padrao btn-cadastrar" name="filtrar" value="filtrar">Filtrar</button>
                         <button type="submit" class="btn btn-padrao btn-cancelar" name="limpar" value="limpar">Limpar</button>
@@ -272,41 +282,44 @@
                     <li class="col6">
                         <b>Entrevista</b>
                         @if ($resume->interview)
-                            <a href="{{ route('interviews.show', $resume->interview->id) }}" class="link-entrevista text-success fw-bold"  data-bs-toggle="tooltip" data-bs-placement="top" title="Ver entrevista">Sim</a>
+                            <a href="{{ route('interviews.show', $resume->interview->id) }}#form-interview" class="link-entrevista text-success fw-bold"  data-bs-toggle="tooltip" data-bs-placement="top" title="Ver entrevista">Sim</a>
                         @else
-                            <a href="{{ route('interviews.interviewResume', $resume) }}"  class="link-entrevista text-danger fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" title="Entrevistar">Não</a>
+                            <a href="{{ route('interviews.interviewResume', $resume) }}#form-interview"  class="link-entrevista text-danger fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" title="Entrevistar">Não</a>
                         @endif
                     </li>
                     <li class="col7">
                         <b>Status</b>
                         @php
-                            $temSelecaoAprovada = $resume->selections->contains('status_selecao', 'aprovado');
-                            $temSelecao = $resume->selections;                            
+                            // $temSelecaoAprovada = $resume->selections->contains('status_selecao', 'aprovado');
+                            // $temSelecao = $resume->selections;                            
                             
-                            if($resume->status === 'inativo'){
+                            // if($resume->status === 'inativo'){
 
-                                $classe = 'status-inativo'; // Colocar cor vermelha
-                                $status = 'Inativo';
+                            //     $classe = 'status-inativo'; // Colocar cor vermelha
+                            //     $status = 'Inativo';
 
-                            } else {
+                            // } else {
 
-                                if(($resume->interview)){
+                            //     if(($resume->interview)){
 
-                                    if($resume->selections->contains('status_selecao', 'aprovado')){
-                                        $classe = 'status-contratado'; // Colocar cor Verde
-                                        $status = 'Contratado';
-                                    } else {
-                                        $classe = 'status-em-processo'; // Colocar cor Amarela
-                                        $status = 'Em processo';
-                                    }
+                            //         if($resume->selections->contains('status_selecao', 'aprovado')){
+                            //             $classe = 'status-contratado'; // Colocar cor Verde
+                            //             $status = 'Contratado';
+                            //         } else {
+                            //             $classe = 'status-em-processo'; // Colocar cor Amarela
+                            //             $status = 'Em processo';
+                            //         }
 
-                                } else {
+                            //     } else {
 
-                                    $classe = 'status-ativo'; // Colocar cor Cinza
-                                    $status = 'Disponível';
+                            //         $classe = 'status-ativo'; // Colocar cor Cinza
+                            //         $status = 'Disponível';
 
-                                }
-                            }
+                            //     }
+                            // }
+
+
+                            
                             
 
                               
@@ -315,7 +328,22 @@
                             //dd($temSelecaoAprovada);
                         @endphp
 
-                        <i class="{{ $classe }}" title="{{ $status }}"></i>{{ $status }}{{-- Pediu para colocar o nome do status. --}}
+                        {{-- <i class="{{ $classe }}" title="{{ $status }}"></i>{{ $status }}Pediu para colocar o nome do status. --}}
+                        @switch($resume->status)
+                            @case('ativo')
+                                <i class="status-ativo" title="Disponível"></i>Disponível
+                                @break
+                            @case('inativo')
+                                <i class="status-inativo" title="Inativo"></i>Inativo
+                                @break
+                            @case('processo')
+                                <i class="status-em-processo" title="Em processo"></i>Em processo
+                                @break
+                            @case('contratado')
+                                <i class="status-contratado" title="Contratado"></i>Contratado
+                                @break                           
+                                
+                        @endswitch
 
                         {{-- @if ($temSelecaoAprovada)
                             Contratado

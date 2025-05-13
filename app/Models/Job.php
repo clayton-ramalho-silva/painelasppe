@@ -12,6 +12,7 @@ class Job extends Model
     protected $casts = [
         'data_inicio_contratacao' => 'date',
         'data_fim_contratacao' => 'date',
+        'data_entrevista_empresa' => 'date',
     ];
 
     protected $fillable = [
@@ -19,7 +20,7 @@ class Job extends Model
         'qtd_vagas','filled_positions', 'cidade', 'uf',
         'salario', 'dias_semana', 'horario', 'beneficios',
         'exp_profissional', 'informatica', 'ingles', 'data_inicio_contratacao',
-        'data_fim_contratacao', 'status', 'company_id', 'dias_curso'
+        'data_fim_contratacao', 'status', 'company_id', 'dias_curso', 'data_entrevista_empresa'
     ];
 
     public function company()
@@ -75,5 +76,12 @@ class Job extends Model
     {
         return $this->hasMany(Selection::class);
     }
+
+    // Verifica se o usuário é Admin ou recrutador associado a vaga
+    public function isEditableBy(User $user)
+    {
+        return $user->role === 'admin' || $this->recruiters->contains($user->id);
+    }
+
 
 }

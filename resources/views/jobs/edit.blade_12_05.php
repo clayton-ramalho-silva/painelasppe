@@ -264,29 +264,7 @@
 
                     </div>
 
-                    
-                    <h5 class="fw-normal mb-2">Data de Entrevista na Empresa:</h5>
-
-                    <div class="row">
-                        <form action="{{ route('jobs.updateDataEntrevistaEmpresa', $job) }}" method="post">
-                            @csrf
-                            @method('PUT')
-                            <div class="col-12 form-campo">
-                                <div class="mb-3">
-                                    <div class="floatlabel-wrapper">
-                                        <label for="date" class="label-floatlabel" class="form-label floatlabel-label">Data de Entrevista na Empresa</label>
-                                       
-                                        <input type="date" class="form-control active-floatlabel" id="data_entrevista_empresa" name="data_entrevista_empresa"
-                                            value="{{ $job->data_entrevista_empresa ? \Carbon\Carbon::parse($job->data_entrevista_empresa)->format('Y-m-d') : '' }}">
-                                        @error('data_entrevista_empresa') <div class="alert alert-danger">{{ $message }}</div> @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn-padrao btn-cadastrar">Atualizar</button>
-                        </form>
-                    </div>
-
-                    <h4 class="fw-norma mt-5">Observações:</h4>
+                    <h4 class="fw-normal">Observações:</h4>
 
                     <div class="row">
 
@@ -401,22 +379,11 @@
                            <div class="modal-content">
 
                                <div class="modal-header">
-                                   <h4>Currículos Disponíveis para Associar: </h4>
+                                   <h4>Currículos Disponíveis para Associar: Modal teste</h4>
                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                </div>
 
                                <div class="modal-body">
-
-                                    {{-- Campo busca por nome --}}
-                                    <form method="GET" action="{{ route('jobs.edit', $job->id) }}" class="mb-3">
-                                        <div class="input-group">
-                                            <input type="text" name="buscar_nome" class="form-control" placeholder="Buscar por nome..." value="{{ request('buscar_nome') }}">
-                                            {{-- <button type="submit" class="btn btn-primary">Buscar</button> --}}
-                                            <button id="botao-buscar-none" type="submit">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                            </button>
-                                        </div>
-                                    </form>
 
                                     <div class="table-container lista-associar-vaga">
 
@@ -465,7 +432,7 @@
                                                         </li>
                                                         <li class="col6">
                                                             <b>Ações</b>
-                                                            
+                                                        
                                                             <form action="{{ route('interviews.associarVaga') }}" method="POST" style="display:inline;">
                                                                 @csrf
                                                                 <input type="hidden" name="job_id" value="{{ $job->id }}">
@@ -486,11 +453,6 @@
                                                 
                                        
                                     </div>
-                                     <!-- No final da página, após a tabela ou lista de currículos -->
-                                    <div class="pagination-wrapper">
-                                        {{ $curriculosParaAssociar->appends(request()->query())->links('vendor.pagination.custom') }}
-                                        <p class="pagination-info">Mostrando {{ $curriculosParaAssociar->firstItem() }} a {{ $curriculosParaAssociar->lastItem() }} de {{ $curriculosParaAssociar->total() }} currículos</p>
-                                    </div>
 
                                </div>
 
@@ -505,38 +467,32 @@
                 </div>
 
                 <div class="table-container lista-curriculos-associados">
-                    @php
-                        $isAdmin = Auth::user()->role == 'admin' ? true : false;                        
-                    @endphp
 
                     <ul class="tit-lista">
-                        <li class="col1 {{ $isAdmin ? 'col1-admin' : ''}}">Nome</li>
-                        <li class="col2 {{ $isAdmin ? 'col2-admin' : ''}}">Tipo de vaga</li>
-                        <li class="col3 {{ $isAdmin ? 'col3-admin' : ''}}">Entrevistado</li>
-                        <li class="col4 {{ $isAdmin ? 'col4-admin' : ''}}">Status</li>
-                        @if ($isAdmin)
-                            <li class="col5 {{ $isAdmin ? 'col5-admin' : ''}}">Ações</li>                            
-                        @endif
+                        <li class="col1">Nome</li>
+                        <li class="col2">Tipo de vaga</li>
+                        <li class="col3">Entrevistado</li>
+                        <li class="col4">Status</li>
                     </ul>
 
                     @if ($job->resumes()->count() > 0)
-                       
+
                         @foreach ($job->resumes as $resume)
                         <ul onclick="window.location='{{ route('resumes.edit', $resume) }}'" >
-                            <li class="col1 {{ $isAdmin ? 'col1-admin' : ''}}">
+                            <li class="col1">
                                 <b>Nome</b>
                                 <svg class="ico-lista" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 19V5.7a1 1 0 0 1 .658-.94l9.671-3.516a.5.5 0 0 1 .671.47v4.953l6.316 2.105a1 1 0 0 1 .684.949V19h2v2H1v-2h2zm2 0h7V3.855L5 6.401V19zm14 0v-8.558l-5-1.667V19h5z"></path></g></svg>
                                 <span>
                                     <strong>{{ $resume->informacoesPessoais->nome }}</strong>
                                 </span>
                             </li>
-                            <li class="col2 {{ $isAdmin ? 'col2-admin' : ''}}">
+                            <li class="col2">
                                 <b>Tipo de Vaga</b>
                                 @foreach ($resume->vagas_interesse as $vaga)
                                     {{$vaga}},
                                 @endforeach
                             </li>
-                            <li class="col3 {{ $isAdmin ? 'col3-admin' : ''}}">
+                            <li class="col3">
                                 <b>Entrevista</b>
                                 @if ($resume->interview)
                                     <a href="{{ route('interviews.show', $resume->interview->id) }}" class="link-entrevista text-success fw-bold"  data-bs-toggle="tooltip" data-bs-placement="top" title="Ver entrevista">Sim</a>
@@ -544,41 +500,40 @@
                                     <a href="{{ route('interviews.interviewResume', $resume) }}"  class="link-entrevista text-danger fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" title="Entrevistar">Não</a>
                                 @endif
                             </li>
-                            <li class="col4 {{ $isAdmin ? 'col4-admin' : ''}}">
+                            <li class="col4">
                                 <b>Status</b>
-                               
-                                  @switch($resume->status)
-                                    @case('ativo')
-                                        <i class="status-ativo" title="Disponível"></i>Disponível
-                                        @break
-                                    @case('inativo')
-                                        <i class="status-inativo" title="Inativo"></i>Inativo
-                                        @break
-                                    @case('processo')
-                                        <i class="status-em-processo" title="Em processo"></i>Em processo
-                                        @break
-                                    @case('contratado')
-                                        <i class="status-contratado" title="Contratado"></i>Contratado
-                                        @break                           
-                                        
-                                @endswitch
+                                @php
+                                $temSelecaoAprovada = $resume->selections->contains('status_selecao', 'aprovado');
+                                if($resume->status === 'inativo'){
 
-                                
-                                
-                                
+                                    $classe = 'status-inativo'; // Colocar cor vermelha
+                                    $status = 'Inativo';
+
+                                } else {
+
+                                    if(($resume->interview)){
+
+                                        if($resume->selections->contains('status_selecao', 'aprovado')){
+                                            $classe = 'status-contratado'; // Colocar cor Verde
+                                            $status = 'Contratado';
+                                        } else {
+                                            $classe = 'status-em-processo'; // Colocar cor Amarela
+                                            $status = 'Em processo';
+                                        }
+
+                                    } else {
+
+                                        $classe = 'status-ativo'; // Colocar cor Cinza
+                                        $status = 'Disponível';
+
+                                    }
+
+                                }
+                                @endphp
+
+                                <i class="{{ $classe }}" title="{{ $status }}"></i>{{ $status }}
+
                             </li>
-                            @if ($isAdmin)
-                                <li class="col5 {{ $isAdmin ? 'col5-admin' : ''}}">
-                                    <form action="{{ route('interviews.desassociarVaga') }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        <input type="hidden" name="job_id" value="{{ $job->id }}">
-                                        <input type="hidden" name="resume_id" value="{{ $resume->id }}">
-                                        <button type="submit" class="btn btn-danger btn-sm">Desassociar</button>
-                                    </form>
-                                </li>
-                                
-                            @endif
-                            
 
                         </ul>
                         @endforeach
@@ -647,21 +602,7 @@
                             </li>
                             <li class="col6">
                                 <b>Status</b>
-                                  @switch($selecao->resume->status)
-                                    @case('ativo')
-                                        <i class="status-ativo" title="Disponível"></i>Disponível
-                                        @break
-                                    @case('inativo')
-                                        <i class="status-inativo" title="Inativo"></i>Inativo
-                                        @break
-                                    @case('processo')
-                                        <i class="status-em-processo" title="Em processo"></i>Em processo
-                                        @break
-                                    @case('contratado')
-                                        <i class="status-contratado" title="Contratado"></i>Contratado
-                                        @break                           
-                                        
-                                @endswitch
+                                {{ $selecao->status_contratacao }}
                             </li>
 
                         </ul>
@@ -752,10 +693,10 @@
 
                         </div>
 
-                    {{-- </div> --}}
-                    @endforeach
+                    </div>
 
                 </div>
+                @endforeach
 
             @else
             <span class="sem-resultado">Nenhum processo seletivo para esta vaga</span>
@@ -766,18 +707,6 @@
     </article>
 
 </section>
-
-@if(request('buscar_nome'))
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const modal = new bootstrap.Modal(document.getElementById('associarCurriculoModal'));
-        modal.show();
-    });
-</script>
-@endif
-
-
-
 @endsection
 
 @push('scripts-custom')
@@ -957,73 +886,6 @@ label{
 .coluna-tipo-vaga{
     width: 250px !important;
 }
-
-#associarCurriculoModal{
-    z-index: 99999;
-}
-
-#botao-buscar-none{
-    
-    background: #F8F8F8;
-    border-radius: 50px;
-    -moz-border-radius: 50px;
-    -webkit-border-radius: 50px;
-    -ms-border-radius: 50px;
-    width: 37px;
-    height: 37px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 7px;
-    left: 11px;
-    z-index: 0;
-
-}
-#botao-buscar-none svg{
-    overflow: visible;
-    width: 20px;
-    height: auto;
-    stroke: #183550;
-}
-
-input[name='buscar_nome']{
-    padding-left: 50px !important;
-}
-
-
-.col1-admin{
-width: 35% !important;
-}
-
-.col2-admin{
-    width: 35% !important;
-}
-
-.col3-admin{
-    width: 10% !important;
-}
-
-.col4-admin{
-    width: 10% !important;
-}
-
-.col5-admin{
-    width: 10% !important;
-}
-
-.form-padrao .bloco-obs .bloco-observacoes .card-text{
-    font-size: 14px !important;
-    color: #333 !important; 
-    font-weight: 400 !important;
-}
-
-.form-padrao .bloco-obs .bloco-observacoes .card-text b{
-    font-size: 13px !important;
-    color: #287FC0 !important; 
-    font-weight: bold !important;
-}
-
 
 @media (max-width: 1024px) {
     .justify-content-between{

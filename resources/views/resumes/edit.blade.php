@@ -5,9 +5,10 @@
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{{ route('resumes.index') }}">Currículos</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Editar Currículo: {{ $resume->id }} </li>
+          <li class="breadcrumb-item active" aria-current="page">Editar Currículo: {{ $resume->id }} </li>          
         </ol>
       </nav>
+      
 
       {{--Componente Botão voltar --}}
       @php
@@ -17,6 +18,16 @@
 
       <x-voltar :rota="$rota"/>
       {{--Componente Botão voltar --}}
+
+      
+</section>
+   
+<section class="mb-5">
+    @if (!$resume->interview)         
+        <div class="box-entrevistar">
+            <a href="{{ route('interviews.interviewResume', $resume) }}#form-interview"  class="link-entrevista" >Iniciar Entrevista</a>       
+        </div>   
+     @endif
 
 </section>
 
@@ -28,7 +39,13 @@
 
             <div class="row form-padrao">
                 <div class="col-12 py-0 pe-5 form-1">
-                    <h4 class="fw-normal mb-4">Cadastro de Currículo</h4>
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-between mb-4">
+                            <h4 class="fw-normal">Cadastro de Currículo</h4>
+                            <p class="fw-bold">Data do cadastro: {{$resume->created_at->format('d/m/Y') }}</p>
+                        </div>
+                        
+                    </div>
         
                     <form class="form-padrao" id="form-companies-create" action="{{ route('resumes.update', $resume) }}" method="post" enctype="multipart/form-data">
                         @csrf
@@ -780,11 +797,7 @@
 
                 </div>
                 
-                <div class="col-12 border-top py-0 ps-5 form-r bloco-obs pt-5">
-        
-                    
-        
-                    <h4 class="fw-normal">Observações:</h4>                    
+                <div class="col-12 border-top py-0 ps-5 form-r bloco-obs pt-5">                   
         
                     <div class="row mb-3 mt-3 bloco-observacoes">
         
@@ -843,12 +856,14 @@
                 <li class="col1">Empresa</li>
                 <li class="col2">Título</li>
                 <li class="col3">Vagas</li>
-                <li class="col4">Recrutador</li>
-                <li class="col5">Status</li>
+                <li class="col4">Status da Seleção</li>
+                <li class="col5">Recrutador</li>
+                <li class="col6">Status</li>
             </ul>
 
             @if ($jobs->count() > 0)
 
+            {{-- Job Aprovado --}}
                 @if ($jobAprovado)
 
                     {{-- Empresa selação aprovada --}}
@@ -1362,7 +1377,7 @@
 
                     </ul>
                     @endforeach
-
+                    {{-- Job Aprovado --}}
                 @else
 
                     @foreach ($jobs as $job)
@@ -1396,6 +1411,10 @@
                             {{$job->filled_positions}} / {{ $job->qtd_vagas }}
                         </li>
                         <li class="col4">
+                                <b>Status da Seleção</b>
+                                {{ $selection->status_selecao == 'aprovado' ? 'Contratado' : $selection->status_selecao }}
+                            </li>
+                        <li class="col5">
                             <b>Recrutador</b>
                             @if (count($job->recruiters) <= 0)
                             Nenhum recrutador associado
@@ -1405,7 +1424,7 @@
                             @endforeach
                             @endif
                         </li>
-                        <li class="col5">
+                        <li class="col6">
                             @php
                             $temSelecaoAprovada = $resume->selections->contains('status_selecao', 'aprovado');
                             if($resume->status === 'inativo'){
@@ -1845,5 +1864,42 @@ $(document).find('.select2').each(function(){
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16) !important;
     border-radius: 8px;
 }
+
+.link-entrevista{
+    margin-bottom: 15px;
+    padding: 10px 30px;
+    background-color: #ff9d0a;
+    color: #fff;
+    border-radius: 30px;
+    transition: ease-in-out all 0.5s;
+}
+
+.link-entrevista:hover{
+    background-color: #ffab2e;
+    color: #fff;    
+}
+
+.table-container.lista-processos-seletivos .col4,
+.table-container.lista-processos-seletivos .col5{
+    width: 10%;
+}
+
+.table-container.lista-processos-seletivos .col6{
+    width: 5%;
+}
+
+.form-padrao .bloco-obs .bloco-observacoes .card-text{
+    font-size: 15px !important;
+    color: #333 !important; 
+    font-weight: 400 !important;
+}
+
+.form-padrao .bloco-obs .bloco-observacoes .card-text b{
+    font-size: 13px !important;
+    color: #287FC0 !important; 
+    font-weight: bold !important;
+}
+
+
 </style>
 @endpush

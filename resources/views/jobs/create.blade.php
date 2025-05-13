@@ -33,7 +33,7 @@
 
                     <div class="mb-3 col-12">
                         <div class="floatlabel-wrapper required">
-                            <label for="company_id" class="label-floatlabel" class="form-label floatlabel-label">Escolhe Empresa</label>
+                            <label for="company_id" class="label-floatlabel" class="form-label floatlabel-label">Escolher Empresa</label>
                             <select name="company_id" id="company_id" class="form-select" required>
                                 <option></option>
                                 @foreach ($companies->sortBy('nome_fantasia') as $company )
@@ -44,7 +44,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-3 col-6 form-campo">
+                    <div class="mb-3 col-4 form-campo">
                         <div class="floatlabel-wrapper required">
                             <label for="cargo" class="label-floatlabel" class="form-label floatlabel-label">Setor</label>
                             <select name="cargo" id="cargo" class="form-select active-floatlabel" required>
@@ -61,7 +61,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-3 col-6 form-campo">
+                    <div class="mb-3 col-4 form-campo">
                         <div class="floatlabel-wrapper required">
                             <label for="cbo" class="label-floatlabel" class="form-label floatlabel-label">CBO</label>
                             <select name="cbo" id="cbo" class="form-select active-floatlabel" required>
@@ -89,6 +89,16 @@
                                 <option value="5143-25">5143-25</option>
                             </select>
                             @error('cbo') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-4 form-campo">
+                        <div class="mb-3">
+                            <div class="floatlabel-wrapper">
+                                <label for="date" class="label-floatlabel" class="form-label floatlabel-label">Data de Entrevista na Empresa</label>
+                                <input type="date" class="form-control active-floatlabel" id="data_entrevista_empresa" name="data_entrevista_empresa">
+                                @error('data_entrevista_empresa') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                            </div>
                         </div>
                     </div>
 

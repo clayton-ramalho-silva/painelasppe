@@ -142,6 +142,16 @@
                         <input type="text" name="max_salario" id="max_salario" class="form-control">
                     </div>
 
+                    <div class="col-6 mb4">
+                        <label for="data_min" class="form-label">Data Entrevista (de):</label>
+                        <input type="date" name="data_min" id="data_min" class="form-control" value="{{ request('data_min')}}">
+                    </div>
+
+                    <div class="col-6 mb4">
+                        <label for="data_max" class="form-label">Data Entrevista (até):</label>
+                        <input type="date" name="data_max" id="data_max" class="form-control" value="{{ request('data_max')}}">
+                    </div>
+
                     <div class="col mt-1 d-flex justify-content-between">
                         <button type="submit" class="btn btn-padrao btn-cadastrar" name="filtrar" value="filtrar">Filtrar</button>
                         <button type="submit" class="btn btn-padrao btn-cancelar" name="limpar" value="limpar">Limpar</button>
@@ -200,8 +210,9 @@
                 <li class="col2">Título</li>
                 <li class="col3">Vagas</li>
                 <li class="col4">Recrutador</li>
-                <li class="col5" data-bs-toggle="tooltip" data-bs-placement="top" title="Ýnico processo contratação">Início</li>
+                <li class="col5" data-bs-toggle="tooltip" data-bs-placement="top" title="Início processo contratação">Início</li>
                 <li class="col6" data-bs-toggle="tooltip" data-bs-placement="top" title="Fim processo contratação">Fim</li>
+                <li class="col7">Data Entrevista Empresa</li>
                 <li class="col7">Status</li>
             </ul>
 
@@ -262,6 +273,9 @@
                             @else
                                 Em andamento
                             @endif
+                        </li>
+                        <li class="col7">
+                            {{$job->data_entrevista_empresa ? $job->data_entrevista_empresa->format('d/m/Y') : '' }}
                         </li>
                         <li class="col7">
                             <b>Status</b>
@@ -438,6 +452,10 @@ $(document).ready(function() {
 }
 .status-cancelada{
     background-color: #808080 !important;
+}
+
+.col4, .col5, .col6, .col7{
+    width: 10% !important;
 }
 
 </style>

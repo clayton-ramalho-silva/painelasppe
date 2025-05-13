@@ -770,7 +770,7 @@
                                 <label for="perfil" class="label-floatlabel" class="form-label floatlabel-label">Perfil</label>
                                 <select name="perfil" id="perfil" class="form-select active-floatlabel" required>
                                     <option></option>
-                                    <option value="Administrativo" {{ old('perfil') === 'Administrativo' ? 'selected' : ''}}> Administrativor</option>
+                                    <option value="Administrativo" {{ old('perfil') === 'Administrativo' ? 'selected' : ''}}> Administrativo</option>
                                     <option value="Operacional" {{ old('perfil') === 'Operacional' ? 'selected' : ''}}> Operacional</option>
                                     <option value="Adm / Operacional" {{ old('perfil') === 'Adm / Operacional' ? 'selected' : ''}}> Adm / Operacional</option>
                                 </select>

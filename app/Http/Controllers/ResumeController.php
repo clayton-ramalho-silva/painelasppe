@@ -177,6 +177,15 @@ class ResumeController extends Controller
             }
         }
 
+        // Filtro por Data de Cadastro Curriculo (minima)
+        if($request->filled('data_min')){
+            $query->whereDate('created_at', '>=', $request->data_min);
+        }
+
+        if($request->filled('data_max')){
+            $query->whereDate('created_at', '<=', $request->data_max);
+        }
+
         // Carregue as relações apenas após aplicar todos os filtros
         $query->with([
             'informacoesPessoais',
@@ -610,16 +619,16 @@ class ResumeController extends Controller
 
     public function deleteTeste()
     {
-        $resumes = range(17696, 17840);
+        //$resumes = range(17696, 17840);
         //dd($resumes);
         // Caroline
        
         
-        foreach($resumes as $resume_id){
-            $resume = Resume::find($resume_id);
-            $resume->delete();
+        // foreach($resumes as $resume_id){
+        //     $resume = Resume::find($resume_id);
+        //     $resume->delete();
 
-        }
+        // }
 
 
 

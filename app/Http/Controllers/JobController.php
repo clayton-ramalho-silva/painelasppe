@@ -20,32 +20,26 @@ class JobController extends Controller
     {
 
         $vagas = Job::where('status', 'espera')->get();
-        //dd($vagas);
-
-        /**
-         * 10 vagas
-         * aberta 6
-         * fechada 3
-         * cancelada 1
-         * espera 0
-         * 
-         */
-
+       
 
         // Verifica se usuário é Admin ou Recrutador
 
 
         $user = Auth::user();
 
-        if($user->role == 'admin'){
-            // Administrador vê todas as vagas com empresas associadas
-            $query = Job::with(['company', 'recruiters']);
-        } else {
-            // O recrutador vê apenas vagas associadas a ele com as empresas
-            $query = Job::with(['company', 'recruiters'])->whereHas('recruiters', function($q) use($user){
-                $q->where('recruiter_id', $user->id);
-            });
-        }
+        /** Somente o admin e o recrutador associado podia ver a vaga. */
+        // if($user->role == 'admin'){
+        //     // Administrador vê todas as vagas com empresas associadas
+        //     $query = Job::with(['company', 'recruiters']);
+        // } else {
+        //     // O recrutador vê apenas vagas associadas a ele com as empresas
+        //     $query = Job::with(['company', 'recruiters'])->whereHas('recruiters', function($q) use($user){
+        //         $q->where('recruiter_id', $user->id);
+        //     });
+        // }
+
+
+        $query = Job::with(['company', 'recruiters']);
 
 
         /**
@@ -178,14 +172,24 @@ class JobController extends Controller
             }
         }
 
+        // Filtro por Data da Entrevista Empresa (mínima)
+        if($request->filled('data_min')) { 
+            $query->whereDate('data_entrevista_empresa', '>=', $request->data_min);
+        }
 
-        //$jobs = $query->get();
+        // Filtro por Data da Entrevista Empresa (máxima)
+        if($request->filled('data_max')) {
+            $query->whereDate('data_entrevista_empresa', '<=', $request->data_max);
+        }
+
+
+        
         $jobs = $query->orderBy('created_at', 'desc')->get();
 
         $companies = Company::all();
         $recruiters = User::where('role', 'recruiter')->get();
 
-        //dd($query->toRawSql());
+        
 
         return view('jobs.index', compact('jobs', 'companies', 'recruiters', 'form_busca'));
 
@@ -225,6 +229,7 @@ class JobController extends Controller
             'beneficios' =>'required|string|max:255', // Requisitos/Diferenciais
             'informatica' =>'required|string|max:255',
             'ingles' =>'required|string|max:255',
+            'data_entrevista_empresa' => 'nullable|date',
             'company_id' => 'required|exists:companies,id',
         ]);
 
@@ -238,7 +243,7 @@ class JobController extends Controller
         $job = Job::create($data);
 
         // Salvando Log de criação
-        $this->logAction('create', 'jobs', $job->id, 'Job cadastrado com sucesso.');
+        $this->logAction('create', 'jobs', $job->id, 'Vaga cadastrada com sucesso.');
 
         return redirect()->route('jobs.index')->with('success', 'Vaga criada com sucesso!');
     }
@@ -250,16 +255,31 @@ class JobController extends Controller
 
         $selections = $job->selections;
 
+        $buscarNome = request('buscar_nome');
+
         $curriculosParaAssociar = Resume::where('status', 'ativo')
             ->whereDoesntHave('jobs')
             ->whereHas('interview')
-            ->get();
+            ->when($buscarNome, function($query, $buscarNome){
+                $query->whereHas('informacoesPessoais', function($subQuery) use ($buscarNome){
+                    $subQuery->where('nome', 'LIKE', '%' . $buscarNome . '%');
+                });
+            })
+            ->paginate(50);
+       
 
         return view('jobs.edit', compact('job', 'companies', 'recruiters', 'curriculosParaAssociar'));
     }
 
     public function update(Request $request, Job $job)
     {
+        //dd($request->all());
+        /** Verifica se o usuario logado é admim ou recrutador associado a vaga */        
+        if(!$job->isEditableBy(Auth::user()) ){
+
+            return redirect()->back()->with('danger', 'Somente o Recrutador associado a vaga ou o Adminstrador podem editar a vaga!');
+        }
+
         $data = $request->validate([
 
             //'setor' =>'required|string|max:255',
@@ -277,7 +297,8 @@ class JobController extends Controller
             'exp_profissional' =>'required|string|max:255', // Beneficios
             'beneficios' =>'required|string|max:255', // Requisitos/Diferenciais
             'informatica' =>'required|string|max:255',
-            'ingles' =>'required|string|max:255',
+            'ingles' => 'required|string|max:255',
+            'data_entrevista_empresa' => 'nullable|date',
 
         ]);
 
@@ -294,37 +315,40 @@ class JobController extends Controller
         return redirect()->route('jobs.index')->with('success', 'Vaga atualizada com sucesso');
     }
 
-    public function destroy(Job $job)
-    {
-        //dd($job);
-        $job->delete();
+    public function updateDataEntrevistaEmpresa(Request $request, Job $job){
+        
+        /** Verifica se o usuario logado é admim ou recrutador associado a vaga */        
+        
+        if(!$job->isEditableBy(Auth::user()) ){
 
-        // Salvar Log de atualização
-        $this->logAction('delete', 'jobs', $job->id, 'Job excluído.');
-
-        return redirect()->route('jobs.index')->with('success', 'Vaga excluída com sucesso!');
-    }
-
-    /* Função antiga para associar o curriculo ha uma vaga
-    public function assignCandidateToJob(Request $request, Job $job)
-    {
-        $job->filled_positions += 1;
-        $job->updateStatus();
-
-        return redirect()->route('jobs.index')->with('success','Candidato associado à vaga com sucesso!');
-    }
-
-    public function removeCandidateFromJob(Request $request, Job $job)
-    {
-        if ($job->filled_positions > 0){
-            $job->filled_positions -= 1;
-            $job->updateStatus();
+            return redirect()->back()->with('danger', 'Somente o Recrutador associado a vaga ou o Adminstrador podem alterar a data da Entrevista na Empresa!');
         }
 
-        return redirect()->route('jobs.index')->with('success', 'Candidato removido da vaga com sucesso!');
+        $data = $request->validate([              
+            'data_entrevista_empresa' => 'nullable|date',
+        ]);
+
+        $job->update($data);
+        
+        // Salvar Log de atualização
+        $this->logAction('update', 'jobs', $job->id, 'Data da entrevista na empresa atualizada.');
+
+        return redirect()->back()->with('success', 'Data da entrevista na empresa atualizada.');
+
     }
 
-    */
+    public function destroy(Job $job)
+    {
+
+        return redirect()->route('jobs.index');
+        //dd($job);
+        // $job->delete();
+
+        // // Salvar Log de atualização
+        // $this->logAction('delete', 'jobs', $job->id, 'Job excluído.');
+
+        // return redirect()->route('jobs.index')->with('success', 'Vaga excluída com sucesso!');
+    }    
 
     // Atualizando o status da vaga( aberta, fechada, espera, cancelada)
     public function updateStatus(Request $request, $jobId)
@@ -333,6 +357,15 @@ class JobController extends Controller
             'status' => 'required|in:aberta,fechada,espera,cancelada',
         ]);
         $job = Job::findOrFail($jobId);
+
+        /** Verifica se o usuario logado é admim ou recrutador associado a vaga */
+        if(!$job->isEditableBy(Auth::user()) ){
+            return redirect()->back()->with('danger', 'Somente o Recrutador associado a vaga ou o Adminstrador podem atualizar o status da vaga!');
+        }
+
+
+
+
 
         $job->status = $request->input('status');
         $job->save();
@@ -354,6 +387,16 @@ class JobController extends Controller
         ]);
 
         $job = Job::findOrFail($jobId);
+
+
+         /** Verifica se o usuario logado é admim ou recrutador associado a vaga */
+        if(!$job->isEditableBy(Auth::user()) ){
+
+            return redirect()->back()->with('danger', 'Somente o Adminstrador pode associar um Recrutador a Vaga!');
+        }
+
+
+
 
         $job->recruiters()->sync($request->input('recruiters'));
 
@@ -387,6 +430,12 @@ class JobController extends Controller
         $job = Job::findOrFail($jobId);
         $now = Carbon::now();
 
+          /** Verifica se o usuario logado é admim ou recrutador associado a vaga */
+        if(!$job->isEditableBy(Auth::user()) ){
+
+            return redirect()->back()->with('danger', 'Somente o Adminstrador ou Recrutador associado podem iniciar um processo!');
+        }
+
         $job->data_inicio_contratacao = $now;
 
         $job->save();
@@ -399,6 +448,12 @@ class JobController extends Controller
     {
         $job = Job::findOrFail($jobId);
         $now = Carbon::now();
+
+          /** Verifica se o usuario logado é admim ou recrutador associado a vaga */
+        if(!$job->isEditableBy(Auth::user()) ){
+
+            return redirect()->back()->with('danger', 'Somente o Adminstrador ou Recrutador associado podem finalizar um processo!');
+        }
 
         $job->data_fim_contratacao = $now;
         $job->status = 'fechada';

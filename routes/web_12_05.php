@@ -18,7 +18,6 @@ use App\Models\Job;
 use Maatwebsite\Excel\Facades\Excel;
 
 
-
 Route::get('/painel', function(){
 
     return view('layouts.painel');
@@ -43,8 +42,6 @@ Route::post('cadastro-curriculo', [PublicResumeController::class, 'store'])->nam
 
 Route::middleware(['auth'])->group(function(){
     // Jobs
-    
-    Route::put('/jobs/{job}/updateDataEntrevistaEmpresa', [JobController::class, 'updateDataEntrevistaEmpresa'])->name('jobs.updateDataEntrevistaEmpresa');
     Route::post('/jobs/startContraction/{jobId}', [JobController::class, 'startContraction'])->name('jobs.startContraction');
     Route::post('/jobs/endContraction/{jobId}', [JobController::class, 'endContraction'])->name('jobs.endContraction');
     Route::post('/jobs/storeHistory/{jobId}',[JobController::class, 'storeHistory'])->name('jobs.storeHistory');

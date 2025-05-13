@@ -375,12 +375,47 @@ class InterviewController extends Controller
         
         $job->resumes()->attach($request->resume_id);
 
-        // Salvando Log de criação
-        $this->logAction('associate', 'job_resume', $job->id, 'Candidadto associado a vaga.');
+        // Confirma se agora está associado
+        if ($resume->jobs()->where('jobs.id', $job->id)->exists()) {
+            // Aqui você pode mudar o status ou fazer outras ações
+            $resume->status = 'processo'; // exemplo
+            $resume->save();
+        }
 
-        return redirect()->back()->with('success', 'Candidadto associado a vaga com sucesso!');
+
+        // Salvando Log de criação
+        $this->logAction('associate', 'job_resume', $job->id, 'Candidato associado a vaga.');
+
+        return redirect()->back()->with('success', 'Candidato associado a vaga com sucesso!');
     }
 
+    public function desassociarVaga(Request $request)
+    {
+        $data = $request->validate([
+            'job_id' => 'required|exists:jobs,id',
+            'resume_id' => 'required|exists:resumes,id',
+        ]);
+        
+        $job = Job::findOrFail($data['job_id']);
+        $resume = Resume::findOrFail($data['resume_id']);
+        
+        // Verifica se está associado antes de remover
+        if ($resume->jobs()->where('jobs.id', $job->id)->exists()) {
+            
+            $job->resumes()->detach($resume->id);
+
+            // (Opcional) Atualiza o status do currículo
+            $resume->status = 'ativo'; // ou outro status
+            $resume->save();
+
+            // Log de desassociação
+            $this->logAction('detach', 'job_resume', $job->id, 'Candidato desassociado da vaga.');
+
+            return redirect()->back()->with('success', 'Candidato desassociado com sucesso!');
+        }
+
+        return redirect()->back()->with('danger', 'Candidato não estava associado a esta vaga.');
+    }
 
     public function destroy(Interview $interview)
     {
