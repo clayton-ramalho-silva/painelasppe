@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function(){
     Route::put('/selections/updateSelection/{selectionId}',[SelectionController::class, 'updateSelection'])->name('selections.updateSelection');
 
     // Resumes
+    Route::post('/resumes/upadate-status/{id}', [ResumeController::class, 'updateStatus'])->name('resumes.updateStatus');
     Route::post('/resumes/storeHistory/{resumebId}',[ResumeController::class, 'storeHistory'])->name('resumes.storeHistory');
     Route::get('/resumes/deleteTeste', [ResumeController::class, 'deleteTeste']);
     Route::resource('resumes', ResumeController::class);

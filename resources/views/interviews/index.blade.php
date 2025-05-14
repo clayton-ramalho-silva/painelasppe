@@ -31,8 +31,8 @@
                             <option>Todos</option>
                             <option value="ativo"> Ativo</option>
                             <option value="inativo"> Inativo</option>
-                            <option value="em processo"> Em processo</option>
-                            <option value="efetivado"> Efetivado</option>
+                            <option value="processo"> Em processo</option>
+                            <option value="contratado"> Contratado</option>
                         </select>
                     </div>
 

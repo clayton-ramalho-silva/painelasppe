@@ -636,6 +636,28 @@ class ResumeController extends Controller
 
     }
 
+    public function updateStatus(Request $request, $id) 
+    {
+        //dd($request->all());
+        $resume = Resume::findOrfail($id);
+        $oldStatus = $resume->status;
+        $newStatus = $request->status == 'ativo' ? 'ativo' : 'inativo';
+
+        $resume->status = $newStatus;
+        $resume->save();
+
+        // Se o status for alterado para inativo, desassocia de toda as vagas
+        if( $oldStatus == 'ativo' && $newStatus == 'inativo') {
+            $resume->jobs()->detach();
+
+             // Salvando Log de criação
+            $this->logAction('update', 'jobs', $resume->id, 'Curriculo foi inativado e desassociado de todas as vagas.');
+            return redirect()->back()->with('success', 'Status alterado para Inativo. O currículo foi desassociado de todas as vagas.');
+
+        }
+
+        return redirect()->back()->with('success', 'Status alterado com sucesso para ' . ucfirst($newStatus) . '.');
+    }
 
 
 }

@@ -561,10 +561,7 @@
                                         <i class="status-contratado" title="Contratado"></i>Contratado
                                         @break                           
                                         
-                                @endswitch
-
-                                
-                                
+                                @endswitch                               
                                 
                             </li>
                             @if ($isAdmin)

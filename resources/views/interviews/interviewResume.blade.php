@@ -4,7 +4,7 @@
 <section class="cabecario">
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Nova Entrevista</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('interviews.index') }}">Nova Entrevista</a></li>
           <li class="breadcrumb-item active" aria-current="page">Candidato: {{ $resume->informacoesPessoais->nome }}</li>
         </ol>
       </nav>
@@ -25,6 +25,32 @@
     <article class="f1">
 
         <div class="container mt-3">
+            <div class="row form-padrao">
+                <div class="col-12 d-flex justify-content-between mb-4">
+                    <h4 class="fw-normal">Cadastro do Currículo</h4>
+
+                    
+                    <p class="fw-bold">Data do cadastro: {{$resume->created_at->format('d/m/Y') }}</p>
+                </div>
+                
+            </div>
+        
+            <div class="row form-padrao">
+                <form id="statusForm" action="{{ route('resumes.updateStatus', $resume->id) }}" method="POST">
+                    @csrf
+                    <div class="col-9 bloco-ativo d-flex mb-3">
+                        <h5>Status</h5>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" name="status" id="status" 
+                                {{ $resume->status == 'ativo' ? 'checked' : '' }}
+                                onchange="confirmarMudancaStatus(this)">
+                            <label class="form-check-label" for="status" id="status-label">
+                                {{ $resume->status == 'ativo' ? 'Ativo' : 'Inativo' }}
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
             <form class="form-padrao" id="form-companies-create" action="{{ route('resumes.update', $resume) }}" method="post" enctype="multipart/form-data">
                 @csrf
@@ -1514,6 +1540,27 @@ $(document).find('.select2').each(function(){
     }
 
 })
+
+// Atualização de status
+function confirmarMudancaStatus(checkbox) {
+    // Se estiver desmarcando (mudando para inativo)
+    if (!checkbox.checked) {
+        // Mostra confirmação
+        if (confirm("Se o currículo estiver associado a alguma vaga, será automaticamente desassociado. Deseja continuar?")) {
+            // Se confirmou, define o valor adequado e envia o form
+            document.getElementsByName('status')[0].value = 'inativo';
+            document.getElementById('statusForm').submit();
+        } else {
+            // Se cancelou, reverte o checkbox para marcado
+            checkbox.checked = true;
+            return false;
+        }
+    } else {
+        // Se estiver marcando (mudando para ativo), envia diretamente
+        document.getElementsByName('status')[0].value = 'ativo';
+        document.getElementById('statusForm').submit();
+    }
+}
 </script>
 @endpush
 

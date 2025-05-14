@@ -84,12 +84,17 @@
     <article class="f-interna">
 
         <div class="table-container lista-usuarios">
-
+            @php
+                $isAdmin = Auth::user()->role == 'admin' ? true : false;                        
+            @endphp 
             <ul class="tit-lista">
-                <li class="col1">Usuário</li>
-                <li class="col2">E-mail</li>
-                <li class="col3">Função</li>
-                <li class="col4">Status</li>
+                <li class="col1 {{ $isAdmin ? 'col1-admin' : ''}}">Usuário</li>
+                <li class="col2 {{ $isAdmin ? 'col2-admin' : ''}}">E-mail</li>
+                <li class="col3 {{ $isAdmin ? 'col3-admin' : ''}}">Função</li>
+                <li class="col4 {{ $isAdmin ? 'col4-admin' : ''}}">Status</li>
+                 @if ($isAdmin)
+                    <li class="col5 {{ $isAdmin ? 'col5-admin' : ''}}">Ações</li>                            
+                @endif
             </ul>
 
             @if ($users->count() > 0)
@@ -97,7 +102,7 @@
                 @foreach ($users as $user)
                 <a href="{{ route('users.edit', $user) }}"{!! ($user->status === 1) ? '' : ' class="inativo"' !!}>
                     <ul>
-                        <li class="col1">
+                        <li class="col1 {{ $isAdmin ? 'col1-admin' : ''}}">
                             <b>Usuário</b>
                             @if ($user->image)
                                 @if (file_exists(public_path('documents/users/image/'.$user->image)))
@@ -112,34 +117,30 @@
                                 <strong>{{ $user->name }}</strong>
                             </span>
                         </li>
-                        <li class="col2">
+                        <li class="col2 {{ $isAdmin ? 'col2-admin' : ''}}">
                             <b>E-mail</b>
                             {{ $user->email }}
                         </li>
-                        <li class="col3">
+                        <li class="col3 {{ $isAdmin ? 'col3-admin' : ''}}">
                             <b>Função</b>
                             {{ $user->role === 'recruiter' ? 'Recrutador' : 'Administrador' }}
                         </li>
-                        <li class="col4">
+                        <li class="col4 {{ $isAdmin ? 'col4-admin' : ''}}">
                             <b>Status</b>
-                            <i title="{{ $user->status === '1' ? 'Ativo' : 'Inativo' }}"></i>
-                            
-                            {{-- @if (Auth::user()->email == 'clayton@email.com')
-                                
-                                <form action="{{ route('users.destroy', $user->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <a href="#" 
-                                        class="nav-link" 
-                                        onclick="event.preventDefault();
-                                                if(confirm('Tem certeza que deseja excluir este usuário?')) {
-                                                    this.closest('form').submit();
-                                                }">
-                                        Deletar Usuário
-                                    </a>
-                                </form>
-                            @endif --}}
+                            <i title="{{ $user->status === '1' ? 'Ativo' : 'Inativo' }}"></i>                        
                         </li>
+                         @if ($isAdmin) 
+                        <li class="col5 {{ $isAdmin ? 'col5-admin' : ''}}">
+                            <form action="{{ route('users.destroy', $user->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-deletar-entidades" data-bs-toggle="tooltip" data-bs-placement="top" title="Deletar Usuário" onclick="event.preventDefault(); if(confirm('Tem certeza que deseja excluir este Usuário?')){this.closest('form').submit()}">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                   
+                                </button>
+                            </form>
+                        </li>
+                        @endif 
 
                     </ul>
                 </a>
@@ -243,6 +244,39 @@ $(document).ready(function() {
 .linha-tabela:hover{
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16) !important;
     border-radius: 8px;
+}
+
+.col1-admin{
+width: 25% !important;
+}
+.col2-admin{
+    width: 25% !important;
+}
+.col3-admin{
+    width: 10% !important;
+}
+.col4-admin{
+    width: 15% !important;
+}
+.col5-admin{
+    width: 10% !important;
+}
+.btn-deletar-entidades{    
+    z-index: 0;
+    background-color: #e4e4e4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -ms-border-radius: 50px;
+    width: 34px;
+    height: 34px;
+    transition: all 0.25s ease-in-out;
+}
+.btn-deletar-entidades:hover{    
+   background-color: #fff;
 }
 </style>
 

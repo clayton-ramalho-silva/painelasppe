@@ -209,8 +209,6 @@ class JobController extends Controller
 
     public function store(Request $request)
     {
-
-
         $data = $request->validate([
 
             //'setor' =>'required|string|max:255',
@@ -315,7 +313,8 @@ class JobController extends Controller
         return redirect()->route('jobs.index')->with('success', 'Vaga atualizada com sucesso');
     }
 
-    public function updateDataEntrevistaEmpresa(Request $request, Job $job){
+    public function updateDataEntrevistaEmpresa(Request $request, Job $job)
+    {
         
         /** Verifica se o usuario logado é admim ou recrutador associado a vaga */        
         
@@ -338,16 +337,14 @@ class JobController extends Controller
     }
 
     public function destroy(Job $job)
-    {
-
-        return redirect()->route('jobs.index');
+    {        
         //dd($job);
-        // $job->delete();
+        $job->delete();
 
-        // // Salvar Log de atualização
-        // $this->logAction('delete', 'jobs', $job->id, 'Job excluído.');
+        // Salvar Log de atualização
+        $this->logAction('delete', 'jobs', $job->id, 'Job excluído.');
 
-        // return redirect()->route('jobs.index')->with('success', 'Vaga excluída com sucesso!');
+        return redirect()->route('jobs.index')->with('success', 'Vaga excluída com sucesso!');
     }    
 
     // Atualizando o status da vaga( aberta, fechada, espera, cancelada)

@@ -181,7 +181,7 @@ class InterviewController extends Controller
     }
 
     // Mostra view com todos curriculos
-    public function create()
+    public function create(Request $request)
     {
         //$user = Auth::user();
 
@@ -191,9 +191,91 @@ class InterviewController extends Controller
         //})->get();
 
         //$resumes = Resume::all();        
-        $resumes = Resume::whereDoesntHave('interview')->get();
+        //$resumes = Resume::whereDoesntHave('interview')->get();
+
+        // Busca todas as entrevistas
+        $query = Resume::with(['informacoesPessoais', 'contato', 'escolaridade'])
+            ->whereDoesntHave('interview');
+
+        //$query = Resume::query();
+
         
-        return view('interviews.create', compact('resumes'));
+
+
+        // Forumulario Busca - nome candidato
+        $form_busca = '';
+        if($request->filled('form_busca')) {
+            
+            $query->whereHas('informacoesPessoais', function($q) use ($request) {
+                $q->where('nome', 'like', '%' . $request->form_busca . '%');
+            });
+
+            $form_busca = $request->form_busca;
+        }
+
+
+         // Filtro por nome - Busca pelo nome do candidato
+         if($request->filled('nome')) {
+            $query->whereHas('informacoesPessoais', function($q) use ($request) {
+                $q->where('nome', 'like', '%' . $request->nome . '%');
+            });
+
+            //dd($request->nome);
+        }
+
+
+        //dd($query);
+        // Filtro Status
+        if($request->filled('status')){           
+           $query->where('status', $request->status);            
+        }     
+      
+       
+         // Filtro Candidato entrevistado/nao entrevistado/ todos
+         if(request()->has('entrevistado')){
+            if (request()->entrevistado == '1'){
+                $query->whereHas('interview'); // Apenas candidatos que já foram entrevistados
+            } elseif (request()->entrevistado == '0'){
+                $query->whereDoesntHave('interview'); // Apenas candidatos que ainda não foram entrevistados
+            }
+        }
+        
+        // Filtro Filtro data Resumes
+
+        if($request->filled('filtro_data')) {
+            $dias = match($request->filtro_data) {
+                '7' => 7,
+                '15' => 15,
+                '30' => 30,
+                '90' => 90,
+                default => null,
+            };
+
+            if ($dias) {
+                $query->where('created_at', '>=', now()->subDays($dias));
+            }
+        }
+        
+
+        $interviews = Interview::all();
+
+        // $query->with([
+        //     'informacoesPessoais',
+        //     'contato',
+        //     'interview',
+        //     'escolaridade'
+        // ]);
+
+        $resumes = $query->paginate(50);
+        // Implementar paginação
+        //$resumes = $query->paginate(50); // Ajustar o numero coforme necessário.
+
+        return view('interviews.create', compact('interviews', 'resumes', 'form_busca'));    
+
+
+
+        
+        //return view('interviews.create', compact('resumes'));
     }
 
     // Mostra view com os dados do curriculo, pronta para entrevista

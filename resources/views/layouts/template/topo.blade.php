@@ -13,8 +13,7 @@
 
             $additionalHideRoutes = [
                 'interviews.interviewResume',
-                'interviews.show',
-                'interviews.create'
+                'interviews.show'
                 // Você pode adicionar outras rotas especiais aqui se necessário
             ];
             //$shouldHideSearch = $isEditRoute || 'interviews.interviewResume';

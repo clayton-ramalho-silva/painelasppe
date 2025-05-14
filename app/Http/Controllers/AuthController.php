@@ -215,6 +215,28 @@ class AuthController extends Controller
     public function destroy(User $user)
     {
         //dd($user);
+        // Se for um recrutador
+        if ($user->role === 'recruiter') {
+            // Encontrar um admin recrutador para transferir as vagas
+            $adminRecruiter = User::where('role', 'admin')->first();
+
+            if(!$adminRecruiter) {
+                return redirect()->back()->with('danger', 'Nenhum recrutador admin encontrado para transferência das vagas.');
+            }
+
+            // Transferir todas as vagas associadas para o admin
+            foreach($user->jobs as $job) {
+                // Evita duplicação se já estiver associado
+                if (!$job->recruiters->contains($adminRecruiter->id)) {
+                    $job->recruiters()->attach($adminRecruiter->ad);
+                }
+
+                // Remove o recrutador atual da vaga
+                $job->recruiters()->detach($user->id);
+            }
+        }
+
+        // Soft delete
         $user->delete();
 
         // Salvando Log de criação

@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Job extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $casts = [
         'data_inicio_contratacao' => 'date',
@@ -81,6 +83,22 @@ class Job extends Model
     public function isEditableBy(User $user)
     {
         return $user->role === 'admin' || $this->recruiters->contains($user->id);
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($job){
+            // Se for soft delete
+            if (!$job->isForceDeleting()){
+                // Soft delete dos filhos diretos
+                $job->selections()->delete();
+                $job->observacoes()->delete();
+
+                // Remover relacionamentos many-to-many
+                $job->resumes()->detach();
+                $job->recruiters()->detach();
+            }
+        });
     }
 
 

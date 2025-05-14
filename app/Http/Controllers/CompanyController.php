@@ -250,6 +250,27 @@ class CompanyController extends Controller
 
     public function destroy(Company $company)
     {       
+        //dd('chegou deletar empresa');
+
+
+        // Verifica se já está deletada
+        if ($company->trashed()){
+            return redirect()->route('companies.index')->with('danger', 'Empresa já foi excluída');
+        }
+
+        // Deletar as vagas associadas (soft delete).
+        foreach($company->jobs as $job) {
+            $job->delete();
+        }
+
+        // Deletar os dados relacionados (soft delete)
+        if ($company->location) {
+            $company->location->delete();
+        }
+
+        if ($company->contacts) {
+            $company->contacts->delete();
+        }
 
         // Logotipo atual
         $logotipo_atual = $company->logotipo;

@@ -204,16 +204,21 @@
         <h4>Vagas em Destaque</h4>
 
         <div class="table-container lista-vagas">
-
+            @php
+                $isAdmin = Auth::user()->role == 'admin' ? true : false;                        
+            @endphp
             <ul class="tit-lista">
-                <li class="col1">Empresa</li>
-                <li class="col2">Título</li>
-                <li class="col3">Vagas</li>
-                <li class="col4">Recrutador</li>
-                <li class="col5" data-bs-toggle="tooltip" data-bs-placement="top" title="Início processo contratação">Início</li>
-                <li class="col6" data-bs-toggle="tooltip" data-bs-placement="top" title="Fim processo contratação">Fim</li>
-                <li class="col7">Data Entrevista Empresa</li>
-                <li class="col7">Status</li>
+                <li class="col1 {{ $isAdmin ? 'col1-admin' : ''}}">Empresa</li>
+                <li class="col2 {{ $isAdmin ? 'col2-admin' : ''}}">Título</li>
+                <li class="col3 {{ $isAdmin ? 'col3-admin' : ''}}">Vagas</li>
+                <li class="col4 {{ $isAdmin ? 'col4-admin' : ''}}">Recrutador</li>
+                <li class="col5 {{ $isAdmin ? 'col5-admin' : ''}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Início processo contratação">Início</li>
+                <li class="col6 {{ $isAdmin ? 'col6-admin' : ''}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Fim processo contratação">Fim</li>
+                <li class="col7 {{ $isAdmin ? 'col7-admin' : ''}}">Data Entrevista Empresa</li>
+                <li class="col7 {{ $isAdmin ? 'col7-admin' : ''}}">Status</li>
+                 @if ($isAdmin)
+                    <li class="col8 {{ $isAdmin ? 'col8-admin' : ''}}">Ações</li>                            
+                @endif 
             </ul>
 
             @if ($jobs->count() > 0)
@@ -221,7 +226,7 @@
             @foreach ($jobs as $job)
                 <a href="{{ route('jobs.edit', $job) }}">
                     <ul>
-                        <li class="col1">
+                        <li class="col1 {{ $isAdmin ? 'col1-admin' : ''}}">
                             @if ($job->company->logotipo)
                                 <b>Empresa</b>
                                 @if (file_exists(public_path('documents/companies/images/'.$job->company->logotipo)))
@@ -236,15 +241,15 @@
                                 <strong>{{ $job->company->nome_fantasia }}</strong>
                             </span>
                         </li>
-                        <li class="col2">
+                        <li class="col2 {{ $isAdmin ? 'col2-admin' : ''}}">
                             <b>Título</b>
                             {!! limite($job->cargo, 28) !!}
                         </li>
-                        <li class="col3" data-bs-toggle="tooltip" data-bs-placement="top" title="Preenchidas/Disponíveis">
+                        <li class="col3 {{ $isAdmin ? 'col3-admin' : ''}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Preenchidas/Disponíveis">
                             <b>Vagas</b>
                             {{ $job->filled_positions }} / {{ $job->qtd_vagas }}
                         </li>
-                        <li class="col4">
+                        <li class="col4 {{ $isAdmin ? 'col4-admin' : ''}}">
                             <b>Recrutador</b>
                             @if (count($job->recruiters) <= 0)
                             Nenhum recrutador associado
@@ -254,7 +259,7 @@
                             @endforeach
                             @endif
                         </li>
-                        <li class="col5">
+                        <li class="col5 {{ $isAdmin ? 'col5-admin' : ''}}">
                             <b>Início</b>
                             @if (!$job->data_inicio_contratacao)
                                 Processo não iniciado
@@ -263,7 +268,7 @@
 
                             @endif
                         </li>
-                        <li class="col6">
+                        <li class="col6 {{ $isAdmin ? 'col6-admin' : ''}}">
                             <b>Fim</b>
                             @if ($job->data_fim_contratacao && $job->data_fim_contratacao !== null)
                                 {{ $job->data_fim_contratacao->format('d/m/Y') }}
@@ -274,10 +279,10 @@
                                 Em andamento
                             @endif
                         </li>
-                        <li class="col7">
+                        <li class="col7 {{ $isAdmin ? 'col7-admin' : ''}}">
                             {{$job->data_entrevista_empresa ? $job->data_entrevista_empresa->format('d/m/Y') : '' }}
                         </li>
-                        <li class="col7">
+                        <li class="col7 {{ $isAdmin ? 'col7-admin' : ''}}">
                             <b>Status</b>
                             @switch($job->status)
                                 @case('aberta')
@@ -295,24 +300,21 @@
                             
                                 @default
                                     
-                            @endswitch  
-                            
-                            {{-- @if (Auth::user()->email == 'clayton@email.com')
-                                
-                                <form action="{{ route('jobs.destroy', $job->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <a href="#" 
-                                        class="nav-link" 
-                                        onclick="event.preventDefault();
-                                                if(confirm('Tem certeza que deseja excluir esta Vaga?')) {
-                                                    this.closest('form').submit();
-                                                }">
-                                        Deletar Vaga
-                                    </a>
-                                </form>
-                            @endif --}}
+                            @endswitch                            
+                       
                         </li>
+                        @if ($isAdmin) 
+                        <li class="col8 {{ $isAdmin ? 'col8-admin' : ''}}">
+                            <form action="{{ route('jobs.destroy', $job->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-deletar-entidades" data-bs-toggle="tooltip" data-bs-placement="top" title="Deletar Vaga" onclick="event.preventDefault(); if(confirm('Tem certeza que deseja excluir esta Vaga? ')){this.closest('form').submit()}">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                   
+                                </button>
+                            </form>
+                        </li>
+                        @endif 
 
                     </ul>
                 </a>
@@ -457,6 +459,53 @@ $(document).ready(function() {
 .col4, .col5, .col6, .col7{
     width: 10% !important;
 }
+
+
+.col1-admin{
+width: 25% !important;
+}
+.col2-admin{
+    width: 10% !important;
+}
+.col3-admin{
+    width: 6% !important;
+}
+.col4-admin{
+    width: 10% !important;
+}
+.col5-admin{
+    width: 10% !important;
+}
+.col6-admin{
+    width: 10% !important;
+}
+.col7-admin{
+    width: 10% !important;
+}
+.col8-admin{
+    width: 5% !important;
+}
+
+.btn-deletar-entidades{    
+    z-index: 0;
+    background-color: #e4e4e4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -ms-border-radius: 50px;
+    width: 34px;
+    height: 34px;
+    transition: all 0.25s ease-in-out;
+}
+.btn-deletar-entidades:hover{    
+   background-color: #fff;
+}
+
+
+
 
 </style>
 @endpush
