@@ -204,6 +204,11 @@ class ResumeController extends Controller
 
         //$resumes = Resume::all();
         return view('resumes.index', compact('resumes', 'form_busca'));
+        // return view('resumes.index', [
+        //     'resumes' => $resumes,
+        //     'form_busca' => $form_busca,
+        //     'filtros' => $request->except(['page']),
+        // ]);
     }
 
     public function show(Resume $resume)

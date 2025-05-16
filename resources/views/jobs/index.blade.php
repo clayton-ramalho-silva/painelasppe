@@ -134,12 +134,12 @@
 
                     <div class="col-6 mb-4">
                         <label for="min_salario" class="form-label">Salário (min):</label>
-                        <input type="text" name="min_salario" id="min_salario" class="form-control">
+                        <input type="text" name="min_salario" id="min_salario" class="form-control" value="{{ request('min_salario') }}">
                     </div>
 
                     <div class="col-6 mb-4">
                         <label for="max_salario" class="form-label">Salário (max):</label>
-                        <input type="text" name="max_salario" id="max_salario" class="form-control">
+                        <input type="text" name="max_salario" id="max_salario" class="form-control" value="{{ request('max_salario') }}">
                     </div>
 
                     <div class="col-6 mb4">
@@ -421,7 +421,12 @@ $(document).ready(function() {
 
     });
 
+    
+
+
 });
+
+
 </script>
 @endpush
 

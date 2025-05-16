@@ -9,11 +9,11 @@
   </head>
   <body>
     {{-- Loader --}}
-    {{-- <div id="loader" style="display:none; position:fixed; z-index:9999; top:0; left:0; width:100vw; height:100vh; background-color:rgba(255,255,255,0.7); display:flex; align-items:center; justify-content:center;">
+    <div id="loader" style="display:none; position:fixed; z-index:9999; top:0; left:0; width:100vw; height:100vh; background-color:rgba(255,255,255,0.7); align-items:center; justify-content:center;">
         <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Carregando...</span>
         </div>
-    </div> --}}
+    </div>
 
   <header>
       <!--    AQUI ENTRA O  HEADER LATERAL    -->
@@ -69,12 +69,12 @@
 
     @include('layouts.partials.scripts')
     @stack('scripts-custom')
-   {{-- <script>
+   <script>
     window.addEventListener('beforeunload', function () {
         const loader = document.getElementById('loader');
         loader.style.display = 'flex';
     });
-</script> --}}
+</script>
 
 
   </body>

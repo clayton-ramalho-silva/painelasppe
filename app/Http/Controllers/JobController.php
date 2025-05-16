@@ -19,7 +19,7 @@ class JobController extends Controller
     public function index(Request $request)
     {
 
-        $vagas = Job::where('status', 'espera')->get();
+        //$vagas = Job::where('status', 'espera')->get();
        
 
         // Verifica se usuário é Admin ou Recrutador
@@ -148,12 +148,14 @@ class JobController extends Controller
 
          // Filtro Salário Mínimo
         if ($request->filled('min_salario')) {
-            $query->where('salario', '>=', $request->min_salario);
+            $min_salario = (float) str_replace(['.', ','], ['', '.'], $request->min_salario);
+            $query->where('salario', '>=', $min_salario);
         }
 
         // Filtro Salário Máximo
         if ($request->filled('max_salario')) {
-            $query->where('salario', '<=', $request->max_salario);
+            $max_salario = (float) str_replace(['.', ','], ['', '.'], $request->max_salario);
+            $query->where('salario', '<=', $max_salario);
         }
 
         // Filtro Filtro data Jobs
@@ -188,10 +190,12 @@ class JobController extends Controller
 
         $companies = Company::all();
         $recruiters = User::where('role', 'recruiter')->get();
+        $min_salario = $request->min_salario ?? '';
+        $max_salario = $request->max_salario ?? '';
 
         
 
-        return view('jobs.index', compact('jobs', 'companies', 'recruiters', 'form_busca'));
+        return view('jobs.index', compact('jobs', 'companies', 'recruiters', 'form_busca', 'min_salario', 'max_salario'));
 
     }
 

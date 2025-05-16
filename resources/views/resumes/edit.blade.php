@@ -677,65 +677,7 @@
         
                                         </div>
         
-                                    </div>
-        
-                                    {{-- <div class="col-6">
-        
-                                        <div class="mb-3">
-                                            <div class="floatlabel-wrapper required">
-                                                <label for="informatica" class="label-floatlabel" class="form-label floatlabel-label">Conhecimento de Informática?</label>
-                                                <select name="informatica" id="informatica" class="form-select active-floatlabel" required>
-                                                    <option></option>
-                                                    <option value="Básico" {{$resume->escolaridade->informatica === 'Básico' ? 'selected' : ' '}}> Básico</option>
-                                                    <option value="Intermediário" {{$resume->escolaridade->informatica === 'Intermediário' ? 'selected' : ' '}}> Intermediário</option>
-                                                    <option value="Avançado" {{$resume->escolaridade->informatica === 'Avançado' ? 'selected' : ' '}}> Avançado</option>
-                                                    <option value="Nenhum" {{$resume->escolaridade->informatica === 'Nenhum' ? 'selected' : ' '}}> Nenhum</option>
-                                                </select>
-                                                @error('informatica') <div class="alert alert-danger">{{ $message }}</div> @enderror
-                                            </div>
-                                        </div>
-        
-                                    </div>
-        
-                                    <div class="col-6">
-        
-                                        <div class="mb-3">
-                                            <div class="floatlabel-wrapper required">
-                                                <label for="ingles" class="label-floatlabel" class="form-label floatlabel-label">Conhecimento de Inglês?</label>
-                                                <select name="ingles" id="ingles" class="form-select active-floatlabel" required>
-                                                    <option></option>
-                                                    <option value="Básico" {{ $resume->escolaridade->ingles === 'Básico' ? 'selected' : '' }}> Básico</option>
-                                                    <option value="Intermediário" {{ $resume->escolaridade->ingles === 'Intermediário' ? 'selected' : '' }}> Intermediário</option>
-                                                    <option value="Avançado" {{ $resume->escolaridade->ingles === 'Avançado' ? 'selected' : '' }}> Avançado</option>
-                                                    <option value="Nenhum" {{ $resume->escolaridade->ingles === 'Nenhum' ? 'selected' : '' }}> Nenhum</option>
-                                                </select>
-                                                @error('ingles') <div class="alert alert-danger">{{ $message }}</div> @enderror
-                                            </div>
-                                        </div>
-        
-                                    </div>
-        
-                                    <div class="col-6">
-        
-                                        <div class="mb-3">
-                                            <div class="floatlabel-wrapper required">
-                                                <label for="tamanho_uniforme" class="label-floatlabel" class="form-label floatlabel-label">Tamanho para Confecção dos Uniformes</label>
-                                                <select name="tamanho_uniforme" id="tamanho_uniforme" class="form-select active-floatlabel" required>
-                                                    <option></option>
-                                                    <option value="FEMININO: Baby Look P" {{ $resume->informacoesPessoais->tamanho_uniforme === 'FEMININO: Baby Look P' ? 'selected' : ''}}> FEMININO: Baby Look P</option>
-                                                    <option value="FEMININO: Baby Look M" {{ $resume->informacoesPessoais->tamanho_uniforme === 'FEMININO: Baby Look M' ? 'selected' : ''}}> FEMININO: Baby Look M</option>
-                                                    <option value="FEMININO: Baby Look G" {{ $resume->informacoesPessoais->tamanho_uniforme === 'FEMININO: Baby Look G' ? 'selected' : ''}}> FEMININO: Baby Look G</option>
-                                                    <option value="FEMININO: Baby Look GG" {{ $resume->informacoesPessoais->tamanho_uniforme === 'FEMININO: Baby Look GG' ? 'selected' : ''}}> FEMININO: Baby Look GG</option>
-                                                    <option value="MASCULINO:  P" {{ $resume->informacoesPessoais->tamanho_uniforme === 'MASCULINO:  P' ? 'selected' : ''}}> MASCULINO:  P</option>
-                                                    <option value="MASCULINO:  M" {{ $resume->informacoesPessoais->tamanho_uniforme === 'MASCULINO:  M' ? 'selected' : ''}}> MASCULINO:  M</option>
-                                                    <option value="MASCULINO:  G" {{ $resume->informacoesPessoais->tamanho_uniforme === 'MASCULINO:  G' ? 'selected' : ''}}> MASCULINO:  G</option>
-                                                    <option value="MASCULINO:  GG" {{ $resume->informacoesPessoais->tamanho_uniforme === 'MASCULINO:  GG' ? 'selected' : ''}}> MASCULINO:  GG</option>
-                                                </select>
-                                                @error('tamanho_uniforme') <div class="alert alert-danger">{{ $message }}</div> @enderror
-                                            </div>
-                                        </div>
-        
-                                    </div> --}}
+                                    </div>        
         
                                 </div>
         
@@ -743,21 +685,6 @@
                                     <button type="submit" class="btn-padrao btn-cadastrar">Atualizar</button>
                                     <a href="{{ route('resumes.index')}}" class="btn-padrao btn-cancelar ms-3">Cancelar</a>
 
-                                    {{-- @if (Auth::user()->email == 'clayton@email.com')
-                                
-                                        <form action="{{ route('resumes.destroy', $resume->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <a href="#" 
-                                                class="nav-link" 
-                                                onclick="event.preventDefault();
-                                                        if(confirm('Tem certeza que deseja excluir este Curriculo?')) {
-                                                            this.closest('form').submit();
-                                                        }">
-                                                Deletar Currículo
-                                            </a>
-                                        </form>
-                                    @endif --}}
                                 </div>
         
         

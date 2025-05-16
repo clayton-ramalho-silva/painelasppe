@@ -81,10 +81,7 @@ class CompanyController extends Controller
         }
 
         $companies = $query->get();
-
-        //dd($query->toRawSql());
-
-        //$companies = Company::all();
+        
         return view('companies.index', compact('companies', 'form_busca'));
     }
 

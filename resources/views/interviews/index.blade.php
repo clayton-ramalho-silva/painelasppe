@@ -28,11 +28,11 @@
                     <div class="col">
                         <label for="status" class="form-label">Status</label>
                         <select name="status" id="status" class="form-select">
-                            <option>Todos</option>
-                            <option value="ativo"> Ativo</option>
-                            <option value="inativo"> Inativo</option>
-                            <option value="processo"> Em processo</option>
-                            <option value="contratado"> Contratado</option>
+                            <option value="">Todos</option>
+                            <option value="ativo"  {{ request('status') == 'ativo' ? 'selected' : '' }}> Disponível</option>
+                            <option value="inativo" {{ request('status') == 'inativo' ? 'selected' : '' }}> Inativo</option>
+                            <option value="processo" {{ request('status') == 'processo' ? 'selected' : '' }}> Em processo</option>
+                            <option value="contratado" {{ request('status') == 'contratado' ? 'selected' : '' }}> Contratado</option>
                         </select>
                     </div>
 
@@ -40,26 +40,25 @@
                         <label for="entrevistado" class="form-label">Entrevistado</label>
                         <select name="entrevistado" id="entrevistado" class="form-select">
                             <option>Todos</option>
-                            <option value="1">Já entrevistado</option>
-                            <option value="0">Não entrevistado</option>
+                            <option value="1" {{ request('entrevistado') == '1' ? 'selected' : '' }}>Já entrevistado</option>
+                            <option value="0" {{ request('entrevistado') == '0' ? 'selected' : '' }}>Não entrevistado</option>
                         </select>
                     </div>
 
                     <div class="col mb-4">
                         <label for="filtro_data" class="form-label">Filtrar por Data</label>
                         <select name="filtro_data" id="filtro_data" class="form-select">
-                            <option>Todas</option>
-                            <option value="">Selecione</option>
-                            <option value="7">Últimos 7 dias</option>
-                            <option value="15">Últimos 15 dias</option>
-                            <option value="30">Últimos 30 dias</option>
-                            <option value="90">Últimos 90 dias</option>
+                            <option>Todas</option>                            
+                            <option value="7" {{ request('filtro_data') == '7' ? 'selected' : '' }}>Últimos 7 dias</option>
+                            <option value="15" {{ request('filtro_data') == '15' ? 'selected' : '' }}>Últimos 15 dias</option>
+                            <option value="30" {{ request('filtro_data') == '30' ? 'selected' : '' }}>Últimos 30 dias</option>
+                            <option value="90" {{ request('filtro_data') == '90' ? 'selected' : '' }}>Últimos 90 dias</option>
                         </select>
                     </div>
 
                     <div class="col mt-1 d-flex justify-content-between">
-                        <button type="submit" class="btn btn-padrao btn-cadastrar" name="filtrar" value="filtrar">Filtrar</button>
-                        <button type="submit" class="btn btn-padrao btn-cancelar" name="limpar" value="limpar">Limpar</button>
+                        <button type="submit" class="btn btn-padrao btn-cadastrar">Filtrar</button>
+                        <a href="{{ route('interviews.index') }}" class="btn btn-padrao btn-cancelar" name="limpar" value="limpar">Limpar</a>
                     </div>
 
                 </div>
@@ -96,8 +95,7 @@
 
             @if ($resumes->count() > 0)
 
-                @foreach ($resumes as $resume)
-                {{-- <ul onclick="window.location='{{ route('resumes.edit', $resume) }}'" title="Editar currículo"> --}}
+                @foreach ($resumes as $resume)                
                 <ul onclick="window.location='{{ $resume->interview ? route('interviews.show', $resume->interview->id) : route('interviews.interviewResume', $resume)    }}'" title="Ver ou Editar Entrevista">
                     <li class="col1">
                         <b>Nome</b>
@@ -124,24 +122,33 @@
                     <li class="col4">
                         <b>Obs.</b>
                         {{-- Precisa lógica para puxar informação --}}
-                        Não
+                        @if ($resume->observacoes->isNotEmpty())
+                            @php
+                                $observacao_recente = $resume->observacoes->sortByDesc('created_at')->first();
+                            @endphp                            
+                                <p class="card-text"><b>{{$observacao_recente->created_at->format('d/m/y')}}</b> - {{$observacao_recente->observacao}} </p>
+                            
+                        @else
+                            Nenhuma observação.
+                        @endif
+                        
                     </li>
                     <li class="col5">
                         <b>Status</b>
                         @switch($resume->status)
-                        @case('inativo')
-                            <i class="status-inativo" title="Inativo"></i>
-                            @break
-
-                        @case('em processo')
-                            <i class="status-em-processo" title="Em processo"></i>
-                            @break
-                        @case('efetivado')
-                            <i class="status-efetivado" title="Efetivado"></i>
-                            @break
-
-                        @default
-                            <i class="status-ativo" title="Ativo"></i>
+                            @case('ativo')
+                                <i class="status-ativo" title="Disponível"></i>Disponível
+                                @break
+                            @case('inativo')
+                                <i class="status-inativo" title="Inativo"></i>Inativo
+                                @break
+                            @case('processo')
+                                <i class="status-em-processo" title="Em processo"></i>Em processo
+                                @break
+                            @case('contratado')
+                                <i class="status-contratado" title="Contratado"></i>Contratado
+                                @break                           
+                                
                         @endswitch
                     </li>
 
@@ -172,60 +179,149 @@
 
 @push('scripts-custom')
 <script>
-var envio   = '',
-    filtros = [];
 
-$(document).ready(function() {
-
-    $('button').on('click', function(){
-        envio = $(this).val();
-
-        if(envio === 'limpar'){
-            $('.form-check-input').prop('checked', true);
-            $('#cidade').val('');
-            $('#uf').val('Todos').select2();
-        }
-
-    });
-
-    $('.bloco-filtros select').select2({
+$(document).ready(function(){
+    // Inicializa o Select2
+    $('.bloco-filtros .select2').select2({
         placeholder: "Selecione",
     });
 
-    if(envio === 'limpar'){
-        $('.bloco-filtros-ativos').slideUp(150);
-        setTimeout(function(){
-            $('.bloco-filtros-ativos span').html('');
-        }, 170);
-    }
-
-    $('#filter-form-interviews').on('submit', function(e) {
-
+    // Botão limpar - redireciona para URL sem parâmetros
+    $('button[name="limpar"]').on('click', function(e){
         e.preventDefault();
-        let formData = (envio === 'filtrar') ? $(this).serialize() : '';
-
-        get_form_filters($(this).serializeArray());
-
-        $.ajax({
-            url: "{{ route('interviews.index') }}",
-            type: "GET",
-            data: formData,
-            success: function(response) {
-                $('.table-container').html($(response).find('.table-container').html());
-                $('.dropdown-menu').removeClass('show');
-            },
-            error: function(xhr, status, error) {
-                console.error("Erro ao buscar dados:", error);
-            }
-        });
-
+        window.location.href = "{{ route('resumes.index') }}";
     });
 
+    // Atualiza filtros ativos quando a página carrega
+    updateActiveFilters();
 });
+
+// Função para mostrar filtros ativos
+function updateActiveFilters(){
+    let params = new URLSearchParams(window.location.search);
+    let activeFilters = [];
+    let filtersContainer = $('.bloco-filtros-ativos span');
+    filtersContainer.empty(); // Limpa os filtros anteriores
+
+    params.forEach((value, key) => {
+        // Ignora parâmetros de paginação e vazios
+        if( key !== 'page' && value && value !== 'Todos' && value !== 'Todas'){
+            // Para arrays (selects múltiplos)
+            if (key.endsWith('[]')){
+                activeFilters.push(createFilterBadge(key.replace('[]', ''), value));
+            } else {
+                activeFilters.push(createFilterBadge(key, value));
+            }
+        }
+    });
+
+    if(activeFilters.length > 0) {
+        filtersContainer.append(activeFilters);
+        $('.bloco-filtros-ativos').slideDown(150);
+    } else {
+        $('.bloco-filtros-ativos').slideUp(150);
+    }
+}
+
+// Cria um badge para cada filtro com botão de remover
+function createFilterBadge(key, value) {
+    // Cria um elemento span para o badge
+    let badge = $('<span class="filter-badge"></span>');
+
+    // Adiciona o valor do filtro
+    badge.append(document.createTextNode(value));
+
+    // Adciona o botão de remover (x)
+    let removeBtn = $('<button class="remove-filter" data-key="'+key+'" data-value="'+value+'">x</button>');
+    badge.append(removeBtn);
+
+    return badge;
+}
+
+// Remove um filtro especifico e recarrega a pagina
+$(document).on('click', '.remove-filter', function(){
+    let key = $(this).data('key');
+    let value = $(this).data('value');
+    let url = new URL(window.location.href);
+    let params = new URLSearchParams(url.search);
+
+    // Para filtros multiplos (array)
+    if (key.endsWith('[]')){
+        let currentValues = params.getAll(key);
+        let newValues = currentValues.filter(v => v !== value);
+
+        // Remove o parametro completamente se não houver mais valores
+        params.delete(key);
+        newValues.forEach(v => params.append(key, v));
+    }
+    // Para filtro simples
+    else {
+        params.delete(key);
+    }
+
+    // Remove também a página para voltar a primeira
+    params.delete('paga');
+
+    // Atualiza a URL e recarrega
+    window.location.href = url.pathname + '?' + params.toString();
+
+});
+
+// Ajax antigo
+// var envio   = '',
+//     filtros = [];
+
+// $(document).ready(function() {
+
+//     $('button').on('click', function(){
+//         envio = $(this).val();
+
+//         if(envio === 'limpar'){
+//             $('.form-check-input').prop('checked', true);
+//             $('#cidade').val('');
+//             $('#uf').val('Todos').select2();
+//         }
+
+//     });
+
+//     $('.bloco-filtros select').select2({
+//         placeholder: "Selecione",
+//     });
+
+//     if(envio === 'limpar'){
+//         $('.bloco-filtros-ativos').slideUp(150);
+//         setTimeout(function(){
+//             $('.bloco-filtros-ativos span').html('');
+//         }, 170);
+//     }
+
+//     $('#filter-form-interviews').on('submit', function(e) {
+
+//         e.preventDefault();
+//         let formData = (envio === 'filtrar') ? $(this).serialize() : '';
+
+//         get_form_filters($(this).serializeArray());
+
+//         $.ajax({
+//             url: "{{ route('interviews.index') }}",
+//             type: "GET",
+//             data: formData,
+//             success: function(response) {
+//                 $('.table-container').html($(response).find('.table-container').html());
+//                 $('.dropdown-menu').removeClass('show');
+//             },
+//             error: function(xhr, status, error) {
+//                 console.error("Erro ao buscar dados:", error);
+//             }
+//         });
+
+//     });
+
+// });
 </script>
 @endpush
 
-@push('scripts-custom')
+{{-- @push('scripts-custom')
 <script>
 var envio   = '',
     filtros = [];
@@ -284,7 +380,7 @@ $(document).ready(function() {
 
 });
 </script>
-@endpush
+@endpush --}}
 
 @push('css-custom')
 <style>
@@ -315,6 +411,18 @@ $(document).ready(function() {
 .link-entrevista:hover{
     text-decoration: underline;
 }
+
+.table-container.lista-entrevistas .col5{
+    justify-content: center;
+    flex-direction: column;
+    font-weight: 700;
+    font-size: 11px;
+    color: #244f77;
+    text-align: center;
+}
+
+
+
 
 
 /* css paginate */
@@ -361,6 +469,105 @@ $(document).ready(function() {
 .page-link:hover {
     background-color: #f8f9fa;
 }
+
+
+/* Estilo dos badges de filtro*/
+.bloco-filtros-ativos {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    font-weight: 700;
+    font-size: 12px;
+    margin: 10px 0;
+    border-radius: 20px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -ms-border-radius: 20px;
+    padding: 3px 14px;
+    background-color: #F2F2F2;
+    letter-spacing: normal;
+}
+
+.filter-badge {
+    display: inline-block;
+    margin-right: 8px;   
+    padding: 5px 10px;
+    padding-left: 24px;
+    background: #fff;
+    border-radius: 15px;
+    font-size: 12px;
+    position: relative;
+}
+
+.remove-filter {
+    margin-left: 5px;
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0 5px;
+    color: #ff0000;
+    font-size: 15px;
+    position: absolute;
+    top: 3px;
+    left: 0;
+    font-weight: 700;
+    font-family: 'Montserrat';
+    line-height: 1em;
+}
+
+.remove-filter:hover {
+    color: #dc3545;
+}
+
+
+
+
+/* css paginate */
+/* Em seu arquivo CSS */
+.pagination-container {
+    margin-top: 20px;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: center;
+}
+
+.page-item {
+    margin: 0 2px;
+}
+
+.page-link {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    color: #007bff;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    cursor: default;
+    background-color: #fff;
+    border-color: #ddd;
+}
+
+.page-link:hover {
+    background-color: #f8f9fa;
+}
+
 
 /* Estilo responsivo */
 @media (max-width: 576px) {
