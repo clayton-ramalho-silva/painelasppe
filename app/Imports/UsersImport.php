@@ -142,6 +142,7 @@ class UsersImport implements ToModel
 
 
         //TODO: Verificar se está tudo ok aqui
+        //if () {} // Não consegui identificar qual campo usar para saber se a entrevista aconteceu ou não.
         $resume->escolaridade()->create([
             'escolaridade' => $row[88] ?? $row[19] ?? null, // Fundamental completo, Fundamental cursando, Medio completo, Medio cursando, Tecnico completo, Tecnico cursando, Superior Completo Superior Cursando ou Outro
             'escolaridade_outro' => $this->limparString(substr($row[91] ?? $row[20] ?? null, 0, 255)), // Qual curso Outro
