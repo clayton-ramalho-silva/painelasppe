@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 // use Maatwebsite\Excel\Concerns\OnEachRow;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class UsersImport implements ToModel
+class InterviewImport implements ToModel
 
 {
     private function parseToArray($value, $json_format = false)
@@ -47,115 +47,119 @@ class UsersImport implements ToModel
     public function model(array $row)
     {
         if ($row[0] == "Código Único") {
-            Log::info('====* Iniciando importação de currículos *====');
+            Log::info('====* Iniciando importação de entrevistas *====');
             // dd($row);
             return null; // Ignorar a linha de cabeçalho
         }
 
-        $createResume = true;
+        $firstName = explode(' ', $row[2])[0];
+        $data_nascimento = $row[4] ? (is_string($row[4]) ? null : Date::excelToDateTimeObject($row[4])->format('Y-m-d')) : null;
+        $cpf = $row[52] ? str_replace(['-', '.'], '', $row[52]) : null;
 
-        // if (!empty($row[56])) {
-        //     return null; // Ignorar linhas vazias
-        // }
-        // dd('aq');
+        //
+        $resume = null;
+        if ($cpf) {
 
-        Log::info('Linha ' . $row[0] . ' - Iniciando importação do currículo: ' . $row[2]);
-        // dd($row[0], $row);
+            $check = Resume::whereHas('informacoesPessoais', function ($query) use ($cpf) {
+                $query->where('cpf', $cpf);
+            })->first();
+            Log::info('Linha ' . 11 . ' - Curriculo Ignorado(cpf) - ' . ucwords($row[2]));
 
-        //Verificar pelo link do currículo externo se já existe.
-        if ($row[98] && $row[98] != '') {
-            $check = Resume::where('curriculo_externo', $row[98])->first();
-            // dd($check);
             if ($check) {
-                Log::info('Linha ' . $row[0] . ' - Ignorado(curriculo externo).');
-                // return null;
-                $createResume = false;
-
                 $resume = $check;
             }
+            Log::info('Linha ' . 11 . ' - Não encontrei(cpf) - ' . ucwords($row[2]));
+            Log::info("cpf = $cpf");
         }
 
-        //Verificar pelo email se já existe.
-        if ($row[57] && $row[57] != '') {
-            $checkEmail = Resume::whereHas('contato', function ($query) use ($row) {
-                $query->where('email', $row[57]);
-            })->first();
-            if ($checkEmail) {
-                Log::info('Linha ' . $row[0] . ' - Ignorado(email).');
-                // return null;
-                $createResume = false;
 
-                $resume = $checkEmail;
+
+        if ($resume == null) {
+
+            $check2 = Resume::whereHas('informacoesPessoais', function ($query) use ($firstName, $data_nascimento) {
+                $query->where('nome', 'like', $firstName . '%')->where('data_nascimento', $data_nascimento);
+            })->get();
+
+            if ($check2->count() > 0) {
+                Log::info('Linha ' . 12 . ' - Curriculo Ignorado(nome e data de nascimento!) - ' . ucwords($row[2]));
+                // return null;
+
+                $resume = $check2->first();
+            } else {
+                Log::info('Linha ' . 11 . ' - Não encontrei(nome e data de nascimento) - ' . ucwords($row[2]));
+                Log::info("nome LIKE '$firstName%' AND data_nascimento = '$data_nascimento'");
             }
         }
 
-        if ($createResume) {
+        if ($resume == null) { // Cadastrar nova inscrição quando não achar nenhuma inscrição vinculada
+
+            Log::info('Linha ' . 10 . ' - Iniciando importação do currículo(novo): ' . ucwords($row[2]));
 
             $resume = Resume::create([
-                'vagas_interesse' => $this->parseToArray($row[85]),
-                'experiencia_profissional' => $this->parseToArray($row[86]),
-                'experiencia_profissional_outro' => $this->limparString(substr($row[87], 0, 255)) ?? null,
-                'foi_jovem_aprendiz' => $row[95] ?? null,
-                'cras' => $row[96] ?? $row[41] ?? null,
-                'fonte' => $this->limparString(substr($row[97], 0, 255)) ?? null,
-                'curriculo_externo' => $row[98] ?? null,
-                'autorizacao_uso_dados' => isset($row[99]) ? 1 : 0,
+                'vagas_interesse' => null,
+                'experiencia_profissional' => $this->parseToArray($row[25] ?? null),
+                'experiencia_profissional_outro' => null,
+                'foi_jovem_aprendiz' => $row[15] ?? null,
+                'cras' => $row[41] ?? null,
+                'fonte' => $this->limparString(substr($row[48], 0, 255)) ?? null,
+                'curriculo_externo' => $row[39] ?? null,
+                'autorizacao_uso_dados' => 1,
                 'imported_at' => date('Y-m-d H:i:s') ?? null,
                 'status' => 'ativo',
                 'participou_selecao' => '',
                 'participou_selecao_outro' => '',
                 'curriculo_doc' => null,
                 'codigo_unico' => $row[0] ?? null,
-                'autorizacao_responsavel_menor' => isset($row[99]) ? 1 : 0,
+                'autorizacao_responsavel_menor' => 1,
             ]);
 
             $resume->informacoesPessoais()->create([
                 'nome' => ucwords($row[2]) ?? null,
                 'data_nascimento' => $row[4] ? (is_string($row[4]) ? null : Date::excelToDateTimeObject($row[4])->format('Y-m-d')) : null,
-                'estado_civil' => $row[64] ?? null,
-                'possui_filhos' => $row[66] ?? null,
-                'filhos_qtd' => $row[67] ?? null,
-                'filhos_sim' => $row[68] ?? null,
-                'sexo' => $row[69] ?? $row[42] ?? null,
-                'sexo_outro' => $row[70] ?? null,
-                'reservista' => $row[65] ?? $row[24] ?? null,
+                'estado_civil' => null,
+                'possui_filhos' => null,
+                'filhos_qtd' => null,
+                'filhos_sim' => null,
+                'sexo' => $row[42] ?? null,
+                'sexo_outro' => null,
+                'reservista' => $row[24] ?? null,
                 'reservista_outro' => null,
-                'cnh' => $row[60] ?? $row[50] ?? null,
-                'tipo_cnh' => $row[61] ? str_replace([' ', 'e', 'E'], '', $row[61]) : null,
-                'rg' => $row[58] ? str_replace(['-', '.'], '', $row[58]) : null,
-                'cpf' => $row[59] ? str_replace(['-', '.'], '', $row[59]) : ($row[52] ? str_replace(['-', '.'], '', $row[52]) : null),
-                'instagram' => $row[80] ?? null,
-                'linkedin' => $row[81] ?? null,
+                'cnh' => $row[50] ?? null,
+                'tipo_cnh' => null,
+                'rg' => null,
+                'cpf' => $row[52] ? str_replace(['-', '.'], '', $row[52]) : null,
+                'instagram' => null,
+                'linkedin' => null,
                 'tamanho_uniforme' => null,
-                'pcd' => $row[71] ?? null,
-                'pcd_sim' => $row[72] ?? null,
-                'nacionalidade' => $row[63] ?? null
+                'pcd' => null,
+                'pcd_sim' => null,
+                'nacionalidade' => null
             ]);
 
             $resume->contato()->create([
-                'email' => $row[57] ?? null,
-                'telefone_residencial' => $this->limparString(substr(($row[83] ? $row[83] : $row[5]) ?? null, 0, 255)),
-                'nome_contato' => $row[84] ?? null,
-                'telefone_celular' => $row[82] ?? null,
-                'logradouro' => $row[74] ?? null,
-                'numero' => $row[75] ?? null,
-                'complemento' => $row[76] ?? null,
-                'bairro' => $row[77] ?? null,
-                'cidade' => $row[78] ?? null,
-                'uf' => $row[79] ?? null,
-                'cep' => $row[73] ? str_replace(['-', '.'], '', $row[73]) : null,
+                'email' => null,
+                'telefone_residencial' => $this->limparString(substr($row[5] ?? null, 0, 255)),
+                'nome_contato' => null,
+                'telefone_celular' => null,
+                'logradouro' => $row[6] ?? null,
+                'numero' => null,
+                'complemento' => null,
+                'bairro' => $row[8] ?? null,
+                'cidade' => $row[7] ?? null,
+                'uf' => null,
+                'cep' => null,
 
             ]);
 
-            $resume->escolaridade()->create([
-                'escolaridade' => $row[88] ?? $row[19] ?? null, // Fundamental completo, Fundamental cursando, Medio completo, Medio cursando, Tecnico completo, Tecnico cursando, Superior Completo Superior Cursando ou Outro
-                'escolaridade_outro' => $this->limparString(substr($row[91] ?? $row[20] ?? null, 0, 255)), // Qual curso Outro
-                'semestre' => $row[90] ?? null, // Modalidade: Presencial, EAD, Hibrido, Outro. Quando cursando qq curso.
-                'instituicao' => $row[92] ?? null, // Quando for Superior Incompleto ou Outro
-                'outro_periodo' => $row[89] ?? null,
-                'informatica' => $row[93] ?? $row[17] ?? null,
+            $resume->escolaridade()->create([ // 88
+                'escolaridade' => $row[19] ?? null, // Fundamental completo, Fundamental cursando, Medio completo, Medio cursando, Tecnico completo, Tecnico cursando, Superior Completo Superior Cursando ou Outro
+                'escolaridade_outro' => $this->limparString(substr($row[20] ?? null, 0, 255)), // Qual curso Outro
+                'semestre' => null, // Modalidade: Presencial, EAD, Hibrido, Outro. Quando cursando qq curso.
+                'instituicao' => null, // Quando for Superior Incompleto ou Outro
+                'outro_periodo' => null,
+                'informatica' => $row[17] ?? null,
                 'obs_informatica' => null,
-                'ingles' => $row[94] ?? $row[18] ?? null,
+                'ingles' => $row[18] ?? null,
                 'obs_ingles' => null,
                 'fundamental_periodo' => null,
                 'fundamental_modalidade' => null,
@@ -171,9 +175,8 @@ class UsersImport implements ToModel
             ]);
         }
 
-        //Adicionar a interview
-        //TODO: Verificar se está tudo ok aqui
-        //if () {} // Não consegui identificar qual campo usar para saber se a entrevista aconteceu ou não.
+        Log::info('Linha ' . 10 . ' - Iniciando importação da entrevista: ' . ucwords($row[2]));
+
         $interview =  Interview::create([
             'outros_idiomas' => $row[46] ?? null,
             'apresentacao_pessoal' => $row[23] ?? null,
@@ -209,8 +212,10 @@ class UsersImport implements ToModel
             //'pontuacao' => $data['pontuacao'],
         ]);
 
-        return $resume;
+
+        return $interview;
     }
+
 
     private function buscarIDRecrutador($nome)
     {

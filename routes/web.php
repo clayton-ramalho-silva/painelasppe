@@ -15,6 +15,8 @@ use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\PublicResumeController;
 use App\Http\Controllers\ResumeImportController;
 use App\Http\Controllers\SelectionController;
+use App\Imports\InterviewImport;
+use App\Imports\ResumeImport;
 use App\Imports\UsersImport;
 use App\Models\Job;
 use Maatwebsite\Excel\Facades\Excel;
@@ -141,6 +143,16 @@ route::get('/importar', function () {
     //Executa a migração para criar a coluna imported_at na tabela resumes
     Artisan::call('migrate');
     //O importador abaixo procura o arquivo em /storage/app/dados.xlsx
-    Excel::import(new UsersImport, 'dados.xlsx');
+    Excel::import(new ResumeImport, 'resumes.xlsx');
     return 'teste';
+});
+
+// Desativar essa rota após o uso
+route::get('/importar-interview', function () {
+
+    //Executa a migração para criar a coluna imported_at na tabela resumes
+    // Artisan::call('migrate');
+    //O importador abaixo procura o arquivo em /storage/app/dados.xlsx
+    Excel::import(new InterviewImport, 'interviews.xlsx');
+    return 'interview';
 });
