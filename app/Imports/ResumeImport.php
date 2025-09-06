@@ -59,17 +59,32 @@ class ResumeImport implements ToModel
         $rg = str_replace(['-', '.'], '', $row[3]);
 
         //
-        $check = Resume::whereHas('informacoesPessoais', function ($query) use ($firstName, $data_nascimento, $rg) {
-            $query->where('nome', 'like', $firstName . '%')->where('data_nascimento', $data_nascimento)
-                ->orWhere('rg', $rg);
-        })->get();
+        if ($rg) {
 
-        if ($check->count() >= 1) {
-            Log::info('Linha ' . 1 . ' - Ignorado(nome e data nascimento ou RG).');
-            // return null;
-            $createResume = false;
+            $check = Resume::whereHas('informacoesPessoais', function ($query) use ($firstName, $data_nascimento, $rg) {
+                $query->where('nome', 'like', $firstName . '%')->where('data_nascimento', $data_nascimento)
+                    ->orWhere('rg', $rg);
+            })->get();
 
-            // $resume = $check->first();
+            if ($check->count() >= 1) {
+                Log::info('Linha ' . 1 . ' - Ignorado(nome e data nascimento ou RG).');
+                // return null;
+                $createResume = false;
+
+                // $resume = $check->first();
+            }
+        } else {
+            $check = Resume::whereHas('informacoesPessoais', function ($query) use ($firstName, $data_nascimento, $rg) {
+                $query->where('nome', 'like', $firstName . '%')->where('data_nascimento', $data_nascimento);
+            })->get();
+
+            if ($check->count() >= 1) {
+                Log::info('Linha ' . 1 . ' - Ignorado(nome e data nascimento).');
+                // return null;
+                $createResume = false;
+
+                // $resume = $check->first();
+            }
         }
 
         /*$check = Resume::whereHas('informacoesPessoais', function ($query) use ($firstName, $data_nascimento) {
@@ -106,10 +121,10 @@ class ResumeImport implements ToModel
 
         // dd($createResume);
 
-        Log::info('Linha ' . 0 . ' - Iniciando importação do currículo: ' . ucwords($row[2]));
         // dd($row[0], $row);
 
         if ($createResume) {
+            Log::info('Linha ' . 0 . ' - Iniciando importação do currículo: ' . ucwords($row[2]));
 
             $resume = Resume::create([
                 'vagas_interesse' => $this->parseToArray($row[30] ?? null),

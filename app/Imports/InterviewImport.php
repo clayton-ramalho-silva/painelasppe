@@ -63,13 +63,14 @@ class InterviewImport implements ToModel
             $check = Resume::whereHas('informacoesPessoais', function ($query) use ($cpf) {
                 $query->where('cpf', $cpf);
             })->first();
-            Log::info('Linha ' . 11 . ' - Curriculo Ignorado(cpf) - ' . ucwords($row[2]));
 
             if ($check) {
+                Log::info('Linha ' . 11 . ' - Curriculo Ignorado(cpf) - ' . ucwords($row[2]));
                 $resume = $check;
+            } else {
+                Log::info('Linha ' . 11 . ' - Não encontrei(cpf) - ' . ucwords($row[2]));
+                Log::info("cpf = $cpf");
             }
-            Log::info('Linha ' . 11 . ' - Não encontrei(cpf) - ' . ucwords($row[2]));
-            Log::info("cpf = $cpf");
         }
 
 
@@ -86,7 +87,7 @@ class InterviewImport implements ToModel
 
                 $resume = $check2->first();
             } else {
-                Log::info('Linha ' . 11 . ' - Não encontrei(nome e data de nascimento) - ' . ucwords($row[2]));
+                Log::info('Linha ' . 12 . ' - Não encontrei(nome e data de nascimento) - ' . ucwords($row[2]));
                 Log::info("nome LIKE '$firstName%' AND data_nascimento = '$data_nascimento'");
             }
         }
@@ -173,6 +174,11 @@ class InterviewImport implements ToModel
                 'superior_semestre' => null, // Modalidade
                 'superior_periodo' => null, // Periodo de estudo: Manhã, Tarde, Noite, Integral. Quando cursando qq curso.
             ]);
+        }
+
+        if ($row[2] == null || $row[2] == '') {
+            Log::info('Linha ' . 13 . ' - Ignorando importação da entrevista por falta de nome: ' . ucwords($row[2]));
+            return null;
         }
 
         Log::info('Linha ' . 10 . ' - Iniciando importação da entrevista: ' . ucwords($row[2]));
