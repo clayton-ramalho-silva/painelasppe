@@ -11,17 +11,24 @@ use App\Http\Controllers\ResumeController;
 use Illuminate\Support\Facades\Route;
 
 use App\Exports\CandidatesByJobExport;
+use App\Exports\InterviewsDExport;
+use App\Exports\ResumesDExport;
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\PublicResumeController;
 use App\Http\Controllers\ResumeImportController;
+use App\Http\Controllers\ScriptsController;
 use App\Http\Controllers\SelectionController;
+use App\Imports\FixFotosImport;
 use App\Imports\InterviewImport;
 use App\Imports\ResumeImport;
 use App\Imports\UsersImport;
+use App\Models\AcademicInfoResume;
 use App\Models\Job;
+use App\Models\PersonalInfoResume;
+use App\Models\Resume;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Artisan;
-
+use Illuminate\Support\Facades\DB;
 
 Route::get('/painel', function () {
 
@@ -138,21 +145,62 @@ Route::post('/getCep', [AjaxController::class, 'getCep'])->name('getCep');
 
 
 // Desativar essa rota após o uso
-route::get('/importar', function () {
+// route::get('/importar', function () {
 
-    //Executa a migração para criar a coluna imported_at na tabela resumes
-    Artisan::call('migrate');
-    //O importador abaixo procura o arquivo em /storage/app/dados.xlsx
-    Excel::import(new ResumeImport, 'resumes.xlsx');
-    return 'teste';
-});
+//     //Executa a migração para criar a coluna imported_at na tabela resumes
+//     Artisan::call('migrate');
+//     //O importador abaixo procura o arquivo em /storage/app/dados.xlsx
+//     Excel::import(new ResumeImport, 'resumes.xlsx');
+//     return 'teste';
+// });
 
-// Desativar essa rota após o uso
-route::get('/importar-interview', function () {
+// // Desativar essa rota após o uso
+// route::get('/importar-interview', function () {
 
-    //Executa a migração para criar a coluna imported_at na tabela resumes
-    // Artisan::call('migrate');
-    //O importador abaixo procura o arquivo em /storage/app/dados.xlsx
-    Excel::import(new InterviewImport, 'interviews.xlsx');
-    return 'interview';
-});
+//     //Executa a migração para criar a coluna imported_at na tabela resumes
+//     // Artisan::call('migrate');
+//     //O importador abaixo procura o arquivo em /storage/app/dados.xlsx
+//     Excel::import(new InterviewImport, 'interviews.xlsx');
+//     return 'interview';
+// });
+
+
+// route::get('clear-fields', function () {
+//     $needClear = PersonalInfoResume::withTrashed()->where('cpf', 'LIKE', '%.%')->orWhere('rg', 'LIKE', '%.%')->get();
+
+//     foreach ($needClear as $item) {
+//         $item->cpf = str_replace(['-', '.'], '', $item->cpf);
+//         $item->rg = str_replace(['-', '.'], '', $item->rg);
+//         $item->save();
+//     }
+//     return 'ok';
+// });
+
+// route::get('/fix-duplicatas', ScriptsController::class);
+
+
+
+// route::get('fix-fotos', function () {
+//     Excel::import(new FixFotosImport, 'interviews.xlsx');
+//     return 'fixed';
+// });
+
+
+// Route::get('/fix-escolaridade', function () {
+//     $escolaridades = AcademicInfoResume::where('escolaridade', 'NOT LIKE', '[%')
+//         ->get();
+
+//     foreach ($escolaridades as $escolaridade) {
+//         if (is_string($escolaridade->escolaridade)) {
+//             $array = array_map('trim', explode(',', $escolaridade->escolaridade));
+//             $escolaridade->escolaridade = array_filter($array);
+//             $escolaridade->save();
+//         }
+//     }
+
+//     return 'ok';
+// });
+
+// route::get('/download-duplicatas-interview', function () {
+//     return Excel::download(new InterviewsDExport, 'resumes.xlsx');
+// });

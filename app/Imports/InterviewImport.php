@@ -134,7 +134,8 @@ class InterviewImport implements ToModel
                 'tamanho_uniforme' => null,
                 'pcd' => null,
                 'pcd_sim' => null,
-                'nacionalidade' => null
+                'nacionalidade' => null,
+                'foto_candidato_externa' => $row[38] ?? null,
             ]);
 
             $resume->contato()->create([
