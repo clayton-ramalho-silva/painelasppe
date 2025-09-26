@@ -145,36 +145,36 @@ Route::post('/getCep', [AjaxController::class, 'getCep'])->name('getCep');
 
 
 // Desativar essa rota após o uso
-// route::get('/importar', function () {
+route::get('/importar', function () {
 
-//     //Executa a migração para criar a coluna imported_at na tabela resumes
-//     Artisan::call('migrate');
-//     //O importador abaixo procura o arquivo em /storage/app/dados.xlsx
-//     Excel::import(new ResumeImport, 'resumes.xlsx');
-//     return 'teste';
-// });
+    //Executa a migração para criar a coluna imported_at na tabela resumes
+    Artisan::call('migrate');
+    //O importador abaixo procura o arquivo em /storage/app/dados.xlsx
+    Excel::import(new ResumeImport, 'resumes.xlsx');
+    return 'teste';
+});
 
 // // Desativar essa rota após o uso
-// route::get('/importar-interview', function () {
+route::get('/importar-interview', function () {
 
-//     //Executa a migração para criar a coluna imported_at na tabela resumes
-//     // Artisan::call('migrate');
-//     //O importador abaixo procura o arquivo em /storage/app/dados.xlsx
-//     Excel::import(new InterviewImport, 'interviews.xlsx');
-//     return 'interview';
-// });
+    //Executa a migração para criar a coluna imported_at na tabela resumes
+    // Artisan::call('migrate');
+    //O importador abaixo procura o arquivo em /storage/app/dados.xlsx
+    Excel::import(new InterviewImport, 'interviews.xlsx');
+    return 'interview';
+});
 
 
-// route::get('clear-fields', function () {
-//     $needClear = PersonalInfoResume::withTrashed()->where('cpf', 'LIKE', '%.%')->orWhere('rg', 'LIKE', '%.%')->get();
+route::get('clear-fields', function () {
+    $needClear = PersonalInfoResume::withTrashed()->where('cpf', 'LIKE', '%.%')->orWhere('rg', 'LIKE', '%.%')->get();
 
-//     foreach ($needClear as $item) {
-//         $item->cpf = str_replace(['-', '.'], '', $item->cpf);
-//         $item->rg = str_replace(['-', '.'], '', $item->rg);
-//         $item->save();
-//     }
-//     return 'ok';
-// });
+    foreach ($needClear as $item) {
+        $item->cpf = str_replace(['-', '.'], '', $item->cpf);
+        $item->rg = str_replace(['-', '.'], '', $item->rg);
+        $item->save();
+    }
+    return 'ok';
+});
 
 // route::get('/fix-duplicatas', ScriptsController::class);
 

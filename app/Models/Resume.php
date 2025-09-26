@@ -13,15 +13,15 @@ class Resume extends Model
 
     protected $casts = [
         'vagas_interesse' => 'array',
-        'experiencia_profissional' => 'array'               
+        'experiencia_profissional' => 'array'
     ];
 
     protected $dates = ['data_nascimento'];
 
     // protected $fillable = [
-    //     'vagas_interesse', 
-    //     'experiencia_profissional','experiencia_profissional_outro', 
-    //     'participou_selecao', 'participou_selecao_outro', 'foi_jovem_aprendiz', 
+    //     'vagas_interesse',
+    //     'experiencia_profissional','experiencia_profissional_outro',
+    //     'participou_selecao', 'participou_selecao_outro', 'foi_jovem_aprendiz',
     //     'curriculo_doc', 'status','created_at', 'codigo_unico', 'curriculo_externo',
     //     'cras', 'fonte', 'autorizacao_uso_dados', 'autorizacao_responsavel_menor'
     // ];
@@ -31,8 +31,7 @@ class Resume extends Model
     // Relacionamento muitos para muitos com Job - Vagas que o candidato está associado.
     public function jobs()
     {
-        return $this->belongsToMany(Job::class, 'job_resume', 'resume_id', 'job_id');            
-            
+        return $this->belongsToMany(Job::class, 'job_resume', 'resume_id', 'job_id');
     }
 
     public function informacoesPessoais()
@@ -52,7 +51,12 @@ class Resume extends Model
 
     public function interview()
     {
-        return $this->hasOne(Interview::class);
+        return $this->hasOne(Interview::class)->latest();
+    }
+
+    public function interviews()
+    {
+        return $this->hasMany(Interview::class);
     }
 
     public function selections()
@@ -63,7 +67,5 @@ class Resume extends Model
     public function observacoes()
     {
         return $this->hasMany(HistoryResume::class);
-    }   
-
-
+    }
 }
