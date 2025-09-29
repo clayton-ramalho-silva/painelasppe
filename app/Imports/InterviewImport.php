@@ -90,6 +90,7 @@ class InterviewImport implements ToModel
                 ->first();
         }
 
+        $interview = null;
         if ($resume) {
             // Log::info('resume encontrado');
 
@@ -98,13 +99,13 @@ class InterviewImport implements ToModel
                 'status' => $this->getStatus($row[43] ?? null)
             ]);
 
-            $interview = null;
             if ($resume->interview) {
                 Log::info('ja tem entrevista, atualizando');
                 $interview = $resume->interview;
                 $interview->update([
                     'observacoes' => $row[54] ?? null,
                     'obs_rh' => $row[55] ?? null,
+                    'fixed_at' => date('Y-m-d')
                 ]);
             } else {
                 Log::info('não tem entrevista');
