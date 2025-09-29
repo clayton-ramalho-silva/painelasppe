@@ -119,12 +119,12 @@ class InterviewImport implements ToModel
 
     private function getStatus($status)
     {
-        switch ($status) {
+        switch (trim($status)) {
             case "ATIVO":
                 return 'ativo';
             case "INATIVO":
                 return 'inativo';
-            case "CONTRATADO":
+            case "EFETIVADO":
                 return 'contratado';
             default:
                 return 'ativo';
