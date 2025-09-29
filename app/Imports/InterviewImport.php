@@ -119,12 +119,15 @@ class InterviewImport implements ToModel
 
     private function getStatus($status)
     {
-        switch (trim($status)) {
-            case "ATIVO":
+        // Remove aspas, espaços em branco e converte para maiúsculas
+        $status = strtoupper(trim($status, " \t\n\r\0\x0B\"'"));
+
+        switch ($status) {
+            case 'ATIVO':
                 return 'ativo';
-            case "INATIVO":
+            case 'INATIVO':
                 return 'inativo';
-            case "EFETIVADO":
+            case 'EFETIVADO':
                 return 'contratado';
             default:
                 return 'ativo';
