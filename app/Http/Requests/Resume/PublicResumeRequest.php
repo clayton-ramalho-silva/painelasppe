@@ -46,7 +46,11 @@ class PublicResumeRequest extends FormRequest
             'bairro' => 'required|string|max:255',
             'cidade' => 'required|string|max:255',
             'uf' => 'required|string|max:255',
-            'email' => 'required|email|unique:contact_resumes,email',
+            'email' => [
+              'required',
+              'email',
+              new \App\Rules\UniqueEmail('contact_resumes'),
+            ],                
             'instagram' => 'nullable|string|max:255',
             'linkedin' => 'nullable|string|max:255',
             'telefone_celular' => 'required|string|max:255',
