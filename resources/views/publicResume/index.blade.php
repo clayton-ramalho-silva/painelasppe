@@ -386,7 +386,7 @@
                                     <div class="col-6 form-campo">
                                         <div class="mb-3">
                                             <div class="floatlabel-wrapper required">
-                                                <label for="reservista" class="label-floatlabel" class="form-label floatlabel-label">Possui Reservista?(Dispensa do Exército)</label>
+                                                <label for="reservista" class="label-floatlabel" class="form-label floatlabel-label">Reservista?(Dispensa do Exército)</label>
                                                 <select name="reservista" id="reservista" class="form-select active-floatlabel" required>
                                                     <option></option>
                                                     <option value="Sim" {{ old('reservista') == 'Sim' ? 'selected' : ''}}> Sim</option>
