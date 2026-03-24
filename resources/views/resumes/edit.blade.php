@@ -27,7 +27,7 @@
     <div class="container">
         <div class="row">
             <div class="col d-flex">
-                @if (!$resume->interview)         
+                @if (!$resume->interview()->exists())         
                     <!--<div class="box-entrevistar"> -->
                         <a href="{{ route('interviews.interviewResume', $resume) }}#form-interview"  class="link-entrevista d-flex align-items-center" >Iniciar Entrevista</a>       
                     <!--</div>-->   
