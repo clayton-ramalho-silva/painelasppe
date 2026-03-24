@@ -554,9 +554,9 @@ class ResumeController extends Controller
     {
         //dd($resume);
         
-        if (Auth::user()->role !== 'admin') {
-            return redirect()->back()->with('danger', 'Permissão negada! Entre em contato com Adminstrador.');
-        }
+        // if (Auth::user()->role !== 'admin') {
+        //     return redirect()->back()->with('danger', 'Permissão negada! Entre em contato com Adminstrador.');
+        // }
         //dd($resume);
 
         // Excluindo arquivo fisico curriculo

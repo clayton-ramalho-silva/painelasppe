@@ -61,7 +61,7 @@
             <?php endif; ?>
             
             
-            <?php if(Auth::user()->role === 'admin'): ?>
+            
             <div class="col">
 
                 <form action="<?php echo e(route('resumes.destroy', $resume)); ?>" method="POST" style="display: inline;">
@@ -75,7 +75,7 @@
                 </form>
 
             </div>
-            <?php endif; ?>
+            
         </div>
     </div>
 
