@@ -122,7 +122,7 @@ class Resume extends Model
     }
 
    public function interview()
-    {
+    {        
         return $this->hasOne(Interview::class)->latestOfMany()
             ->withDefault([
                 'saude_candidato' => null,
