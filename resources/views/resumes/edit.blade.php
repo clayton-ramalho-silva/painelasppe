@@ -44,7 +44,7 @@
             @endif
             
             
-            @if (Auth::user()->role === 'admin')
+            {{-- @if (Auth::user()->role === 'admin') --}}
             <div class="col">
 
                 <form action="{{ route('resumes.destroy', $resume) }}" method="POST" style="display: inline;">
@@ -58,7 +58,7 @@
                 </form>
 
             </div>
-            @endif
+            {{-- @endif --}}
         </div>
     </div>
 
