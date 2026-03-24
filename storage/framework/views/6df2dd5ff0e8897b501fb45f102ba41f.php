@@ -97,7 +97,7 @@
                             <h4 class="fw-normal">Cadastro de Currículo</h4>
 
                             
-                            <p class="fw-bold">Data do cadastro: <?php echo e($resume->created_at->format('d/m/Y')); ?></p>
+                            <p class="fw-bold">Data do cadastro: <?php echo e($resume->created_at ? \Carbon\Carbon::parse($resume->created_at)->format('d/m/Y') : '—'); ?></p>
                         </div>
                         
                     </div>
