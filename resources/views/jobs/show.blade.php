@@ -357,7 +357,7 @@
                                             </svg></button>
                                         </form>
 
-                                        @if (!$resume->interview)
+                                        @if (!$resume->interview()->exists())
                                             <form action="{{ route('interviews.interviewResume') }}" method="get" class="d-inline">
                                                 @csrf
                                                 <input type="hidden" name="resume_id" value="{{ $resume->id}}">
