@@ -15,7 +15,7 @@
         <div class="row border-bottom mb-3">
             <div class="col-4">
                 <div class="mb-3">
-                    <label for="resume_id" class="form-label">Selecione o Candidato</label>
+                    <label for="resume_id" class="form-label">Selecione o Candidatso</label>
                     <select name="resume_id" id="resume_id" class="form-select">
                         <option value="" disabled selected>Escolher</option>
 
