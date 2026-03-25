@@ -537,7 +537,7 @@
                         
                         
                         @php
-                            if($resume->interview){
+                            if($resume->interview()->exists()){
                                 
                                 $rotaResume = route('interviews.show', $resume->interview->id);
                             }else{
@@ -575,7 +575,7 @@
                             </li>                            
                             <li class="col3 col3-admin{{-- $isAdmin ? 'col3-admin' : ''--}}">
                                 <b>Entrevista</b>
-                                @if ($resume->interview)
+                                @if ($resume->interview()->exists())
                                     <a href="{{ route('interviews.show', $resume->interview->id) }}" class="link-entrevista text-success fw-bold"  data-bs-toggle="tooltip" data-bs-placement="top" title="Ver entrevista">Sim</a>
                                 @else
                                     <a href="{{ route('resumes.edit', $resume) }}"  class="link-entrevista text-danger fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver currículo">Não</a>
@@ -657,7 +657,7 @@
                         @foreach ($job->selections as $selecao)
                         @php
                             $resume = $selecao->resume;
-                            if($resume->interview){
+                            if($resume->interview()->exists()){
                                 
                                 $rotaResume = route('interviews.show', $resume->interview->id);
                             }else{

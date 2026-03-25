@@ -898,7 +898,7 @@
                     </li>
                     <li class="col-entrevistado">
                         <b>Entrevistado</b>
-                        @if ($resume->interview)
+                        @if ($resume->interview()->exists())
                             <a href="{{ route('interviews.show', $resume->interview->id) }}" class="link-entrevista text-success fw-bold"  data-bs-toggle="tooltip" data-bs-placement="top" title="Ver entrevista">Sim</a>
                         @else
                             <a href="{{ route('interviews.interviewResume', $resume) }}"  class="link-entrevista text-danger fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" title="Entrevistar">Não</a>

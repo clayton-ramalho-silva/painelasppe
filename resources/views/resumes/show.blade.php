@@ -266,7 +266,7 @@
                 <div class="col-2">
                     <p>Disponibilidade</p>
                     <h4>
-                        @if ($resume->interview)
+                        @if ($resume->interview()->exists())
                             {{ $resume->interview->disponibilidade_horario}}
                         @else
                             Candidato não entrevistado.
@@ -277,7 +277,7 @@
                 <div class="col-2">
                     <p>Fonte de captação</p>
                     <h4>
-                        @if ($resume->interview)
+                        @if ($resume->interview()->exists())
                             {{ $resume->interview->fonte_curriculo }}
                         @else
                             Candidato não entrevistado.
@@ -287,7 +287,7 @@
                 <div class="col-2">
                     <p>Saúde</p>
                     <h4>
-                        @if ($resume->interview)
+                        @if ($resume->interview()->exists())
                             {{ $resume->interview->saude_candidato }}
                         @else
                             Candidato não entrevistado.
@@ -307,7 +307,7 @@
                 <div class="col-8">
                     <p>Por que gostaria de ser um Jovem Aprendiz?</p>
                     <h4>
-                        @if ( $resume->interview)
+                        @if ( $resume->interview()->exists())
                             {{ $resume->interview->porque_ser_jovem_aprendiz }}
                         @else
                             Candidato não entrevistado.
@@ -323,7 +323,7 @@
                 <div class="col-6">
                     <p>Observações:</p>
                     <h4>
-                        @if ( $resume->interview)
+                        @if ( $resume->interview()->exists())
                             {{ $resume->interview->observacoes }}
                         @else
                             Candidato não entrevistado.
@@ -380,7 +380,7 @@
                                             </svg></button>
                                         </form>
 
-                                        @if (!$resume->interview)
+                                        @if (!$resume->interview()->exists())
                                             <form action="{{ route('interviews.interviewResume') }}" method="get" class="d-inline">
                                                 @csrf
                                                 <input type="hidden" name="resume_id" value="{{ $resume->id}}">
