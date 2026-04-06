@@ -334,6 +334,20 @@
                                 </div>
 
                             </form>
+                            @if ($job->recruiters()->exists())
+                                @foreach ($job->recruiters as $recruiter)                            
+                                    {{-- pivot->associator retorna o User que fez a associação --}}
+                                    <div class="card mb-3 rounded-4">
+                                        <div class="card-header bg-transparent">
+                                            <p>Associado por:</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">{{ $recruiter->pivot->associator?->name ?? '—' }}</p>
+                                        </div>
+
+                                    </div>
+                                @endforeach
+                            @endif
 
                         {{-- @endif --}}
 

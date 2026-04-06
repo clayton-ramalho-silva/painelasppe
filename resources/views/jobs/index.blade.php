@@ -277,20 +277,22 @@
                             {{ $job->filled_positions }} / {{ $job->qtd_vagas }}
                         </li>
                         <li class="col5">
+                            @if ($job->recruiters()->exists())
                             @foreach ($job->recruiters as $recruiter)                            
                                 {{-- pivot->associator retorna o User que fez a associação --}}
                                 {{ $recruiter->pivot->associator?->name ?? '—' }}                                    
                             @endforeach
+                            @endif
                         </li>
 
                         <li class="col5">
                             <b>Recrutador</b>
-                            @if (count($job->recruiters) <= 0)
-                            Nenhum recrutador associado
-                            @else
+                            @if ($job->recruiters()->exists())
                             @foreach ($job->recruiters as $recruiter)
                             {{ $recruiter->name }}
                             @endforeach
+                            @else
+                            Nenhum recrutador associado
                             @endif
                         </li>
                         <li class="col6">
