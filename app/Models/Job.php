@@ -45,7 +45,10 @@ class Job extends Model
 
     public function recruiters()
     {
-        return $this->belongsToMany(User::class, 'job_recruiter', 'job_id', 'recruiter_id');
+        return $this->belongsToMany(User::class, 'job_recruiter', 'job_id', 'recruiter_id')
+            ->using(JobRecruiterPivot::class) // Especifica o modelo pivot personalizado
+            ->withPivot('user_id') // Inclui o campo user_id do pivot
+            ->withTimestamps();
     }
 
     // Relacionamento muitos para muitos com Resume

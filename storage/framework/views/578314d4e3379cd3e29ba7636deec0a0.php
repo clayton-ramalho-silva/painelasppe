@@ -9,6 +9,7 @@
                 <li class="col2">Título</li>
                 <li class="col3">Vagas</li>
                 <li class="col4">Seleção</li>
+                <li class="col5">Associador</li>
                 <li class="col5">Recrutador</li>
                 <li class="col6">Status</li>
             </ul>
@@ -56,8 +57,20 @@
 
                         </li>
                         <li class="col5">
+                             <b>Associador</b>
+                             <?php if($jobAprovado->recruiters()->exists()): ?>
+                             
+                                <?php $__currentLoopData = $jobAprovado->recruiters; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $recruiter): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>                            
+                                    
+                                    <?php echo e($recruiter->pivot->associator?->name ?? '—'); ?>                                    
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
+                        </li>
+                        <li class="col5">
                             <b>Recrutador</b>
-                            <?php if(count($jobAprovado->recruiters) <= 0): ?>
+                            <?php if($jobAprovado->recruiters()->exists()): ?>                              
+                            
+                            
                             Nenhum recrutador associado
                             <?php else: ?>
                             <?php $__currentLoopData = $jobAprovado->recruiters; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $recruiter): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -279,10 +292,21 @@ unset($__errorArgs, $__bag); ?>
                                     <b>Status da Seleção</b>
                                     <?php echo e($selecao->status_selecao == 'aprovado' ? 'Contratado' : $selecao->status_selecao); ?>
 
-                                </li>
+                                </li>                               
+
+                            <li class="col5">
+                                <b>Associador</b>
+                                <?php if($selecao->job->recruiters()->exists()): ?>
+                                
+                                    <?php $__currentLoopData = $selecao->job->recruiters; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $recruiter): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>                            
+                                        
+                                        <?php echo e($recruiter->pivot->associator?->name ?? '—'); ?>                                    
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endif; ?>
+                            </li>
                             <li class="col5">
                                 <b>Recrutador</b>
-                                <?php if(count($selecao->job->recruiters) <= 0): ?>
+                                <?php if($selecao->job->recruiters()->exists()): ?>
                                 Nenhum recrutador associado
                                 <?php else: ?>
                                 <?php $__currentLoopData = $selecao->job->recruiters; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $recruiter): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -503,7 +527,7 @@ unset($__errorArgs, $__bag); ?>
 <style>
 
 .lista-processos-seletivos ul .col1{
-width: 40% !important;
+width: 30% !important;
 }
 
 .lista-processos-seletivos ul .col2{

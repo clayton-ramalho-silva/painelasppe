@@ -755,7 +755,7 @@ unset($__errorArgs, $__bag); ?>
                     </li>
                     <li class="col-entrevistado">
                         <b>Entrevistado</b>
-                        <?php if($resume->interview): ?>
+                        <?php if($resume->interview()->exists()): ?>
                             <a href="<?php echo e(route('interviews.show', $resume->interview->id)); ?>" class="link-entrevista text-success fw-bold"  data-bs-toggle="tooltip" data-bs-placement="top" title="Ver entrevista">Sim</a>
                         <?php else: ?>
                             <a href="<?php echo e(route('interviews.interviewResume', $resume)); ?>"  class="link-entrevista text-danger fw-bold" data-bs-toggle="tooltip" data-bs-placement="top" title="Entrevistar">Não</a>

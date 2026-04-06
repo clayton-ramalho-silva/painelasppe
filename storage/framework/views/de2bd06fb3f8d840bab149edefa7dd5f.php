@@ -10,9 +10,10 @@
                 <li class="w-30">Empresa</li>
                 <li class="w-15">Título</li>
                 <li class="w-10">Dt. Associação</li>
-                <li class="w-15">Vagas</li>                
+                <li class="w-10">Vagas</li>    
+                <li class="w-10">Associador</li>            
                 <li class="w-10">Recrutador</li>
-                <li class="w-10">Status</li>
+                <li class="w-5">Status</li>
                 <li class="w-10">Ações</li>
             </ul>
             
@@ -50,14 +51,24 @@
                                 <span class="text-muted">Não disponível</span>
                             <?php endif; ?>
                         </li>
-                        <li class="w-15" data-bs-toggle="tooltip" data-bs-placement="top" title="Preenchidas/Disponíveis">
+                        <li class="w-10" data-bs-toggle="tooltip" data-bs-placement="top" title="Preenchidas/Disponíveis">
                             <b>Vagas</b>
                             <?php echo e($job->filled_positions); ?> / <?php echo e($job->qtd_vagas); ?>
 
-                        </li>                        
+                        </li>  
+                        <li class="w-10">
+                            <b>Associador</b>
+                            <?php if($job->recruiters()->exists()): ?>
+                           <?php $__currentLoopData = $job->recruiters; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $recruiter): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>                            
+                                
+                                <?php echo e($recruiter->pivot->associator?->name ?? '—'); ?>                                    
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
+                        </li>
+                        
                         <li class="w-10">
                             <b>Recrutador</b>
-                            <?php if(count($job->recruiters) <= 0): ?>
+                            <?php if($job->recruiters()->exists()): ?>
                             Nenhum recrutador associado
                             <?php else: ?>
                             <?php $__currentLoopData = $job->recruiters; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $recruiter): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -66,7 +77,7 @@
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <?php endif; ?>
                         </li>
-                        <li class="w-10">
+                        <li class="w-5">
                            <?php switch($job->status):
                                 case ('aberta'): ?>
                                     <i title="Aberta" class="status-aberta"></i>        

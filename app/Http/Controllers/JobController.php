@@ -431,10 +431,16 @@ class JobController extends Controller
         //     return redirect()->back()->with('danger', 'Somente o Adminstrador pode associar um Recrutador a Vaga!');
         // }
 
+        $syncData = collect($request->input('recruiters'))
+            ->mapWithKeys(fn($recruiterId) => [
+                $recruiterId => ['user_id' => Auth::id()]
+            ])
+            ->toArray();
 
 
 
-        $job->recruiters()->sync($request->input('recruiters'));
+
+        $job->recruiters()->sync($syncData);
 
          // Salvar Log de atualização
          $this->logAction('associateRecruiter', 'jobs', $job->id, 'Recrutador associado a vaga atualizado com sucesso.');

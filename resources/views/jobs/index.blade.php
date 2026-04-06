@@ -230,6 +230,7 @@
                 <li class="col2 sortable" data-column="area" data-type="text">Área</li>
                 <li class="col3 sortable" data-column="titulo" data-type="text">CBO</li>
                 <li class="col4 sortable" data-column="vagas" data-type="text">Vagas</li>
+                <li class="col5 sortable" data-column="associador" data-type="text">Associador</li>
                 <li class="col5 sortable" data-column="recrutador" data-type="text">Recrutador</li>
                 <li class="col6 sortable" data-column="inicio_processo" data-type="date" >Início</li>
                 <li class="col7 sortable" data-column="fim_processo" data-type="date" >Fim</li>
@@ -275,6 +276,13 @@
                             <b>Vagas</b>
                             {{ $job->filled_positions }} / {{ $job->qtd_vagas }}
                         </li>
+                        <li class="col5">
+                            @foreach ($job->recruiters as $recruiter)                            
+                                {{-- pivot->associator retorna o User que fez a associação --}}
+                                {{ $recruiter->pivot->associator?->name ?? '—' }}                                    
+                            @endforeach
+                        </li>
+
                         <li class="col5">
                             <b>Recrutador</b>
                             @if (count($job->recruiters) <= 0)
