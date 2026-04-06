@@ -9,6 +9,7 @@
                 <li class="col2">Título</li>
                 <li class="col3">Vagas</li>
                 <li class="col4">Seleção</li>
+                <li class="col5">Associador</li>
                 <li class="col5">Recrutador</li>
                 <li class="col6">Status</li>
             </ul>
@@ -53,8 +54,20 @@
                             {{ $selection->status_selecao == 'aprovado' ? 'Contratado' : $selection->status_selecao }}
                         </li>
                         <li class="col5">
+                             <b>Associador</b>
+                             @if ($jobAprovado->recruiters()->exists())
+                             {{-- @if (count($jobAprovado->recruiters) <= 0) --}}
+                                @foreach ($jobAprovado->recruiters as $recruiter)                            
+                                    {{-- pivot->associator retorna o User que fez a associação --}}
+                                    {{ $recruiter->pivot->associator?->name ?? '—' }}                                    
+                                @endforeach
+                            @endif
+                        </li>
+                        <li class="col5">
                             <b>Recrutador</b>
-                            @if (count($jobAprovado->recruiters) <= 0)
+                            @if ($jobAprovado->recruiters()->exists())                              
+                            
+                            {{-- @if (count($jobAprovado->recruiters) <= 0) --}}
                             Nenhum recrutador associado
                             @else
                             @foreach ($jobAprovado->recruiters as $recruiter)
@@ -248,10 +261,21 @@
                             <li class="col4">
                                     <b>Status da Seleção</b>
                                     {{ $selecao->status_selecao == 'aprovado' ? 'Contratado' : $selecao->status_selecao }}
-                                </li>
+                                </li>                               
+
+                            <li class="col5">
+                                <b>Associador</b>
+                                @if($selecao->job->recruiters()->exists())
+                                
+                                    @foreach ($selecao->job->recruiters as $recruiter)                            
+                                        {{-- pivot->associator retorna o User que fez a associação --}}
+                                        {{ $recruiter->pivot->associator?->name ?? '—' }}                                    
+                                    @endforeach
+                                @endif
+                            </li>
                             <li class="col5">
                                 <b>Recrutador</b>
-                                @if (count($selecao->job->recruiters) <= 0)
+                                @if($selecao->job->recruiters()->exists())
                                 Nenhum recrutador associado
                                 @else
                                 @foreach ($selecao->job->recruiters as $recruiter)
@@ -447,7 +471,7 @@
 <style>
 
 .lista-processos-seletivos ul .col1{
-width: 40% !important;
+width: 30% !important;
 }
 
 .lista-processos-seletivos ul .col2{

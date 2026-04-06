@@ -10,9 +10,10 @@
                 <li class="w-30">Empresa</li>
                 <li class="w-15">Título</li>
                 <li class="w-10">Dt. Associação</li>
-                <li class="w-15">Vagas</li>                
+                <li class="w-10">Vagas</li>    
+                <li class="w-10">Associador</li>            
                 <li class="w-10">Recrutador</li>
-                <li class="w-10">Status</li>
+                <li class="w-5">Status</li>
                 <li class="w-10">Ações</li>
             </ul>
             
@@ -48,13 +49,23 @@
                                 <span class="text-muted">Não disponível</span>
                             @endif
                         </li>
-                        <li class="w-15" data-bs-toggle="tooltip" data-bs-placement="top" title="Preenchidas/Disponíveis">
+                        <li class="w-10" data-bs-toggle="tooltip" data-bs-placement="top" title="Preenchidas/Disponíveis">
                             <b>Vagas</b>
                             {{$job->filled_positions}} / {{ $job->qtd_vagas }}
-                        </li>                        
+                        </li>  
+                        <li class="w-10">
+                            <b>Associador</b>
+                            @if ($job->recruiters()->exists())
+                           @foreach ($job->recruiters as $recruiter)                            
+                                {{-- pivot->associator retorna o User que fez a associação --}}
+                                {{ $recruiter->pivot->associator?->name ?? '—' }}                                    
+                            @endforeach
+                            @endif
+                        </li>
+                        
                         <li class="w-10">
                             <b>Recrutador</b>
-                            @if (count($job->recruiters) <= 0)
+                            @if ($job->recruiters()->exists())
                             Nenhum recrutador associado
                             @else
                             @foreach ($job->recruiters as $recruiter)
@@ -62,7 +73,7 @@
                             @endforeach
                             @endif
                         </li>
-                        <li class="w-10">
+                        <li class="w-5">
                            @switch($job->status)
                                 @case('aberta')
                                     <i title="Aberta" class="status-aberta"></i>        
