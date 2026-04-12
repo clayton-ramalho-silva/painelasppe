@@ -19,6 +19,8 @@ use App\Models\Job;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\ExportController;
+
 
 
 
@@ -137,6 +139,12 @@ Route::middleware(['auth', 'role:recruiter'])->group(function(){
 // Verifica��o de CEP
 Route::post('/getCep', [AjaxController::class, 'getCep'])->name('getCep');
 
-
+Route::prefix('exportacoes')->name('exportacoes.')->middleware('auth')->group(function () {
+    Route::get('/',         [ExportController::class, 'index'])->name('index');
+    Route::post('/',        [ExportController::class, 'store'])->name('store');
+    Route::get('/status',   [ExportController::class, 'status'])->name('status');
+    Route::get('/{export}/download', [ExportController::class, 'download'])->name('download');
+    Route::delete('/{export}',       [ExportController::class, 'destroy'])->name('destroy');
+});
 
 

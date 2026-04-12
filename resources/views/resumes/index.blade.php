@@ -765,10 +765,10 @@
 
     <article class="f4 bts-interna">
         <a href="{{ route('resumes.create') }}" class="btInt btCadastrar">Cadastrar <small>Criar um novo currículo</small></a>
-        @if (Auth::user()->email === 'marketing@asppe.org' || Auth::user()->email === 'clayton@email.com')
+        {{-- @if (Auth::user()->email === 'marketing@asppe.org' || Auth::user()->email === 'clayton@email.com')
             <a href="{{ route('reports.export.resumes') }}" class="btInt btExportar">Exportar <small>Exporte em excel</small></a>
         @endif
-        <a href="{{ route('companies.create') }}" class="btInt btHistorico">Histórico <small>Log de atividades</small></a>
+        <a href="{{ route('companies.create') }}" class="btInt btHistorico">Histórico <small>Log de atividades</small></a> --}}
     </article>
 </section>
 @endsection

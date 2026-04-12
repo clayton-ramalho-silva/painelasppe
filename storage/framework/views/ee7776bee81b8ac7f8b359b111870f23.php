@@ -649,10 +649,7 @@ unset($__errorArgs, $__bag); ?>
 
     <article class="f4 bts-interna">
         <a href="<?php echo e(route('resumes.create')); ?>" class="btInt btCadastrar">Cadastrar <small>Criar um novo currículo</small></a>
-        <?php if(Auth::user()->email === 'marketing@asppe.org' || Auth::user()->email === 'clayton@email.com'): ?>
-            <a href="<?php echo e(route('reports.export.resumes')); ?>" class="btInt btExportar">Exportar <small>Exporte em excel</small></a>
-        <?php endif; ?>
-        <a href="<?php echo e(route('companies.create')); ?>" class="btInt btHistorico">Histórico <small>Log de atividades</small></a>
+        
     </article>
 </section>
 <?php $__env->stopSection(); ?>

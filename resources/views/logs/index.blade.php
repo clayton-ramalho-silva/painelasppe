@@ -168,9 +168,9 @@
     </article>
 
     <article class="f4 bts-interna">
-        @if (Auth::user()->email === 'marketing@asppe.org' || Auth::user()->email === 'clayton@email.com')
+        {{-- @if (Auth::user()->email === 'marketing@asppe.org' || Auth::user()->email === 'clayton@email.com')
             <a href="#" class="btInt btExportar">Exportar <small>Exporte em excel</small></a>
-        @endif
+        @endif --}}
     </article>
 
 </section>

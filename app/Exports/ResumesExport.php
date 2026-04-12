@@ -23,7 +23,25 @@ class ResumesExport implements FromCollection, WithHeadings, WithMapping, WithCo
     */
     public function collection()
     {
-        return Resume::with(['informacoesPessoais', 'escolaridade', 'contato'])->get();
+        $query = Resume::with([
+                'informacoesPessoais:resume_id,data_nascimento,nome,cpf,cnh,tipo_cnh,nacionalidade,estado_civil,possui_filhos,filhos_sim,sexo,sexo_outro,pcd,pcd_sim,reservista,instagram,linkedin', 
+                'contato:resume_id,logradouro,cidade,uf,email,telefone_celular,telefone_residencial,nome_contato', 
+                'escolaridade:resume_id,escolaridade,escolaridade_outro,semestre,instituicao,superior_periodo,informatica,ingles'
+            ])
+            ->select('id','created_at','status','vagas_interesse','experiencia_profissional','foi_jovem_aprendiz','cras','fonte')
+            ->whereDoesntHave('interview')
+            ->whereHas('informacoesPessoais', function ($q) {
+                $q->whereNotNull('data_nascimento')
+                //->whereRaw('TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) < 23');
+                ->where('data_nascimento', '>=', now()->subYears(24)->toDateString());
+            })->take(10); 
+
+        //dd($query->get()->toArray()); // Verifique os dados retornados pela consulta
+
+
+        return $query->get();
+
+        //return Resume::with(['informacoesPessoais', 'escolaridade', 'contato'])->get();
     }
 
     /**
@@ -33,18 +51,21 @@ class ResumesExport implements FromCollection, WithHeadings, WithMapping, WithCo
     {
         return [
             'ID',
+            'Data de Inscrição',
             'Nome',
             'Data de Nascimento',
+            'Nacionalidade',
             'Estado Civil',
             'Possui Filhos',
             'Genêro',
+            'PCD',
+            'Numero CID',
             'Reservista',            
             'Cnh',
             'Rg',
             'CPF',
             'Instagram',
-            'Linkedin',
-            'Tamanho do Uniforme',
+            'Linkedin',            
             'E-mail',
             'Telefone de Contato', // Telefone de contato
             'Nome de contato',
@@ -64,7 +85,10 @@ class ResumesExport implements FromCollection, WithHeadings, WithMapping, WithCo
             'Experiencia profissional',
             'Experiencia profissional Adcional',            
             'Já foi jovemaprendiz',
+            'Família Beneficiária de benefício social',
+            'Fonte Currículo',
             'curriculo_doc',
+            'Status',
             
         ];
     }
@@ -88,18 +112,21 @@ class ResumesExport implements FromCollection, WithHeadings, WithMapping, WithCo
 
         return [
             $resume->id,
+            $resume->created_at ? $resume->created_at->format('d/m/Y H:i:s') : 'N/A',
             mb_convert_encoding(optional($resume->informacoesPessoais)->nome ?? 'N/A', 'UTF-8', 'auto'),
             $this->formatarData(optional($resume->informacoesPessoais)->data_nascimento),
+            mb_convert_encoding(optional($resume->informacoesPessoais)->nacionalidade ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding(optional($resume->informacoesPessoais)->estado_civil ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding(optional($resume->informacoesPessoais)->possui_filhos ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding(optional($resume->informacoesPessoais)->sexo ?? 'N/A', 'UTF-8', 'auto'),
+            mb_convert_encoding(optional($resume->informacoesPessoais)->pcd ?? 'N/A', 'UTF-8', 'auto'),
+            mb_convert_encoding(optional($resume->informacoesPessoais)->numero_cid ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding(optional($resume->informacoesPessoais)->reservista ?? 'N/A', 'UTF-8', 'auto'),            
             mb_convert_encoding(optional($resume->informacoesPessoais)->cnh ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding(optional($resume->informacoesPessoais)->rg ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding(optional($resume->informacoesPessoais)->cpf ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding(optional($resume->informacoesPessoais)->instagram ?? 'N/A', 'UTF-8', 'auto'),
-            mb_convert_encoding(optional($resume->informacoesPessoais)->linkedin ?? 'N/A', 'UTF-8', 'auto'),
-            mb_convert_encoding(optional($resume->informacoesPessoais)->tamanho_uniforme ?? 'N/A', 'UTF-8', 'auto'),
+            mb_convert_encoding(optional($resume->informacoesPessoais)->linkedin ?? 'N/A', 'UTF-8', 'auto'),            
             mb_convert_encoding(optional($resume->contato)->email ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding(optional($resume->contato)->telefone_residencial ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding(optional($resume->contato)->nome_contato ?? 'N/A', 'UTF-8', 'auto'),
@@ -120,7 +147,10 @@ class ResumesExport implements FromCollection, WithHeadings, WithMapping, WithCo
             mb_convert_encoding($resume->experiencia_profissional ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding($resume->experiencia_profissional_outro ?? 'N/A', 'UTF-8', 'auto'),
             mb_convert_encoding($resume->foi_jovem_aprendiz ?? 'N/A', 'UTF-8', 'auto'),
+            mb_convert_encoding($resume->cras ?? 'N/A', 'UTF-8', 'auto'),
+            mb_convert_encoding($resume->fonte ?? 'N/A', 'UTF-8', 'auto'),
             $resume->curriculo_doc ? $url_app . asset('documents/resumes/curriculos/' . $resume->curriculo_doc) : 'N/A',
+            mb_convert_encoding($resume->status ?? 'N/A', 'UTF-8', 'auto'),
 
         ];
     }
