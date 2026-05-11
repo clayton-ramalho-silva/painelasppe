@@ -328,6 +328,13 @@ class InterviewController extends Controller
             }
         }
 
+        // Filtro Bairro - Busca por nome do bairro com like
+        if ($request->filled('bairro')) {
+            $query->whereHas('contato', function ($q) use ($request){              
+                $q->where('bairro', 'like', '%' . $request->bairro . '%');            
+            });              
+        }
+
 
 
         // Filtro Telefone Celular

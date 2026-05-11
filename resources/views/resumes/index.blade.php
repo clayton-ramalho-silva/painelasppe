@@ -339,6 +339,10 @@
                     </div>
 
                                   
+                    <div class="col-12">
+                        <label for="bairro" class="form-label">Bairro:</label>
+                        <input type="text" name="bairro" id="bairro" class="form-control" value="{{ request('bairro') }}">
+                    </div>
                     
                     <div class="col-12">
                         <label for="cidade" class="form-label">Cidade:</label>
@@ -483,6 +487,7 @@
                 <li class="col-pcd_sim sortable" data-column="pcd_sim" data-type="text">Número CID</li>
                 <li class="col-reservista sortable" data-column="reservista" data-type="text">Reservista</li>
                 <li class="col-endereco sortable" data-column="endereco" data-type="text">Endereço</li>
+                <li class="col-bairro sortable" data-column="bairro" data-type="text">Bairro</li>
                 <li class="col-cidade sortable" data-column="cidade" data-type="text">Cidade</li>
                 <li class="col-uf sortable" data-column="uf" data-type="text">UF</li>
                 <li class="col-email sortable" data-column="email" data-type="text">E-mail</li>
@@ -601,7 +606,8 @@
                     <li class="col-pcd">{{ $resume->informacoesPessoais->pcd ?? '' }}</li>
                     <li class="col-pcd_sim">{{ $resume->informacoesPessoais->pcd_sim ?? '' }}</li>
                     <li class="col-reservista">{{ $resume->informacoesPessoais->reservista ?? ''}}</li>
-                    <li class="col-endereco">{{isset($resume->contato->logradouro) ? $resume->contato->logradouro : ''}} , {{ isset($resume->contato->numero) ? $resume->contato->numero : '' }} - {{ isset($resume->contato->bairro) ? $resume->contato->bairro : '' }}</li>
+                    <li class="col-endereco">{{isset($resume->contato->logradouro) ? $resume->contato->logradouro : ''}} , {{ isset($resume->contato->numero) ? $resume->contato->numero : '' }}</li>
+                    <li class="col-bairro">{{ isset($resume->contato->bairro) ? $resume->contato->bairro : '' }}</li> 
                     <li class="col-cidade">{{ isset($resume->contato->cidade) ? $resume->contato->cidade : '' }}</li>
                     <li class="col-uf">{{ isset($resume->contato->uf) ? $resume->contato->uf : ''}}</li>
                     <li class="col-email">                        

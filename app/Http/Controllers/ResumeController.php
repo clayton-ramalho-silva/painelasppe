@@ -36,7 +36,7 @@ class ResumeController extends Controller
         if ($request->filled('form_busca')) {
             $query = Resume::with([
                     'informacoesPessoais:resume_id,data_nascimento,nome,cpf,cnh,tipo_cnh,nacionalidade,estado_civil,possui_filhos,filhos_sim,sexo,sexo_outro,pcd,pcd_sim,reservista,instagram,linkedin', 
-                    'contato:resume_id,logradouro,cidade,uf,email,telefone_celular,telefone_residencial,nome_contato', 
+                    'contato:resume_id,logradouro,numero,bairro,cidade,uf,email,telefone_celular,telefone_residencial,nome_contato', 
                     'escolaridade:resume_id,escolaridade,escolaridade_outro,semestre,instituicao,superior_periodo,informatica,ingles'
                 ])
                 ->select('id','created_at','status','vagas_interesse','experiencia_profissional','foi_jovem_aprendiz','cras','fonte')
@@ -64,7 +64,7 @@ class ResumeController extends Controller
         // Busca com filtros - mantém restrição de idade de 24 anos
         $query = Resume::with([
                 'informacoesPessoais:resume_id,data_nascimento,nome,cpf,cnh,tipo_cnh,nacionalidade,estado_civil,possui_filhos,filhos_sim,sexo,sexo_outro,pcd,pcd_sim,reservista,instagram,linkedin', 
-                'contato:resume_id,logradouro,cidade,uf,email,telefone_celular,telefone_residencial,nome_contato', 
+                'contato:resume_id,logradouro,numero,bairro,cidade,uf,email,telefone_celular,telefone_residencial,nome_contato', 
                 'escolaridade:resume_id,escolaridade,escolaridade_outro,semestre,instituicao,superior_periodo,informatica,ingles'
             ])
             ->select('id','created_at','status','vagas_interesse','experiencia_profissional','foi_jovem_aprendiz','cras','fonte')
@@ -209,6 +209,11 @@ class ResumeController extends Controller
                     $q->whereIn('cidade', $opcoes);  
                    
                 }
+            }
+
+            // Filtro Bairro - Busca por nome do bairro com like
+            if ($request->filled('bairro')) {
+                $q->where('bairro', 'like', '%' . $request->bairro . '%');
             }
 
             // Filtro Telefone Celular
