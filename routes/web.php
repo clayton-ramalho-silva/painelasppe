@@ -61,6 +61,7 @@ Route::middleware(['auth', 'perf.monitor'])->group(function(){
     // Selections
     Route::post('/selections/storeSelection',[SelectionController::class, 'storeSelection'])->name('selections.storeSelection');
     Route::put('/selections/updateSelection/{selectionId}',[SelectionController::class, 'updateSelection'])->name('selections.updateSelection');
+    Route::delete('/selections/deleteSelection/{selectionId}',[SelectionController::class, 'deleteSelection'])->name('selections.deleteSelection');
 
     // Resumes
     Route::put('/resumes/upadate-status/{id}', [ResumeController::class, 'updateStatus'])->name('resumes.updateStatus');

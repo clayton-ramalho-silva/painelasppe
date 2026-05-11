@@ -12,6 +12,9 @@
                 <li class="col5">Associador</li>
                 <li class="col5">Recrutador</li>
                 <li class="col6">Status</li>
+                @if (Auth::user()->role == 'admin')
+                    <li class="col7">Ações</li>
+                @endif
             </ul>
 
             {{-- @if ($selections) --}}
@@ -312,6 +315,24 @@
 
 
                             </li>
+                            @if (Auth::user()->role == 'admin')
+                            <li class="col7">
+                                <b>Ações</b>
+                                <div class="d-flex gap-2">
+                                    {{-- Ação para deletar uma seleção --}}
+                                    <form action="{{ route('selections.deleteSelection', $selecao->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja deletar esta seleção?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width:36px; height:36px;" data-bs-toggle="tooltip" title="Desfazer Seleção" aria-label="Desfazer Seleção">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16" aria-hidden="true">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 5h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5v-7z"/>
+                                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1 0-2H5V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h3.5a1 1 0 0 1 1 1zM6 1v1h4V1H6zm6 3H4v9a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4z"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </li>
+                            @endif
 
                         </ul>
 

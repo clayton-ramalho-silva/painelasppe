@@ -538,4 +538,12 @@ class SelectionController extends Controller
 
         return redirect()->back()->with('danger', 'Candidato não estava associado a esta vaga.');
     }
+
+    public function deleteSelection($selectionId)
+    {
+        $selection = Selection::findOrFail($selectionId);
+        $selection->delete();
+
+        return redirect()->back()->with('success', 'Seleção deletada com sucesso!');
+    }
 }
