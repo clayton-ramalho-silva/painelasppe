@@ -71,6 +71,52 @@
                     :editResume="false" 
                 />
                 {{-- Fim Formulário Edição Currículo --}}
+
+                          {{-- Formulário Observação Currículo --}}
+                <div class="col-12 border-top py-0 ps-5 form-r bloco-obs pt-5">                   
+        
+                    <div class="row mb-3 mt-3 bloco-observacoes">
+        
+                        <div class="card">
+                            <div class="card-header bg-transparent">
+                            <p>Observações:</p>
+                            </div>
+                            <div class="card-body">
+                                @if ($resume->observacoes->isNotEmpty())
+                                    @foreach ($resume->observacoes->sortByDesc('created_at') as $observacao )
+                                        <p class="card-text"><b>{{$observacao->created_at->format('d/m/y')}}</b> - {{$observacao->observacao}} </p>
+                                    @endforeach
+                                @else
+                                    Nenhuma observação.
+                                @endif
+        
+                            </div>
+                        </div>
+        
+                    </div>
+        
+        
+                    <div class="row">
+        
+                        <!-- <form class="form-padrao d-flex justify-content-center" action="{{ route('resumes.storeHistory', $resume->id)}}" method="post"> -->
+        
+                            <!-- @csrf -->
+                            <div class="floatlabel-wrapper form-textarea">
+                                <label for="beneficios" class="label-floatlabel" class="form-label floatlabel-label">Escreva sua observação</label>
+                                <textarea name="observacao" id="observacao" class="form-control"></textarea>
+                            </div>
+                            <!-- <button class="btn-padrao btn-cadastrar mt-3" type="submit">Salvar</button> -->
+        
+                        <!-- </form> -->
+        
+                    </div>
+        
+                </div>
+                {{-- Fim Formulário Observação Currículo --}}
+
+
+
+
                 <div class="row mb-3 mt-3">
 
                     <div class="col-12">

@@ -100,6 +100,7 @@ class UpdateResumeRequest extends FormRequest
             //'participou_selecao' => 'nullable|string|max:255',
             //'participou_selecao_outro' => 'nullable|string|max:255',
             //'tamanho_uniforme' => 'nullable|string|max:255',
+            'observacao' => 'nullable|string',
         ];
     }
 

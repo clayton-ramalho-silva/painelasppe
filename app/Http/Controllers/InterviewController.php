@@ -725,7 +725,7 @@ class InterviewController extends Controller
             'bairro' => $requestResume['bairro'] ?? '',
             'cidade' => $requestResume['cidade'] ?? '',
             'uf' => $requestResume['uf'] ?? '',
-            'cep' => $requestResume['cep'] ?? '',
+            'cep' => $requestResume['cep'] ?? '',            
 
         ];
         
@@ -744,7 +744,12 @@ class InterviewController extends Controller
         
         $resume = $service->updateResume($requestResume->validated(), $resume);
 
-        //dd($resume->informacoesPessoais);
+        if($requestResume->validated('observacao') !== null){
+            $resume->observacoes()->create([
+                'observacao' => $requestResume->validated('observacao'),
+            ]);
+
+        }
         
 
         $interview =  Interview::create([
@@ -796,8 +801,17 @@ class InterviewController extends Controller
     {
              
         $data = $request->validated();
-        $resume = Resume::find($request->resume_id);
+        $resume = Resume::find($request->resume_id);        
         $resume = $service->updateResume($requestResume->validated(), $resume);
+        
+        if($requestResume->validated('observacao') !== null){
+            $resume->observacoes()->create([
+                'observacao' => $requestResume->validated('observacao'),
+            ]);
+
+        }
+
+
       
         
        //dd($data);
