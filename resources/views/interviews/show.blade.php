@@ -25,13 +25,13 @@
     <div class="container">
         <div class="row">
             <div class="col d-flex">
-                @if (!$resume->interview()->exists())         
+                @if (!$resume->interview()->exists())
                     <!--<div class="box-entrevistar"> -->
-                        <a href="{{ route('interviews.interviewResume', $resume) }}#form-interview"  class="link-entrevista d-flex align-items-center" >Iniciar Entrevista</a>       
-                    <!--</div>-->   
+                        <a href="{{ route('interviews.interviewResume', $resume) }}#form-interview"  class="link-entrevista d-flex align-items-center" >Iniciar Entrevista</a>
+                    <!--</div>-->
                  @endif
             </div>
-            
+
             {{-- mostra somente se o candidato não está associado a vagas --}}
             @if(!$resume->jobs()->exists())
                 <div class="col">
@@ -49,8 +49,8 @@
                 <form action="{{ route('resumes.destroy', $resume) }}" method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn-padrao btn-cancelar ms-3 d-flex align-items-center justify-content-center" 
-                            onclick="return confirm('Tem certeza que deseja deletar este currículo? Esta ação não pode ser desfeita.')" 
+                    <button type="submit" class="btn-padrao btn-cancelar ms-3 d-flex align-items-center justify-content-center"
+                            onclick="return confirm('Tem certeza que deseja deletar este currículo? Esta ação não pode ser desfeita.')"
                             id="delete-resume">
                         Deletar Currículo
                     </button>
@@ -77,15 +77,15 @@
                 <div class="col-12 py-0 pe-5 form-1">
                     <div class="row">
                         <div class="col-6 d-flex justify-content-between">
-                            
+
                             {{-- Botão mudar status --}}
-                            
-                            <x-status-button :resume="$resume" :status="$resume->status" />                                           
-                            {{-- Fim Botão mudar status --}} 
-                            
-                            
-                        </div>                        
-                       
+
+                            <x-status-button :resume="$resume" :status="$resume->status" />
+                            {{-- Fim Botão mudar status --}}
+
+
+                        </div>
+
 
                         <div class="col-6">
                             <div class="col-12 bloco-ativo d-flex mb-3">
@@ -94,17 +94,17 @@
                             </div>
 
                         </div>
-                        
+
                     </div>
-        
-                   
-                   
+
+
+
                 </div>
-                
-                
-                
+
+
+
             </div>
-            
+
         </div>
 
     </article>
@@ -125,17 +125,19 @@
                 @csrf
                 @method('PUT')
 
-                {{-- Formulário Edição Currículo --}}                    
-                <x-resume-edit-form 
-                    :resume="$resume"
-                    :editResume="false" 
+                {{-- Formulário Edição Currículo --}}
+                <x-resume-edit-form
+                        :resume="$resume"
+                        :academicData="$academicData"
+                        :editResume="true"
+
                 />
 
                          {{-- Formulário Observação Currículo --}}
-                <div class="col-12 border-top py-0 ps-5 form-r bloco-obs pt-5">                   
-        
+                <div class="col-12 border-top py-0 ps-5 form-r bloco-obs pt-5">
+
                     <div class="row mb-3 mt-3 bloco-observacoes">
-        
+
                         <div class="card">
                             <div class="card-header bg-transparent">
                             <p>Observações:</p>
@@ -148,28 +150,28 @@
                                 @else
                                     Nenhuma observação.
                                 @endif
-        
+
                             </div>
                         </div>
-        
+
                     </div>
-        
-        
+
+
                     <div class="row">
-        
+
                         <!-- <form class="form-padrao d-flex justify-content-center" action="{{ route('resumes.storeHistory', $resume->id)}}" method="post"> -->
-        
+
                             <!-- @csrf -->
                             <div class="floatlabel-wrapper form-textarea">
                                 <label for="beneficios" class="label-floatlabel" class="form-label floatlabel-label">Escreva sua observação</label>
                                 <textarea name="observacao" id="observacao" class="form-control"></textarea>
                             </div>
                             <!-- <button class="btn-padrao btn-cadastrar mt-3" type="submit">Salvar</button> -->
-        
+
                         <!-- </form> -->
-        
+
                     </div>
-        
+
                 </div>
                 {{-- Fim Formulário Observação Currículo --}}
 
@@ -198,8 +200,8 @@
                         </div>
 
                         <div class="mb-6 bloco-data">
-                            <p>                                
-                                <b>Entrevistador:</b> 
+                            <p>
+                                <b>Entrevistador:</b>
                                 {{ $interview->recruiter ? $interview->recruiter->name : Auth::user()->name }}
                             </p>
                         </div>
@@ -235,7 +237,7 @@
                                 <label for="saude_candidato" class="label-floatlabel" class="form-label floatlabel-label">Sobre A Sua Saúde? (Saúde Física: Toma Medicação? / Faz Algum Tratamento? / Tem Alguma Restrição De Mobilidade? Alguma Cirurgia Realizada Ou À Realizar? – Saúde Mental: Faz Terapia? Já Fez? Toma Medicação?)</label>
                                 <textarea class="form-control" id="saude_candidato" name="saude_candidato" style="padding-top: 43px !important" >{{ $interview->saude_candidato }}</textarea>
                                 @error('saude_candidato') <div class="alert alert-danger">{{ $message }}</div> @enderror
-                            </div>                            
+                            </div>
                         </div>
                     </div>
 
@@ -258,7 +260,7 @@
                         </div>
                     </div>
 
-                    
+
 
                     <div class="col-3 form-campo">
                         <div class="mb-3">
@@ -268,7 +270,7 @@
                                     <option></option>
                                     <option value="Sim, da ASPPE" {{ $resume->foi_jovem_aprendiz === 'Sim, da ASPPE' ? 'selected' : ''}}> Sim, da ASPPE</option>
                                     <option value="Sim, de Outra Qualificadora" {{ $resume->foi_jovem_aprendiz === 'Sim, de Outra Qualificadora' ? 'selected' : ''}}> Sim, de Outra Qualificadora</option>
-                                    <option value="Não" {{ $resume->foi_jovem_aprendiz === 'Não' ? 'selected' : ''}}> Não</option>                                    
+                                    <option value="Não" {{ $resume->foi_jovem_aprendiz === 'Não' ? 'selected' : ''}}> Não</option>
                                 </select>
                                 @error('ja_foi_jovem_aprendiz') <div class="alert alert-danger">{{ $message }}</div> @enderror
                             </div>
@@ -470,14 +472,14 @@
                                     <option></option>
                                     <option value="ADMINISTRATIVO" {{ $interview->perfil === 'ADMINISTRATIVO' ? 'selected' : ''}}> ADMINISTRATIVO</option>
                                     <option value="OPERACIONAL" {{ $interview->perfil === 'OPERACIONAL' ? 'selected' : ''}}> OPERACIONAL</option>
-                                    <option value="ADM / OPERACIONAL" {{ $interview->perfil === 'ADM / OPERACIONAL' ? 'selected' : ''}}> ADM / OPERACIONAL</option>                                    
+                                    <option value="ADM / OPERACIONAL" {{ $interview->perfil === 'ADM / OPERACIONAL' ? 'selected' : ''}}> ADM / OPERACIONAL</option>
                                 </select>
                                 @error('perfil') <div class="alert alert-danger">{{ $message }}</div> @enderror
                             </div>
                         </div>
                     </div>
 
-                    
+
                     {{-- <div class="col-6 form-campo">
                         <div class="mb-3">
                             <div class="floatlabel-wrapper required">
@@ -540,8 +542,8 @@
                         </div>
                     </div> --}}
 
-                    <!-- Fim -->  
-                    
+                    <!-- Fim -->
+
 
                     <div class="mt-3 bloco-submit">
                         <button type="submit" class="btn btn-primary btn-padrao btn-cadastrar">Atualizar</button>
@@ -563,18 +565,18 @@
 
 {{-- Fim Entrevista --}}
 
-<section class="sessao my-5">   
+<section class="sessao my-5">
 
     {{-- Componente Tabela Vagas Associadas --}}
     <x-resume-jobs-table :resume="$resume" />
 
     {{-- Fim Componente Tabela Vagas Associadas --}}
 
-   
+
     {{-- Componente Tabela Processos Seletivos --}}
     <x-resume-selections-table :resume="$resume" />
-    {{-- Fim Componente Tabela Processos Seletivos --}}   
-   
+    {{-- Fim Componente Tabela Processos Seletivos --}}
+
 </section>
 
 
@@ -821,20 +823,20 @@ $(document).find('.select2').each(function(){
 // Atualização de status
 function updateStatus(newStatus) {
     const statusInput = document.getElementById('statusInput');
-    
+
     // Se for mudar para inativo, pede confirmação especial
     if (newStatus === 'inativo') {
         if (!confirm("Se o currículo estiver associado a alguma vaga, será automaticamente desassociado. Deseja continuar?")) {
             return false; // Cancela se o usuário não confirmar
         }
     }
-    
+
     // Atualiza o valor do campo hidden
     statusInput.value = newStatus;
-    
+
     // Envia o formulário
     document.getElementById('statusForm').submit();
-    
+
     return true;
 }
 
@@ -842,15 +844,15 @@ function updateStatus(newStatus) {
 
 // // Previne que o clique no botão de desassociar abra o link
 // document.addEventListener('DOMContentLoaded', function() {
-    
+
 //     // Seleciona todos os botões de desassociar
 //     const botoesDesassociar = document.querySelectorAll('.col7-admin button[type="submit"]');
-    
+
 //     botoesDesassociar.forEach(botao => {
 //         botao.addEventListener('click', function(event) {
 //             // Previne que o evento se propague para o <ul> pai
 //             event.stopPropagation();
-            
+
 //             // Opcional: adicionar confirmação antes de desassociar
 //             if (!confirm('Tem certeza que deseja desassociar este currículo?')) {
 //                 event.preventDefault();
@@ -858,17 +860,17 @@ function updateStatus(newStatus) {
 //             }
 //         });
 //     });
-    
+
 //     // Também previne o clique em toda a coluna col5-admin
 //     const colunasDesassociar = document.querySelectorAll('.col7-admin');
-    
+
 //     colunasDesassociar.forEach(coluna => {
 //         coluna.addEventListener('click', function(event) {
 //             // Previne que o clique na coluna abra o link
 //             event.stopPropagation();
 //         });
 //     });
-    
+
 // });
 
 // // Alternativa: Função inline que você pode usar diretamente no HTML

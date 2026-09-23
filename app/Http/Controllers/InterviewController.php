@@ -30,7 +30,7 @@ class InterviewController extends Controller
     }
 
     public function index(Request $request)
-    {       
+    {
 
         // Busca rápida por nome - sem filtros e sem restrição de idade
         if ($request->filled('form_busca')) {
@@ -42,7 +42,7 @@ class InterviewController extends Controller
 
             $form_busca = $request->form_busca;
             $ordem = $request->get('ordem', 'desc');
-            
+
             if (!in_array($ordem, ['asc', 'desc'])) {
                 $ordem = 'desc';
             }
@@ -57,10 +57,10 @@ class InterviewController extends Controller
 
             $resumes = $query->paginate(50)->appends($request->all());
             $cidades = $this->cidadeService->getCidades();
-            
+
             return view('interviews.index', compact('resumes', 'form_busca', 'ordem', 'cidades'));
         }
-        
+
 
         //Abaixo de 23 anos.
         $query = Resume::with(['informacoesPessoais', 'contato', 'escolaridade', 'interview'])
@@ -69,10 +69,10 @@ class InterviewController extends Controller
                 $q->whereNotNull('data_nascimento')
                 //->whereRaw('TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) < 23');
                 ->where('data_nascimento', '>=', now()->subYears(24)->toDateString());
-           });   
-        
+           });
+
         // Forumulario Busca - nome candidato
-        $form_busca = '';     
+        $form_busca = '';
 
 
          // Filtro por nome - Busca pelo nome do candidato
@@ -86,7 +86,7 @@ class InterviewController extends Controller
         if($request->filled('cpf')) {
             $query->whereHas('informacoesPessoais', function($q) use ($request) {
                 //$q->where('cpf', 'like', '%' . $request->cpf . '%');
-                $this->resumeService->applyCpfFilter($q, $request->cpf); 
+                $this->resumeService->applyCpfFilter($q, $request->cpf);
             });
         }
 
@@ -132,17 +132,17 @@ class InterviewController extends Controller
             $statusSelecionados = array_filter($request->status, function($item) {
                 return $item !== '' && $item !== 'Todos';
             });
-            
+
             if (!empty($statusSelecionados)) {
                 $query->whereIn('status', $statusSelecionados);
             }
-        }    
-         
-        
+        }
+
+
          // Filtro gênero- múltiplas seleções
         if ($request->filled('sexo') && is_array($request->sexo)) {
             $opcoes = array_filter($request->sexo); // Remove valores vazios
-            
+
             if (!empty($opcoes)) {
                 $query->whereHas('informacoesPessoais', function($q) use ($opcoes) {
                     $q->where(function($subQuery) use ($opcoes) {
@@ -157,7 +157,7 @@ class InterviewController extends Controller
          // Filtro Perfil- múltiplas seleções
         if ($request->filled('perfil') && is_array($request->perfil)) {
             $opcoes = array_filter($request->perfil); // Remove valores vazios
-            
+
             if (!empty($opcoes)) {
                 $query->whereHas('interview', function($q) use ($opcoes) {
                     $q->where(function($subQuery) use ($opcoes) {
@@ -169,12 +169,12 @@ class InterviewController extends Controller
             }
         }
 
-        
+
 
         // Filtro CNH- múltiplas seleções
         if ($request->filled('cnh') && is_array($request->cnh)) {
             $opcoes = array_filter($request->cnh); // Remove valores vazios
-            
+
             if (!empty($opcoes)) {
                 $query->whereHas('informacoesPessoais', function($q) use ($opcoes) {
                     $q->where(function($subQuery) use ($opcoes) {
@@ -202,12 +202,12 @@ class InterviewController extends Controller
             });
         }
 
-      
+
 
         // Filtro Reservista- múltiplas seleções
         if ($request->filled('reservista') && is_array($request->reservista)) {
             $opcoes = array_filter($request->reservista); // Remove valores vazios
-            
+
             if (!empty($opcoes)) {
                 $query->whereHas('informacoesPessoais', function($q) use ($opcoes) {
                     $q->where(function($subQuery) use ($opcoes) {
@@ -219,12 +219,12 @@ class InterviewController extends Controller
             }
         }
 
-        
+
 
          // Filtro Já foi jovem aprendiz - múltiplas seleções
         if ($request->filled('foi_jovem_aprendiz') && is_array($request->foi_jovem_aprendiz)) {
             $opcoesJovemAprendiz = array_filter($request->foi_jovem_aprendiz); // Remove valores vazios
-            
+
             if (!empty($opcoesJovemAprendiz)) {
                 $query->whereHas('informacoesPessoais', function($q) use ($opcoesJovemAprendiz) {
                     $q->where(function($subQuery) use ($opcoesJovemAprendiz) {
@@ -236,12 +236,12 @@ class InterviewController extends Controller
             }
         }
 
-      
+
 
         // Filtro Informatica - múltiplas seleções
         if ($request->filled('informatica') && is_array($request->informatica)) {
             $opcoesInformatica = array_filter($request->informatica); // Remove valores vazios
-            
+
             if (!empty($opcoesInformatica)) {
                 $query->whereHas('escolaridade', function($q) use ($opcoesInformatica) {
                     $q->where(function($subQuery) use ($opcoesInformatica) {
@@ -253,12 +253,12 @@ class InterviewController extends Controller
             }
         }
 
-       
+
 
         // Filtro Ingles - múltiplas seleções
         if ($request->filled('ingles') && is_array($request->ingles)) {
             $opcoesIngles = array_filter($request->ingles); // Remove valores vazios
-            
+
             if (!empty($opcoesIngles)) {
                 $query->whereHas('escolaridade', function($q) use ($opcoesIngles) {
                     $q->where(function($subQuery) use ($opcoesIngles) {
@@ -271,13 +271,13 @@ class InterviewController extends Controller
         }
 
 
-      
+
 
         if ($request->filled('escolaridade') && is_array($request->escolaridade)) {
-            $escolaridades = array_filter($request->escolaridade, fn($item) => 
+            $escolaridades = array_filter($request->escolaridade, fn($item) =>
                 $item !== '' && $item !== 'Todos'
             );
-            
+
             if (!empty($escolaridades)) {
                 $query->whereHas('escolaridade', function($q) use ($escolaridades) {
                     // Remove as validações daqui
@@ -311,12 +311,12 @@ class InterviewController extends Controller
             }
         }
 
-        
+
 
         // Filtro Cidade - múltiplas seleções
         if ($request->filled('cidade') && is_array($request->cidade)) {
             $cidades = array_filter($request->cidade); // Remove valores vazios
-            
+
             if (!empty($cidades)) {
                 $query->whereHas('contato', function($q) use ($cidades) {
                     $q->where(function($subQuery) use ($cidades) {
@@ -330,9 +330,9 @@ class InterviewController extends Controller
 
         // Filtro Bairro - Busca por nome do bairro com like
         if ($request->filled('bairro')) {
-            $query->whereHas('contato', function ($q) use ($request){              
-                $q->where('bairro', 'like', '%' . $request->bairro . '%');            
-            });              
+            $query->whereHas('contato', function ($q) use ($request){
+                $q->where('bairro', 'like', '%' . $request->bairro . '%');
+            });
         }
 
 
@@ -342,7 +342,7 @@ class InterviewController extends Controller
         //dd($request->celular);
         if ($request->filled('celular') && strlen($request->celular) >= 4) {
             $ultimosDigitos = substr($request->celular, -4);
-            
+
             $query->whereHas('contato', function($q) use ($ultimosDigitos) {
                 $q->where('telefone_celular', 'like', '%' . $ultimosDigitos);
             });
@@ -352,7 +352,7 @@ class InterviewController extends Controller
 
         if ($request->filled('telefone_contato') && strlen($request->telefone_contato) >= 4) {
             $ultimosDigitos = substr($request->telefone_contato, -4);
-            
+
             $query->whereHas('contato', function($q) use ($ultimosDigitos) {
                 $q->where('telefone_residencial', 'like', '%' . $ultimosDigitos);
             });
@@ -383,16 +383,16 @@ class InterviewController extends Controller
             $query->whereDate('created_at', '<=', $request->data_max);
         }
 
-       
+
 
         // Filtro PCD - múltiplas seleções
         if ($request->filled('pcd') && is_array($request->pcd)) {
             $pcdSelecionados = array_filter($request->pcd);
-            
+
             if (!empty($pcdSelecionados)) {
                 $query->whereHas('informacoesPessoais', function($q) use ($pcdSelecionados) {
                     $q->where(function($subQuery) use ($pcdSelecionados) {
-                        
+
                         // Verifica se "Não" foi selecionado
                         if (in_array('Não', $pcdSelecionados)) {
                             $subQuery->where(function($naoQuery) {
@@ -401,7 +401,7 @@ class InterviewController extends Controller
                                         ->orWhere('pcd', '');
                             });
                         }
-                        
+
                         // Adiciona as outras opções selecionadas (Sim, com laudo. / Sim, sem laudo.)
                         $outrasOpcoes = array_diff($pcdSelecionados, ['Não']);
                         if (!empty($outrasOpcoes)) {
@@ -422,9 +422,9 @@ class InterviewController extends Controller
         if ($request->filled('cras') && $request->cras !== "cras") {
             $query->where('cras', $request->cras);
         }
-        
 
-        
+
+
 
         //NOVA FUNCIONALIDADE: Filtro de Ordenação
          $ordem = $request->get('ordem', 'desc');
@@ -443,18 +443,18 @@ class InterviewController extends Controller
 
         $resumes = $query->paginate(50)->appends($request->all());
         // Implementar paginação
-        
+
 
 
         $cidades = $this->cidadeService->getCidades();
-        
 
-        return view('interviews.index', compact('resumes', 'form_busca', 'ordem', 'cidades'));    
+
+        return view('interviews.index', compact('resumes', 'form_busca', 'ordem', 'cidades'));
     }
 
     public function show($id)
     {
-        
+
         $interview = Interview::findOrFail($id);
         $resume = Resume::findOrFail($interview->resume->id);
         $user = Auth::user();
@@ -469,7 +469,7 @@ class InterviewController extends Controller
 
 
         // Obtém vagas com empresas associadas conforme o usuario e status 'aberta'
-        
+
         // $jobsQuery = Job::where('status', 'aberta');
 
         // if ($user->role !== 'admin') {
@@ -483,37 +483,39 @@ class InterviewController extends Controller
 
         $jobsAssociados = $resume->jobs;
 
-            
-        
+
+
 
         // Vagas associadas ao recrutador
-       
+
         /*
         if($user->role == 'admin'){
             // Administrador vê todas as vagas com empresas associadas
             $jobs = Job::with('company')->get();
         } else {
             // O recrutador vê apenas vagas associadas a ele com as empresas
-            $jobs = Job::with('company')                                
+            $jobs = Job::with('company')
             ->whereHas('recruiters', function($query) use($user){
                 $query->where('recruiter_id', $user->id);
             })->get();
-        } 
-            
+        }
+
         */
-        
-        return view('interviews.show', compact('interview', 'resume', 'jobs', 'jobsAssociados', 'jobAprovado'));
+
+        $academicData = $this->resumeService->prepareAcademicDataForView($resume);
+
+        return view('interviews.show', compact('interview', 'resume', 'jobs', 'jobsAssociados', 'jobAprovado', 'academicData'));
     }
 
     public function showDev($id)
     {
-        
+
         $interview = Interview::findOrFail($id);
         $resume = Resume::findOrFail($interview->resume->id);
 
         // Vagas associadas ao recrutador
         $user = Auth::user();
-        
+
         if($user->role == 'admin'){
             // Administrador vê todas as vagas com empresas associadas
             $jobs = Job::with('company')->get();
@@ -524,9 +526,9 @@ class InterviewController extends Controller
             })->get();
         }
 
-        
-        
-        
+
+
+
         return view('interviews.showDev', compact('interview', 'resume', 'jobs'));
     }
 
@@ -540,7 +542,7 @@ class InterviewController extends Controller
         //    $query->where('recruiter_id', $user->id);
         //})->get();
 
-        //$resumes = Resume::all();        
+        //$resumes = Resume::all();
         //$resumes = Resume::whereDoesntHave('interview')->get();
 
         // Busca todas as entrevistas
@@ -554,15 +556,15 @@ class InterviewController extends Controller
             ->whereHas('informacoesPessoais', function ($q) {
                 $q->whereNotNull('data_nascimento')
                 ->whereRaw('TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) < 23');
-            });  
+            });
 
-        
+
 
 
         // Forumulario Busca - nome candidato
         $form_busca = '';
         if($request->filled('form_busca')) {
-            
+
             $query->whereHas('informacoesPessoais', function($q) use ($request) {
                 $q->where('nome', 'like', '%' . $request->form_busca . '%');
             });
@@ -583,15 +585,15 @@ class InterviewController extends Controller
 
         //dd($query);
         // Filtro Status
-        // if($request->filled('status')){           
-        //    $query->where('status', $request->status);            
-        // }   
-        
-        if($request->filled('status') && $request->status !== "Todos") {            
-            $query->where('status', $request->status);            
+        // if($request->filled('status')){
+        //    $query->where('status', $request->status);
+        // }
+
+        if($request->filled('status') && $request->status !== "Todos") {
+            $query->where('status', $request->status);
         }
-      
-       
+
+
          // Filtro Candidato entrevistado/nao entrevistado/ todos
          if(request()->has('entrevistado')){
             if (request()->entrevistado == '1'){
@@ -600,7 +602,7 @@ class InterviewController extends Controller
                 $query->whereDoesntHave('interview'); // Apenas candidatos que ainda não foram entrevistados
             }
         }
-        
+
         // Filtro Filtro data Resumes
 
         if($request->filled('filtro_data')) {
@@ -616,7 +618,7 @@ class InterviewController extends Controller
                 $query->where('created_at', '>=', now()->subDays($dias));
             }
         }
-        
+
 
         $interviews = Interview::all();
 
@@ -631,36 +633,38 @@ class InterviewController extends Controller
         // Implementar paginação
         //$resumes = $query->paginate(50); // Ajustar o numero coforme necessário.
 
-        return view('interviews.create', compact('interviews', 'resumes', 'form_busca'));    
+        return view('interviews.create', compact('interviews', 'resumes', 'form_busca'));
 
 
 
-        
+
         //return view('interviews.create', compact('resumes'));
     }
 
     // Mostra view com os dados do curriculo, pronta para entrevista
     public function interviewResume($id)
-    {        
+    {
 
-        
+
         $resume = Resume::find($id);
 
-        return view('interviews.interviewResume', compact('resume'));
-       
+        $academicData = $this->resumeService->prepareAcademicDataForView($resume);
+
+        return view('interviews.interviewResume', compact('resume', 'academicData'));
+
     }
 
     /*
     public function interviewResume(Request $request)
-    {        
+    {
         $resume = Resume::find($request->input('resume_id'));
 
         return view('interviews.interviewResume', compact('resume'));
-       
+
     }
     */
 
-    
+
     public function store(StoreInterviewRequest $request, UpdateResumeRequest $requestResume, ResumeService $service)
     {
 
@@ -725,23 +729,23 @@ class InterviewController extends Controller
             'bairro' => $requestResume['bairro'] ?? '',
             'cidade' => $requestResume['cidade'] ?? '',
             'uf' => $requestResume['uf'] ?? '',
-            'cep' => $requestResume['cep'] ?? '',            
+            'cep' => $requestResume['cep'] ?? '',
 
         ];
-        
-        $data = $request->validated();     
+
+        $data = $request->validated();
           //dd($request->all());
         $resume = Resume::find($request->resume_id);
 
          if (!$resume) {
             return redirect()->back()->with('error', 'Currículo não encontrado.');
         }
-        
+
         // Verificação se já existe entrevista
         if ($resume->interview()->exists()) {
             return redirect()->back()->with('error', 'Este currículo já possui uma entrevista cadastrada.');
         }
-        
+
         $resume = $service->updateResume($requestResume->validated(), $resume);
 
         if($requestResume->validated('observacao') !== null){
@@ -750,41 +754,41 @@ class InterviewController extends Controller
             ]);
 
         }
-        
+
 
         $interview =  Interview::create([
-            'outros_idiomas' => $data['outros_idiomas'], 
-            'apresentacao_pessoal' => $data['apresentacao_pessoal'], 
+            'outros_idiomas' => $data['outros_idiomas'],
+            'apresentacao_pessoal' => $data['apresentacao_pessoal'],
             'saude_candidato' => $data['saude_candidato'],
-            'qual_formadora' => $data['qual_formadora'], 
+            'qual_formadora' => $data['qual_formadora'],
             'vacina_covid' => $data['vacina_covid'],
-            'experiencia_profissional' => $data['experiencia_profissional'], 
-            'qual_motivo_demissao' => $data['qual_motivo_demissao'], 
-            'caracteristicas_positivas' => $data['caracteristicas_positivas'], 
-            'habilidades' => $data['habilidades'], 
-            'pontos_melhoria' => $data['pontos_melhoria'], 
-            'rotina_candidato' => $data['rotina_candidato'], 
-            'disponibilidade_horario' => $data['disponibilidade_horario'], 
-            'familia' => $data['familia'], 
+            'experiencia_profissional' => $data['experiencia_profissional'],
+            'qual_motivo_demissao' => $data['qual_motivo_demissao'],
+            'caracteristicas_positivas' => $data['caracteristicas_positivas'],
+            'habilidades' => $data['habilidades'],
+            'pontos_melhoria' => $data['pontos_melhoria'],
+            'rotina_candidato' => $data['rotina_candidato'],
+            'disponibilidade_horario' => $data['disponibilidade_horario'],
+            'familia' => $data['familia'],
             'renda_familiar' => $data['renda_familiar'],
             'familia_cras' => $data['familia_cras'],
             'tipo_beneficio' => $data['tipo_beneficio'] ?? null,
-            'objetivo_longo_prazo' => $data['objetivo_longo_prazo'], 
-            'porque_ser_jovem_aprendiz' => $data['porque_ser_jovem_aprendiz'], 
+            'objetivo_longo_prazo' => $data['objetivo_longo_prazo'],
+            'porque_ser_jovem_aprendiz' => $data['porque_ser_jovem_aprendiz'],
             'fonte_curriculo' => $data['fonte_curriculo'],
             'perfil_santa_casa' => $data['perfil_santa_casa'],
             //'classificacao' => $data['classificacao'],  substituido por perfil
-            'parecer_recrutador' => $data['parecer_recrutador'], 
-            'observacoes' => $data['observacoes'], 
+            'parecer_recrutador' => $data['parecer_recrutador'],
+            'observacoes' => $data['observacoes'],
             'obs_rh' => $data['obs_rh'],
             'resume_id' => $data['resume_id'],
-            'recruiter_id' => Auth::id(),            
+            'recruiter_id' => Auth::id(),
             'perfil' => $data['perfil'],
-            //'curso_extracurricular' => $data['curso_extracurricular'], 
-            //'pretencao_candidato' => $data['pretencao_candidato'], 
-            //'sugestao_empresa' => $data['sugestao_empresa'], 
-            //'sobre_candidato' => $data['sobre_candidato'], 
-            //'pontuacao' => $data['pontuacao'],                      
+            //'curso_extracurricular' => $data['curso_extracurricular'],
+            //'pretencao_candidato' => $data['pretencao_candidato'],
+            //'sugestao_empresa' => $data['sugestao_empresa'],
+            //'sobre_candidato' => $data['sobre_candidato'],
+            //'pontuacao' => $data['pontuacao'],
         ]);
 
 
@@ -795,15 +799,15 @@ class InterviewController extends Controller
         // return redirect()->back()->with('success', 'Entrevista cadastrada com sucesso e dados atualizados!');
     }
 
-   
+
 
     public function update(UpdateInterviewRequest $request, Interview $interview, UpdateResumeRequest $requestResume, ResumeService $service)
     {
-             
+
         $data = $request->validated();
-        $resume = Resume::find($request->resume_id);        
+        $resume = Resume::find($request->resume_id);
         $resume = $service->updateResume($requestResume->validated(), $resume);
-        
+
         if($requestResume->validated('observacao') !== null){
             $resume->observacoes()->create([
                 'observacao' => $requestResume->validated('observacao'),
@@ -812,8 +816,8 @@ class InterviewController extends Controller
         }
 
 
-      
-        
+
+
        //dd($data);
 
         $interview->update($data);
@@ -829,12 +833,12 @@ class InterviewController extends Controller
     public function associarVaga(Request $request, ResumeService $service)
     {
         $request->validate([
-            'job_id' => 'required|exists:jobs,id',            
-            'resume_id' => 'required|exists:resumes,id',            
-           
-        ]);  
+            'job_id' => 'required|exists:jobs,id',
+            'resume_id' => 'required|exists:resumes,id',
 
-        
+        ]);
+
+
         $job = Job::findOrFail($request->job_id);
         $resume = Resume::findOrFail($request->resume_id);
 
@@ -843,8 +847,8 @@ class InterviewController extends Controller
         }
 
 
-        $service->associarVaga($resume, $job);      
-        
+        $service->associarVaga($resume, $job);
+
 
 
         // Salvando Log de criação
@@ -855,16 +859,16 @@ class InterviewController extends Controller
 
     public function desassociarVaga(Request $request, ResumeService $service)
     {
-        $data = $request->validate([            
+        $data = $request->validate([
             'resume_id' => 'required|exists:resumes,id',
         ]);
-        
+
         // $job = Job::findOrFail($data['job_id']);
         $resume = Resume::findOrFail($data['resume_id']);
 
         // Desassocia o resume de todas as vagas
         $resume = $service->desassociarVagas($resume);
-        
+
         // (Opcional) Atualiza o status do currículo
         $resume->status = 'ativo'; // ou outro status
         $resume->save();
@@ -872,8 +876,8 @@ class InterviewController extends Controller
         // Log de desassociação
         $this->logAction('detach', 'job_resume', $resume->id, 'Candidato desassociado da vaga.');
 
-        return redirect()->back()->with('success', 'Candidato desassociado com sucesso!');        
-        
+        return redirect()->back()->with('success', 'Candidato desassociado com sucesso!');
+
     }
 
     public function destroy(Interview $interview)
@@ -894,13 +898,13 @@ class InterviewController extends Controller
     public function updateStatus(Request $request, $jobId, $resumeId)
     {
 
-       
+
         // Valida o campo status
         $request->validate([
-            'status' => 'required|in:em análise,entrevistado,aprovado,lista de espera,reprovado',            
+            'status' => 'required|in:em análise,entrevistado,aprovado,lista de espera,reprovado',
         ]);
 
-       
+
         // Busca o currículo (Resume) e a vaga associada
         $job = Job::findOrFail($jobId);
         $resume = Resume::findOrFail($resumeId);
@@ -912,7 +916,7 @@ class InterviewController extends Controller
             $job->resumes()->updateExistingPivot($resume->id,[
                 'status' => $request->input('status'),
                 'updated_at' => now(),
-            ]);            
+            ]);
         } else {
             // Se não existe, cria o relacionamento com o status inical
             $job->resumes()->attach($resume->id,[

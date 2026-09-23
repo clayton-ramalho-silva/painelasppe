@@ -30,10 +30,10 @@
                 <div class="col-6 d-flex justify-content-between mb-4">
 
                     {{-- Botão mudar status --}}
-                       <x-status-button :resume="$resume" :status="$resume->status" />   
-                       
+                       <x-status-button :resume="$resume" :status="$resume->status" />
+
                    {{-- Fim Botão mudar status --}}
-                    
+
                     {{-- <p class="fw-bold">Data do cadastro: {{$resume->created_at->format('d/m/Y') }}</p> --}}
                 </div>
                  <div class="col-6">
@@ -43,11 +43,11 @@
                             </div>
 
                         </div>
-                
-            </div>
-        
 
-            
+            </div>
+
+
+
 
         </div>
 
@@ -65,18 +65,19 @@
 
             <form class="form-padrao" id="form-interview" action="{{ route('interviews.store')}}" method="post" enctype="multipart/form-data">
 
-                {{-- Formulário Edição Currículo --}}                    
-                <x-resume-edit-form 
-                    :resume="$resume"
-                    :editResume="false" 
+                {{-- Formulário Edição Currículo --}}
+                <x-resume-edit-form
+                        :resume="$resume"
+                        :academicData="$academicData"
+                        :editResume="true"
                 />
                 {{-- Fim Formulário Edição Currículo --}}
 
                           {{-- Formulário Observação Currículo --}}
-                <div class="col-12 border-top py-0 ps-5 form-r bloco-obs pt-5">                   
-        
+                <div class="col-12 border-top py-0 ps-5 form-r bloco-obs pt-5">
+
                     <div class="row mb-3 mt-3 bloco-observacoes">
-        
+
                         <div class="card">
                             <div class="card-header bg-transparent">
                             <p>Observações:</p>
@@ -89,28 +90,28 @@
                                 @else
                                     Nenhuma observação.
                                 @endif
-        
+
                             </div>
                         </div>
-        
+
                     </div>
-        
-        
+
+
                     <div class="row">
-        
+
                         <!-- <form class="form-padrao d-flex justify-content-center" action="{{ route('resumes.storeHistory', $resume->id)}}" method="post"> -->
-        
+
                             <!-- @csrf -->
                             <div class="floatlabel-wrapper form-textarea">
                                 <label for="beneficios" class="label-floatlabel" class="form-label floatlabel-label">Escreva sua observação</label>
                                 <textarea name="observacao" id="observacao" class="form-control"></textarea>
                             </div>
                             <!-- <button class="btn-padrao btn-cadastrar mt-3" type="submit">Salvar</button> -->
-        
+
                         <!-- </form> -->
-        
+
                     </div>
-        
+
                 </div>
                 {{-- Fim Formulário Observação Currículo --}}
 
@@ -176,10 +177,10 @@
                                 <label for="saude_candidato" class="label-floatlabel" class="form-label floatlabel-label">Sobre A Sua Saúde? (Saúde Física: Toma Medicação? / Faz Algum Tratamento? / Tem Alguma Restrição De Mobilidade? Alguma Cirurgia Realizada Ou À Realizar? – Saúde Mental: Faz Terapia? Já Fez? Toma Medicação?)</label>
                                 <textarea class="form-control" id="saude_candidato" name="saude_candidato"  style="padding-top: 43px !important">{{ old('saude_candidato') }}</textarea>
                                 @error('saude_candidato') <div class="alert alert-danger">{{ $message }}</div> @enderror
-                            </div>                            
+                            </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-4 form-campo">
                         <div class="mb-3">
                             <div class="floatlabel-wrapper ">
@@ -207,7 +208,7 @@
                                     <option></option>
                                     <option value="Sim, da ASPPE" {{ $resume->foi_jovem_aprendiz === 'Sim, da ASPPE' ? 'selected' : ''}}> Sim, da ASPPE</option>
                                     <option value="Sim, de Outra Qualificadora" {{ $resume->foi_jovem_aprendiz === 'Sim, de Outra Qualificadora' ? 'selected' : ''}}> Sim, de Outra Qualificadora</option>
-                                    <option value="Não" {{ $resume->foi_jovem_aprendiz === 'Não' ? 'selected' : ''}}> Não</option>                                    
+                                    <option value="Não" {{ $resume->foi_jovem_aprendiz === 'Não' ? 'selected' : ''}}> Não</option>
                                 </select>
                                 @error('ja_foi_jovem_aprendiz') <div class="alert alert-danger">{{ $message }}</div> @enderror
                             </div>
@@ -331,7 +332,7 @@
                             </div>
                         </div>
                     </div>
-                
+
                     <!-- Campo de Tipo Benefcio -->
                     <div class="col-4 form-campo" id="tipoBeneficioContainer" >
                         <div class="mb-3">
@@ -410,7 +411,7 @@
                                 <select name="perfil" id="perfil" class="form-select active-floatlabel" >
                                     <option></option>
                                     <option value="ADMINISTRATIVO" {{ old('perfil') === 'ADMINISTRATIVO' ? 'selected' : ''}}>ADMINISTRATIVO</option>
-                                    <option value="OPERACIONAL" {{ old('perfil') === 'OPERACIONAL' ? 'selected' : ''}}> OPERACIONAL</option>                                    
+                                    <option value="OPERACIONAL" {{ old('perfil') === 'OPERACIONAL' ? 'selected' : ''}}> OPERACIONAL</option>
                                     <option value="ADM / OPERACIONAL" {{ old('perfil') === 'ADM / OPERACIONAL' ? 'selected' : ''}}>ADM / OPERACIONAL</option>
                                 </select>
                                 @error('perfil') <div class="alert alert-danger">{{ $message }}</div> @enderror
@@ -418,7 +419,7 @@
                         </div>
                     </div>
 
-                    
+
 
                     {{-- <div class="col-6 form-campo">
                         <div class="mb-3">
@@ -444,7 +445,7 @@
                             </div>
                         </div>
                     </div> --}}
-                    
+
                     <div class="col-12">
                         <div class="mb-3">
                             <div class="floatlabel-wrapper form-textarea">
@@ -482,7 +483,7 @@
                         </div>
                     </div> --}}
 
-                    <!-- Fim -->                    
+                    <!-- Fim -->
 
 
                     <div class="mt-3 bloco-submit">
@@ -778,18 +779,18 @@
 
 </section>
 
-<section class="sessao my-5">   
+<section class="sessao my-5">
 
     {{-- Componente Tabela Vagas Associadas --}}
     <x-resume-jobs-table :resume="$resume" />
 
     {{-- Fim Componente Tabela Vagas Associadas --}}
 
-   
+
     {{-- Componente Tabela Processos Seletivos --}}
     <x-resume-selections-table :resume="$resume" />
-    {{-- Fim Componente Tabela Processos Seletivos --}}   
-   
+    {{-- Fim Componente Tabela Processos Seletivos --}}
+
 </section>
 
 @endsection
@@ -1027,15 +1028,15 @@ function confirmarMudancaStatus(checkbox) {
 
 // Previne que o clique no botão de desassociar abra o link
 document.addEventListener('DOMContentLoaded', function() {
-    
+
     // Seleciona todos os botões de desassociar
     const botoesDesassociar = document.querySelectorAll('.col7-admin button[type="submit"]');
-    
+
     botoesDesassociar.forEach(botao => {
         botao.addEventListener('click', function(event) {
             // Previne que o evento se propague para o <ul> pai
             event.stopPropagation();
-            
+
             // Opcional: adicionar confirmação antes de desassociar
             if (!confirm('Tem certeza que deseja desassociar este currículo?')) {
                 event.preventDefault();
@@ -1043,17 +1044,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // Também previne o clique em toda a coluna col5-admin
     const colunasDesassociar = document.querySelectorAll('.col7-admin');
-    
+
     colunasDesassociar.forEach(coluna => {
         coluna.addEventListener('click', function(event) {
             // Previne que o clique na coluna abra o link
             event.stopPropagation();
         });
     });
-    
+
 });
 
 // Alternativa: Função inline que você pode usar diretamente no HTML
