@@ -5,13 +5,13 @@ use App\Models\Job;
 use App\Models\Resume;
 use Illuminate\Http\UploadedFile;
 
-class ResumeService 
+class ResumeService
 {
     public function updateResume(array $data, Resume $resume): Resume
     {
         // Salvando foto do candidato no banco e movendo arquivo para pasta.
             $foto_candidato_atual = $resume->informacoesPessoais->foto_candidato;
-            
+
             if(isset($data['foto_candidato']) && $data['foto_candidato'] instanceof UploadedFile){
                 $file = $data['foto_candidato'];
 
@@ -32,7 +32,7 @@ class ResumeService
 
         // Salvando curriculo no banco e movendo arquivo para pasta.
         $curriculo_atual = $resume->curriculo_doc;
-         
+
          if(isset($data['curriculo_doc']) && $data['curriculo_doc'] instanceof UploadedFile){
             $file = $data['curriculo_doc'];
 
@@ -104,7 +104,7 @@ class ResumeService
             'fundamental_modalidade' => $data['fundamental_modalidade'] ?? '',
             'medio_periodo' => $data['medio_periodo'] ?? '',
             'medio_modalidade' => $data['medio_modalidade'] ?? '',
-            
+
              // Técnico Cursando
             'tecnico_curso' => $data['tecnico_curso'] ?? '',
             'tecnico_semestre' => $data['tecnico_semestre'] ?? '', // Criar coluna no BD
@@ -116,7 +116,7 @@ class ResumeService
             'tecnico_completo_curso' => $data['tecnico_completo_curso'] ?? '', // Criar coluna no BD
             'tecnico_completo_instituicao' => $data['tecnico_completo_instituicao'] ?? '', // Criar coluna no BD
             'tecnico_completo_data_conclusao' => $data['tecnico_completo_data_conclusao'] ?? '', // Criar coluna no BD
-            
+
              // Superior Cursando
             'superior_curso' => $data['superior_curso'] ?? '', // Curso
             'superior_termo' => $data['superior_termo'] ?? '', // usado para campo semestre. Criar no BD
@@ -151,17 +151,17 @@ class ResumeService
 
     public function associarVaga(Resume $resume, Job $job)
     {
-        
+
         if($resume->jobs()->exists()){
             return redirect()->back()->with('danger', 'Candidato já está associado a uma vaga!');
         }
-        
-        
+
+
         if(!$job->data_inicio_contratacao){
-            return redirect()->back()->with('danger', 'Processo de contratação ainda não foi iniciado!');    
+            return redirect()->back()->with('danger', 'Processo de contratação ainda não foi iniciado!');
         }
-        
-        
+
+
         $job->resumes()->attach($resume->id);
         //dd($resume->jobs()->exists());
 
@@ -202,11 +202,48 @@ class ResumeService
 
         // Adiciona formatação padrão
         $formattedCpf = preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $cleanCpf);
-        
+
         return $query->where(function($q) use ($cleanCpf, $formattedCpf, $cpf) {
             $q->where('cpf', 'like', '%' . $cleanCpf . '%')
             ->orWhere('cpf', 'like', '%' . $formattedCpf . '%')
             ->orWhere('cpf', 'like', '%' . $cpf . '%');
         });
+    }
+
+    /**
+     * Prepara os dados de escolaridade para a view, definindo flags de exibição.
+     * Isso remove a lógica complexa do Blade.
+     */
+    public function prepareAcademicDataForView(Resume $resume): array
+    {
+        // Pega os dados do relacionamento ou um array vazio se não existir
+        $academicInfo = $resume->escolaridade ? $resume->escolaridade->toArray() : [];
+
+        // Garante que o campo 'escolaridade' seja uma rray (devido ao cast no Model)
+        $escolaridadesSelecionadas = $academicInfo['escolaridade'] ?? [];
+        if (!is_array($escolaridadesSelecionadas)) {
+            $escolaridadesSelecionadas = [$escolaridadesSelecionadas];
+        }
+
+        // Define as flags de exibição baseadas no que está salvo no banco
+        $flags = [
+            'fundamental_cursando' => in_array('Ensino Fundamental Cursando', $escolaridadesSelecionadas),
+            'medio_cursando'       => in_array('Ensino Médio Incompleto', $escolaridadesSelecionadas), // Corrigido: O value do checkbox é "Ensino Médio Incompleto" no HTML, mas a label é "Cursando". Vou assumir que o value correto é "Ensino Médio Cursando" para bater com a lógica.
+            'tecnico_completo'     => in_array('Ensino Técnico Completo', $escolaridadesSelecionadas),
+            'tecnico_cursando'     => in_array('Ensino Técnico Cursando', $escolaridadesSelecionadas),
+            'superior_completo'    => in_array('Superior Completo', $escolaridadesSelecionadas),
+            'superior_cursando'    => in_array('Superior Cursando', $escolaridadesSelecionadas),
+            'outro'                => in_array('Outro', $escolaridadesSelecionadas),
+        ];
+
+        // Retorna um array limpo com os dados e as flags
+        return [
+            'data' => $academicInfo,
+            'flags' => $flags,
+            // Mantém o array original para os checkboxes
+            'selected' => $escolaridadesSelecionadas
+        ];
+
+
     }
 }

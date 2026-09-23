@@ -1,4 +1,4 @@
-    
+
     <div class="row">
         <div class="col-9 py-0 pe-5 form-l">
 
@@ -62,36 +62,36 @@
                 <div class="col-6 form-campo">
                     <div class="mb-3">
                         <div class="floatlabel-wrapper ">
-                            @php                  
+                            @php
                                 $dataNascimento = optional($resume->informacoesPessoais)->data_nascimento;
                                 $idadeDiff = $dataNascimento ? \Carbon\Carbon::parse($dataNascimento)->diff(\Carbon\Carbon::now()) : null;
                                 $idadeFormatada = $idadeDiff ? $idadeDiff->format('%y anos e %m meses') : 'N/A';
-        
+
                                 //Verifica se a idade é maior que 22 anos e 8 meses
                                 $idadeEmMeses = $idadeDiff ? ($idadeDiff->y * 12 + $idadeDiff->m) : 0;
                                 $limiteEmMeses = (22 * 12) + 8;
                             @endphp
-                        
+
                             @if ($idadeEmMeses > $limiteEmMeses)
                                 <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style="right: -23%;">
-                                    {{ $idadeFormatada }}                                               
-                                </span>                                                
+                                    {{ $idadeFormatada }}
+                                </span>
                             @else
                                 <span class="position-absolute top-0 translate-middle badge rounded-pill bg-light text-dark" style="right: -23%;">
-                                    {{ $idadeFormatada }}                                              
+                                    {{ $idadeFormatada }}
                                 </span>
-                                
+
                             @endif
                             <label for="date" class="label-floatlabel" class="form-label floatlabel-label">Data de Nascimento</label>
                             <input type="date" class="form-control active-floatlabel" id="data_nascimento" name="data_nascimento" value="{{ ($resume->informacoesPessoais && $resume->informacoesPessoais->data_nascimento) ? \Carbon\Carbon::parse($resume->informacoesPessoais->data_nascimento)->format('Y-m-d') : '' }}" >
                             @error('data_nascimento') <div class="alert alert-danger">{{ $message }}</div> @enderror
                         </div>
                     </div>
-                </div> 
+                </div>
 
                  <!-- Nacionalidade teste -->
                 @php
-                    $paises = getPaises();                                
+                    $paises = getPaises();
                 @endphp
                 <div class="col-6 form-campo">
                     <div class="mb-3">
@@ -100,7 +100,7 @@
                             <select name="nacionalidade" id="nacionalidade" class="form-select active-floatlabel" >
                                 <option></option>
                                 @foreach ($paises as $pais)
-                                    <option value="{{ $pais }}" {{ $resume->informacoesPessoais && $resume->informacoesPessoais->nacionalidade ===  "$pais"  ? 'selected' : ''}}> {{ $pais }}</option>                                                                                        
+                                    <option value="{{ $pais }}" {{ $resume->informacoesPessoais && $resume->informacoesPessoais->nacionalidade ===  "$pais"  ? 'selected' : ''}}> {{ $pais }}</option>
                                 @endforeach
                             </select>
                             @error('nacionalidade') <div class="alert alert-danger">{{ $message }}</div> @enderror
@@ -134,7 +134,7 @@
                                 <option></option>
                                 <option value="Sim" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->reservista === 'Sim') ? 'selected' : ''}}> Sim</option>
                                 <option value="Não" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->reservista === 'Não') ? 'selected' : ''}}> Não</option>
-                                <option value="Em andamento" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->reservista === 'Em andamento') ? 'selected' : ''}}> Em andamento</option>                                            
+                                <option value="Em andamento" {{ ($resume->informacoesPessoais && $resume->informacoesPessoais->reservista === 'Em andamento') ? 'selected' : ''}}> Em andamento</option>
                             </select>
                             @error('reservista') <div class="alert alert-danger">{{ $message }}</div> @enderror
                         </div>
@@ -225,9 +225,9 @@
                             @error('pcd_sim') <div class="alert alert-danger">{{ $message }}</div> @enderror
                         </div>
                     </div>
-                </div>  
+                </div>
 
-                
+
                 <h4 class="fw-normal mb-4 mt-4">Endereço</h4>
 
                 <div class="col-4 form-campo">
@@ -294,7 +294,7 @@
                         @error('email') <div class="alert alert-danger">{{ $message }}</div> @enderror
                     </div>
                 </div>
-                
+
                 <div class="col-6 form-campo">
                     <div class="mb-3">
                         <input type="text" placeholder="Telefone Celular(Whatsapp)" class="floatlabel form-control" id="telefone_celular" name="telefone_celular"  value="{{ $resume->contato->telefone_celular }}">
@@ -329,11 +329,11 @@
                     </div>
                 </div>
 
-                
 
-                                
 
-                <h4 class="fw-normal mb-4 mt-4">Mais Informações</h4>   
+
+
+                <h4 class="fw-normal mb-4 mt-4">Mais Informações</h4>
 
                 @php
                     $vagasInteresse = [];
@@ -344,7 +344,7 @@
                         $vagasInteresse = is_array($decoded) ? $decoded : [];
                     }
                 @endphp
-                
+
                  <!-- Vagas Interesse -->
                 <div class="d-flex col-6 form-campo">
                     <div class="mb-3 form-checkbox">
@@ -455,20 +455,20 @@
                             <label class="form-check-label" for="experiencia_profissional5">
                                 Recepção
                             </label>
-                        </div>      
+                        </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="experiencia_profissional7" value="Garçon/Cumim" name="experiencia_profissional[]" @checked(in_array('Garçon/Cumim)', $experienciaProfissional))>
                             <label class="form-check-label" for="experiencia_profissional7">
                                 Garçom/Cumim
                             </label>
-                        </div>                  
+                        </div>
 
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="experiencia_profissional1" value="Nenhuma por enquanto" name="experiencia_profissional[]" @checked(in_array('Nenhuma por enquanto', $experienciaProfissional))>
                             <label class="form-check-label" for="experiencia_profissional1">
                                 Nenhuma Experiencia Profissional
                             </label>
-                        </div>                       
+                        </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="experiencia_profissional10" value="Outro" name="experiencia_profissional[]" @checked(in_array('Outro', $experienciaProfissional))>
                             <label class="form-check-label" for="experiencia_profissional10">
@@ -484,6 +484,7 @@
 
                 </div>
 
+
                 <!-- Formação -->
                 <div class="d-flex col-12 form-campo">
 
@@ -491,12 +492,298 @@
                         <label for="telefone_celular" class="form-label">Formação/Escolaridade*
                             (Especifique no campo "OUTRO" caso tenha Ensino Superior, Técnico ou outro)</label>
 
+                        @php
+                            // Atalhos para facilitar a leitura
+                            $selected = $academicData['selected'];
+                            $flags = $academicData['flags'];
+                            $info = $academicData['data'];
+                        @endphp
+
+                        {{-- Ensino Fundamental Completo --}}
+                        <div class="form-check form-check">
+                            <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade4" value="Ensino Fundamental Completo"
+                                @checked(in_array('Ensino Fundamental Completo', $selected))>
+                            <label class="form-check-label" for="escolaridade4">
+                                Ensino Fundamental Completo
+                            </label>
+                        </div>
+
+                        {{-- Ensino Fundamental Cursando --}}
+                        <div class="form-check form-check">
+                            <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade5" value="Ensino Fundamental Cursando"
+                                @checked(in_array('Ensino Fundamental Cursando', $selected))>
+                            <label class="form-check-label" for="escolaridade5">
+                                Ensino Fundamental Cursando
+                            </label>
+                        </div>
+
+                        {{-- Campos Fundamental Cursando --}}
+                        <div class="col-12 form-campo check-fundamental-cursando campo-escondido" id="fundamentalCursandoContainer" style="{{ $flags['fundamental_cursando'] ? 'display:block' : '' }}">
+                            <div class="mb-3">
+                                <div class="floatlabel-wrapper">
+                                    <label for="fundamental_select_periodo" class="label-floatlabel">Qual ao Período?</label>
+                                    <select name="fundamental_periodo" id="fundamental_select_periodo" class="form-select active-floatlabel">
+                                        <option></option>
+                                        <option value="Manhã" {{ ($info['fundamental_periodo'] ?? '') === 'Manhã' ? 'selected' : '' }}>Manhã</option>
+                                        <option value="Tarde" {{ ($info['fundamental_periodo'] ?? '') === 'Tarde' ? 'selected' : '' }}>Tarde</option>
+                                        <option value="Noite" {{ ($info['fundamental_periodo'] ?? '') === 'Noite' ? 'selected' : '' }}>Noite</option>
+                                        <option value="Integral" {{ ($info['fundamental_periodo'] ?? '') === 'Integral' ? 'selected' : '' }}>Integral</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="floatlabel-wrapper">
+                                    <label for="fundamental_select_modalidade" class="label-floatlabel">Modalidade</label>
+                                    <select name="fundamental_modalidade" id="fundamental_select_modalidade" class="form-select active-floatlabel">
+                                        <option></option>
+                                        <option value="Presencial" {{ ($info['fundamental_modalidade'] ?? '') === 'Presencial' ? 'selected' : '' }}>Presencial</option>
+                                        <option value="EAD" {{ ($info['fundamental_modalidade'] ?? '') === 'EAD' ? 'selected' : '' }}>EAD</option>
+                                        <option value="Híbrido" {{ ($info['fundamental_modalidade'] ?? '') === 'Híbrido' ? 'selected' : '' }}>Híbrido</option>
+                                        <option value="Outros" {{ ($info['fundamental_modalidade'] ?? '') === 'Outros' ? 'selected' : '' }}>Outros</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Ensino Médio Completo --}}
+                        <div class="form-check form-check">
+                            <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade2" value="Ensino Médio Completo"
+                                @checked(in_array('Ensino Médio Completo', $selected))>
+                            <label class="form-check-label" for="escolaridade2">
+                                Ensino Médio Completo
+                            </label>
+                        </div>
+
+                        {{-- Ensino Médio Cursando (CORREÇÃO DO VALUE) --}}
+                        <div class="form-check form-check">
+                            <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade1" value="Ensino Médio Incompleto"
+                                @checked(in_array('Ensino Médio Incompleto', $selected))>
+                            <label class="form-check-label" for="escolaridade1">
+                                Ensino Médio Cursando
+                            </label>
+                        </div>
+
+                        {{-- Campos Médio Cursando --}}
+                        <div class="col-12 form-campo check-medio-cursando campo-escondido" id="medioCursandoContainer" style="{{ $flags['medio_cursando'] ? 'display:block' : '' }}">
+                            <div class="mb-3">
+                                <div class="floatlabel-wrapper">
+                                    <label for="medio_select_periodo" class="label-floatlabel">Qual ao Período?</label>
+                                    <select name="medio_periodo" id="medio_select_periodo" class="form-select active-floatlabel">
+                                        <option></option>
+                                        <option value="Manhã" {{ ($info['medio_periodo'] ?? '') === 'Manhã' ? 'selected' : '' }}>Manhã</option>
+                                        <option value="Tarde" {{ ($info['medio_periodo'] ?? '') === 'Tarde' ? 'selected' : '' }}>Tarde</option>
+                                        <option value="Noite" {{ ($info['medio_periodo'] ?? '') === 'Noite' ? 'selected' : '' }}>Noite</option>
+                                        <option value="Integral" {{ ($info['medio_periodo'] ?? '') === 'Integral' ? 'selected' : '' }}>Integral</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="floatlabel-wrapper">
+                                    <label for="medio_select_modalidade" class="label-floatlabel">Modalidade</label>
+                                    <select name="medio_modalidade" id="medio_select_modalidade" class="form-select active-floatlabel">
+                                        <option></option>
+                                        <option value="Presencial" {{ ($info['medio_modalidade'] ?? '') === 'Presencial' ? 'selected' : '' }}>Presencial</option>
+                                        <option value="EAD" {{ ($info['medio_modalidade'] ?? '') === 'EAD' ? 'selected' : '' }}>EAD</option>
+                                        <option value="Híbrido" {{ ($info['medio_modalidade'] ?? '') === 'Híbrido' ? 'selected' : '' }}>Híbrido</option>
+                                        <option value="Outros" {{ ($info['medio_modalidade'] ?? '') === 'Outros' ? 'selected' : '' }}>Outros</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Ensino Técnico Completo --}}
+                        <div class="form-check form-check">
+                            <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade6" value="Ensino Técnico Completo"
+                                @checked(in_array('Ensino Técnico Completo', $selected))>
+                            <label class="form-check-label" for="escolaridade6">
+                                Ensino Técnico Completo
+                            </label>
+                        </div>
+
+                        {{-- Campos Técnico Completo --}}
+                        <div class="col-12 form-campo check-tecnico-completo campo-escondido" id="tecnicoCompletoContainer" style="{{ $flags['tecnico_completo'] ? 'display:block' : '' }}">
+                            <div class="mb-3">
+                                <input type="text" placeholder="Qual curso?" class="floatlabel form-control" id="tecnico_completo_curso" name="tecnico_completo_curso" value="{{ $info['tecnico_completo_curso'] ?? '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" placeholder="Qual instituição?" class="floatlabel form-control" id="tecnico_completo_instituicao" name="tecnico_completo_instituicao" value="{{ $info['tecnico_completo_instituicao'] ?? '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" placeholder="Qual data de conclusão?" class="floatlabel form-control" id="tecnico_completo_data_conclusao" name="tecnico_completo_data_conclusao" value="{{ $info['tecnico_completo_data_conclusao'] ?? '' }}">
+                            </div>
+                        </div>
+
+                        {{-- Ensino Técnico Cursando --}}
+                        <div class="form-check form-check">
+                            <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade7" value="Ensino Técnico Cursando"
+                                @checked(in_array('Ensino Técnico Cursando', $selected))>
+                            <label class="form-check-label" for="escolaridade7">
+                                Ensino Técnico Cursando
+                            </label>
+                        </div>
+
+                        {{-- Campos Técnico Cursando --}}
+                        <div class="col-12 form-campo check-tecnico-cursando campo-escondido" id="tecnicoCursandoContainer" style="{{ $flags['tecnico_cursando'] ? 'display:block' : '' }}">
+                            <div class="mb-3">
+                                <input type="text" placeholder="Qual curso?" class="floatlabel form-control" id="tecnico_curso" name="tecnico_curso" value="{{ $info['tecnico_curso'] ?? '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" placeholder="Qual semestre?" class="floatlabel form-control" id="tecnico_semestre" name="tecnico_semestre" value="{{ $info['tecnico_semestre'] ?? '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" placeholder="Qual instituição?" class="floatlabel form-control" id="tecnico_instituicao" name="tecnico_instituicao" value="{{ $info['tecnico_instituicao'] ?? '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <div class="floatlabel-wrapper">
+                                    <label for="tecnico_select_periodo" class="label-floatlabel">Qual ao Período?</label>
+                                    <select name="tecnico_periodo" id="tecnico_select_periodo" class="form-select active-floatlabel">
+                                        <option></option>
+                                        <option value="Manhã" {{ ($info['tecnico_periodo'] ?? '') === 'Manhã' ? 'selected' : '' }}>Manhã</option>
+                                        <option value="Tarde" {{ ($info['tecnico_periodo'] ?? '') === 'Tarde' ? 'selected' : '' }}>Tarde</option>
+                                        <option value="Noite" {{ ($info['tecnico_periodo'] ?? '') === 'Noite' ? 'selected' : '' }}>Noite</option>
+                                        <option value="Integral" {{ ($info['tecnico_periodo'] ?? '') === 'Integral' ? 'selected' : '' }}>Integral</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="floatlabel-wrapper">
+                                    <label for="tecnico_select_modalidade" class="label-floatlabel">Modalidade</label>
+                                    <select name="tecnico_modalidade" id="tecnico_select_modalidade" class="form-select active-floatlabel">
+                                        <option></option>
+                                        <option value="Presencial" {{ ($info['tecnico_modalidade'] ?? '') === 'Presencial' ? 'selected' : '' }}>Presencial</option>
+                                        <option value="EAD" {{ ($info['tecnico_modalidade'] ?? '') === 'EAD' ? 'selected' : '' }}>EAD</option>
+                                        <option value="Híbrido" {{ ($info['tecnico_modalidade'] ?? '') === 'Híbrido' ? 'selected' : '' }}>Híbrido</option>
+                                        <option value="Outros" {{ ($info['tecnico_modalidade'] ?? '') === 'Outros' ? 'selected' : '' }}>Outros</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Superior Completo --}}
+                        <div class="form-check form-check">
+                            <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade8" value="Superior Completo"
+                                @checked(in_array('Superior Completo', $selected))>
+                            <label class="form-check-label" for="escolaridade8">
+                                Superior Completo
+                            </label>
+                        </div>
+
+                        {{-- Campos Superior Completo --}}
+                        <div class="col-12 form-campo check-superior-completo campo-escondido" id="superiorCompletoContainer" style="{{ $flags['superior_completo'] ? 'display:block' : '' }}">
+                            <div class="mb-3">
+                                <input type="text" placeholder="Qual curso?" class="floatlabel form-control" id="superior_completo_curso" name="superior_completo_curso" value="{{ $info['superior_completo_curso'] ?? '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" placeholder="Qual instituição?" class="floatlabel form-control" id="superior_completo_instituicao" name="superior_completo_instituicao" value="{{ $info['superior_completo_instituicao'] ?? '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" placeholder="Qual data de conclusão?" class="floatlabel form-control" id="superior_completo_data_conclusao" name="superior_completo_data_conclusao" value="{{ $info['superior_completo_data_conclusao'] ?? '' }}">
+                            </div>
+                        </div>
+
+                        {{-- Superior Cursando --}}
+                        <div class="form-check form-check">
+                            <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade9" value="Superior Cursando"
+                                @checked(in_array('Superior Cursando', $selected))>
+                            <label class="form-check-label" for="escolaridade9">
+                                Superior Cursando
+                            </label>
+                        </div>
+
+                        {{-- Campos Superior Cursando --}}
+                        <div class="col-12 form-campo check-superior-cursando campo-escondido" id="superiorCursandoContainer" style="{{ $flags['superior_cursando'] ? 'display:block' : '' }}">
+                            <div class="mb-3">
+                                <input type="text" placeholder="Qual curso?" class="floatlabel form-control" id="superior_curso" name="superior_curso" value="{{ $info['superior_curso'] ?? '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" placeholder="Qual semestre?" class="floatlabel form-control" id="superior_termo" name="superior_termo" value="{{ $info['superior_termo'] ?? '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" placeholder="Qual Instituição?" class="floatlabel form-control" id="superior_instituicao" name="superior_instituicao" value="{{ $info['superior_instituicao'] ?? '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <div class="floatlabel-wrapper">
+                                    <label for="superior_select_periodo" class="label-floatlabel">Qual o Período?</label>
+                                    <select name="superior_periodo" id="superior_select_periodo" class="form-select active-floatlabel">
+                                        <option></option>
+                                        <option value="Manhã" {{ ($info['superior_periodo'] ?? '') === 'Manhã' ? 'selected' : '' }}>Manhã</option>
+                                        <option value="Tarde" {{ ($info['superior_periodo'] ?? '') === 'Tarde' ? 'selected' : '' }}>Tarde</option>
+                                        <option value="Noite" {{ ($info['superior_periodo'] ?? '') === 'Noite' ? 'selected' : '' }}>Noite</option>
+                                        <option value="Integral" {{ ($info['superior_periodo'] ?? '') === 'Integral' ? 'selected' : '' }}>Integral</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="floatlabel-wrapper">
+                                    <label for="superior_select_modalidade" class="label-floatlabel">Qual a Modalidade?</label>
+                                    <select name="superior_semestre" id="superior_select_modalidade" class="form-select active-floatlabel">
+                                        <option></option>
+                                        <option value="Presencial" {{ ($info['superior_semestre'] ?? '') === 'Presencial' ? 'selected' : '' }}>Presencial</option>
+                                        <option value="EAD" {{ ($info['superior_semestre'] ?? '') === 'EAD' ? 'selected' : '' }}>EAD</option>
+                                        <option value="Híbrido" {{ ($info['superior_semestre'] ?? '') === 'Híbrido' ? 'selected' : '' }}>Híbrido</option>
+                                        <option value="Outros" {{ ($info['superior_semestre'] ?? '') === 'Outros' ? 'selected' : '' }}>Outros</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Outro --}}
+                        <div class="form-check form-check">
+                            <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade3" value="Outro"
+                                @checked(in_array('Outro', $selected))>
+                            <label class="form-check-label" for="escolaridade3">
+                                Outro
+                            </label>
+                        </div>
+
+                        {{-- Campos Outro --}}
+                        <div class="campo-escondido check-escolaridade" style="{{ $flags['outro'] ? 'display:block' : '' }}">
+                            <input type="text" placeholder="Qual curso?" class="floatlabel form-control" id="escolaridade_outro" name="escolaridade_outro" value="{{ $info['escolaridade_outro'] ?? '' }}">
+                            <input type="text" placeholder="Qual Instituição?" class="floatlabel form-control" id="instituicao" name="instituicao" value="{{ $info['instituicao'] ?? '' }}">
+                            <div class="mb-3">
+                                <div class="floatlabel-wrapper">
+                                    <label for="outro_select_periodo" class="label-floatlabel">Qual o Período?</label>
+                                    <select name="outro_periodo" id="outro_select_periodo" class="form-select active-floatlabel">
+                                        <option></option>
+                                        <option value="Manhã" {{ ($info['outro_periodo'] ?? '') === 'Manhã' ? 'selected' : '' }}>Manhã</option>
+                                        <option value="Tarde" {{ ($info['outro_periodo'] ?? '') === 'Tarde' ? 'selected' : '' }}>Tarde</option>
+                                        <option value="Noite" {{ ($info['outro_periodo'] ?? '') === 'Noite' ? 'selected' : '' }}>Noite</option>
+                                        <option value="Integral" {{ ($info['outro_periodo'] ?? '') === 'Integral' ? 'selected' : '' }}>Integral</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="floatlabel-wrapper">
+                                    <label for="outro_select_modalidade" class="label-floatlabel">Qual a Modalidade?</label>
+                                    <select name="semestre" id="outro_select_modalidade" class="form-select active-floatlabel">
+                                        <option></option>
+                                        <option value="Presencial" {{ ($info['semestre'] ?? '') === 'Presencial' ? 'selected' : '' }}>Presencial</option>
+                                        <option value="EAD" {{ ($info['semestre'] ?? '') === 'EAD' ? 'selected' : '' }}>EAD</option>
+                                        <option value="Híbrido" {{ ($info['semestre'] ?? '') === 'Híbrido' ? 'selected' : '' }}>Híbrido</option>
+                                        <option value="Outros" {{ ($info['semestre'] ?? '') === 'Outros' ? 'selected' : '' }}>Outros</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        @error('escolaridade') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+
+
+                <!-- Formação Antiga
+                <div class="d-flex col-12 form-campo">
+
+                    <div class="mb-3 form-checkbox">
+                        <label for="telefone_celular" class="form-label">Formação/Escolaridade*
+                            (Especifique no campo "OUTRO" caso tenha Ensino Superior, Técnico ou outro)</label>
+
                             <div class="form-check form-check">
-                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade4" value="Ensino Fundamental Completo" 
+                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade4" value="Ensino Fundamental Completo"
                                     @checked(in_array(
-                                        'Ensino Fundamental Completo', 
-                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade)) 
-                                            ? $resume->escolaridade->escolaridade 
+                                        'Ensino Fundamental Completo',
+                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade))
+                                            ? $resume->escolaridade->escolaridade
                                             : []
                                     ))>
                                 <label class="form-check-label" for="escolaridade4">
@@ -505,11 +792,11 @@
                             </div>
 
                             <div class="form-check form-check">
-                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade5" value="Ensino Fundamental Cursando" 
+                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade5" value="Ensino Fundamental Cursando"
                                     @checked(in_array(
-                                        'Ensino Fundamental Cursando', 
-                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade)) 
-                                            ? $resume->escolaridade->escolaridade 
+                                        'Ensino Fundamental Cursando',
+                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade))
+                                            ? $resume->escolaridade->escolaridade
                                             : []
                                     ))>
                                 <label class="form-check-label" for="escolaridade5">
@@ -517,9 +804,9 @@
                                 </label>
                             </div>
 
-                            
+
                             {{-- Campos ocultos caso checkbox Fundamental Cursando seja escolhido --}}
-                    
+
                             <div class="col-12 form-campo check-fundamental-cursando campo-escondido" id="fundamentalCursandoContainer" {!! is_array($resume->escolaridade?->escolaridade) ? ((in_array('Ensino Fundamental Cursando', $resume->escolaridade?->escolaridade ?? [])) ? ' style="display:block"' : '') : ($resume->escolaridade?->escolaridade === 'Ensino Fundamental Cursando' ? ' style="display:block"' : '') !!}>
                                 <div class="mb-3">
                                     <div class="floatlabel-wrapper">
@@ -529,13 +816,13 @@
                                             <option value="Manhã" {{ ($resume->escolaridade && $resume->escolaridade->fundamental_periodo === 'Manhã') ? 'selected' : '' }}>Manhã</option>
                                             <option value="Tarde" {{ ($resume->escolaridade && $resume->escolaridade->fundamental_periodo === 'Tarde') ? 'selected' : '' }}>Tarde</option>
                                             <option value="Noite" {{ ($resume->escolaridade && $resume->escolaridade->fundamental_periodo === 'Noite') ? 'selected' : '' }}>Noite</option>
-                                            <option value="Integral" {{ ($resume->escolaridade && $resume->escolaridade->fundamental_periodo === 'Integral') ? 'selected' : '' }}>Integral</option>                                            
+                                            <option value="Integral" {{ ($resume->escolaridade && $resume->escolaridade->fundamental_periodo === 'Integral') ? 'selected' : '' }}>Integral</option>
                                         </select>
                                         @error('fundamental_periodo') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-12 form-campo check-fundamental-cursando campo-escondido" id="fundamentalCursandoContainer" {!! is_array($resume->escolaridade?->escolaridade) ? ((in_array('Ensino Fundamental Cursando', $resume->escolaridade?->escolaridade ?? [])) ? ' style="display:block"' : '') : ($resume->escolaridade?->escolaridade === 'Ensino Fundamental Cursando' ? ' style="display:block"' : '') !!}>
                                 <div class="mb-3">
                                     <div class="floatlabel-wrapper">
@@ -545,7 +832,7 @@
                                             <option value="Presencial" {{ ($resume->escolaridade && $resume->escolaridade->fundamental_modalidade === 'Presencial') ? 'selected' : '' }}>Presencial</option>
                                             <option value="EAD" {{ ($resume->escolaridade && $resume->escolaridade->fundamental_modalidade === 'EAD') ? 'selected' : '' }}>EAD</option>
                                             <option value="Híbrido" {{ ($resume->escolaridade && $resume->escolaridade->fundamental_modalidade === 'Híbrido') ? 'selected' : '' }}>Híbrido</option>
-                                            <option value="Outros" {{ ($resume->escolaridade && $resume->escolaridade->fundamental_modalidade === 'Outros') ? 'selected' : '' }}>Outros</option>                                            
+                                            <option value="Outros" {{ ($resume->escolaridade && $resume->escolaridade->fundamental_modalidade === 'Outros') ? 'selected' : '' }}>Outros</option>
                                         </select>
                                         @error('fundamental_modalidade') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
@@ -554,11 +841,11 @@
 
                             {{-- Medio --}}
                             <div class="form-check form-check">
-                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade2" value="Ensino Médio Completo" 
+                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade2" value="Ensino Médio Completo"
                                 @checked(in_array(
-                                        'Ensino Médio Completo', 
-                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade)) 
-                                            ? $resume->escolaridade->escolaridade 
+                                        'Ensino Médio Completo',
+                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade))
+                                            ? $resume->escolaridade->escolaridade
                                             : []
                                     ))>
                                 <label class="form-check-label" for="escolaridade2">
@@ -568,20 +855,20 @@
 
 
                             <div class="form-check form-check">
-                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade1" value="Ensino Médio Incompleto" 
+                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade1" value="Ensino Médio Incompleto"
                                     @checked(in_array(
-                                        'Ensino Médio Incompleto', 
-                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade)) 
-                                            ? $resume->escolaridade->escolaridade 
+                                        'Ensino Médio Incompleto',
+                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade))
+                                            ? $resume->escolaridade->escolaridade
                                             : []
                                     ))>
                                 <label class="form-check-label" for="escolaridade1">
                                     Ensino Médio Cursando
                                 </label>
-                            </div>   
-                            
+                            </div>
+
                             {{-- Campos ocultos caso checkbox  Ensino Médio Cursando seja escolhido --}}
-                    
+
                             <div class="col-12 form-campo check-medio-cursando campo-escondido" id="medioCursandoContainer" {!! is_array($resume->escolaridade?->escolaridade) ? ((in_array('Ensino Médio Cursando', $resume->escolaridade?->escolaridade ?? [])) ? ' style="display:block"' : '') : ($resume->escolaridade?->escolaridade === 'Ensino Médio Cursando' ? ' style="display:block"' : '') !!}>
                                 <div class="mb-3">
                                     <div class="floatlabel-wrapper">
@@ -591,7 +878,7 @@
                                             <option value="Manhã" {{ ($resume->escolaridade && $resume->escolaridade->medio_periodo === 'Manhã') ? 'selected' : '' }}>Manhã</option>
                                             <option value="Tarde" {{ ($resume->escolaridade && $resume->escolaridade->medio_periodo === 'Tarde') ? 'selected' : '' }}>Tarde</option>
                                             <option value="Noite" {{ ($resume->escolaridade && $resume->escolaridade->medio_periodo === 'Noite') ? 'selected' : '' }}>Noite</option>
-                                            <option value="Integral" {{ ($resume->escolaridade && $resume->escolaridade->medio_periodo === 'Integral') ? 'selected' : '' }}>Integral</option>                                            
+                                            <option value="Integral" {{ ($resume->escolaridade && $resume->escolaridade->medio_periodo === 'Integral') ? 'selected' : '' }}>Integral</option>
                                         </select>
                                         @error('medio_periodo') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
@@ -607,29 +894,29 @@
                                             <option value="Presencial" {{ ($resume->escolaridade && $resume->escolaridade->medio_modalidade === 'Presencial') ? 'selected' : '' }}>Presencial</option>
                                             <option value="EAD" {{ ($resume->escolaridade && $resume->escolaridade->medio_modalidade === 'EAD') ? 'selected' : '' }}>EAD</option>
                                             <option value="Híbrido" {{ ($resume->escolaridade && $resume->escolaridade->medio_modalidade === 'Híbrido') ? 'selected' : '' }}>Híbrido</option>
-                                            <option value="Outros" {{ ($resume->escolaridade && $resume->escolaridade->medio_modalidade === 'Outros') ? 'selected' : '' }}>Outros</option>                                            
+                                            <option value="Outros" {{ ($resume->escolaridade && $resume->escolaridade->medio_modalidade === 'Outros') ? 'selected' : '' }}>Outros</option>
                                         </select>
                                         @error('medio_modalidade') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
                             </div>
-                            
+
 
                             {{-- Tecnico --}}
                             <div class="form-check form-check">
-                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade6" value="Ensino Técnico Completo" 
+                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade6" value="Ensino Técnico Completo"
                                     @checked(in_array(
-                                        'Ensino Técnico Completo', 
-                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade)) 
-                                            ? $resume->escolaridade->escolaridade 
+                                        'Ensino Técnico Completo',
+                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade))
+                                            ? $resume->escolaridade->escolaridade
                                             : []
                                     ))>
                                 <label class="form-check-label" for="escolaridade6">
-                                    Ensino Técnico Completo 
+                                    Ensino Técnico Completo
                                 </label>
                             </div>
                             {{-- Campos ocultos caso checkbox Tecnico Completo seja escolhido --}}
-                                        
+
                             <div class="col-12 form-campo check-tecnico-completo campo-escondido" id="tecnicoCompletoContainer" {!! is_array($resume->escolaridade?->escolaridade) ? ((in_array('Ensino Técnico Completo', $resume->escolaridade?->escolaridade ?? [])) ? ' style="display:block"' : '') : ($resume->escolaridade?->escolaridade === 'Ensino Técnico Completo' ? ' style="display:block"' : '') !!}>
                                 <div class="mb-3">
                                     <input  type="text" placeholder="Qual curso?" class="floatlabel form-control" id="tecnico_completo_curso" name="tecnico_completo_curso" value="{{ old('tecnico_completo_curso', $resume->escolaridade->tecnico_completo_curso)}}">
@@ -639,17 +926,17 @@
                                 </div>
                                 <div class="mb-3">
                                     <input  type="text" placeholder="Qual data de conclusão?" class="floatlabel form-control" id="tecnico_completo_data_conclusao" name="tecnico_completo_data_conclusao" value="{{ old('tecnico_completo_data_conclusao', $resume->escolaridade->tecnico_completo_data_conclusao)}}">
-                                </div>                                                    
+                                </div>
                             </div>
 
                             {{-- Ensino Técnico Cursando --}}
 
                             <div class="form-check form-check">
-                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade7" value="Ensino Técnico Cursando" 
+                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade7" value="Ensino Técnico Cursando"
                                     @checked(in_array(
-                                        'Ensino Técnico Cursando', 
-                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade)) 
-                                            ? $resume->escolaridade->escolaridade 
+                                        'Ensino Técnico Cursando',
+                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade))
+                                            ? $resume->escolaridade->escolaridade
                                             : []
                                     ))>
                                 <label class="form-check-label" for="escolaridade7">
@@ -658,7 +945,7 @@
                             </div>
 
                             {{-- Campos ocultos caso checkbox  Ensino Técnico Cursando seja escolhido --}}
-                    
+
                             <div class="col-12 form-campo check-tecnico-cursando campo-escondido" id="tecnicoCursandoContainer" {!! is_array($resume->escolaridade?->escolaridade) ? ((in_array('Ensino Técnico Cursando', $resume->escolaridade?->escolaridade ?? [])) ? ' style="display:block"' : '') : ($resume->escolaridade?->escolaridade === 'Ensino Técnico Cursando' ? ' style="display:block"' : '') !!}>
                                 <div class="mb-3">
                                     <input  type="text" placeholder="Qual curso?" class="floatlabel form-control" id="tecnico_curso" name="tecnico_curso" value="{{ old('tecnico_curso', $resume->escolaridade->tecnico_curso) }}">
@@ -677,7 +964,7 @@
                                             <option value="Manhã" {{ ($resume->escolaridade && $resume->escolaridade->tecnico_periodo === 'Manhã') ? 'selected' : '' }}>Manhã</option>
                                             <option value="Tarde" {{ ($resume->escolaridade && $resume->escolaridade->tecnico_periodo === 'Tarde') ? 'selected' : '' }}>Tarde</option>
                                             <option value="Noite" {{ ($resume->escolaridade && $resume->escolaridade->tecnico_periodo === 'Noite') ? 'selected' : '' }}>Noite</option>
-                                            <option value="Integral" {{ ($resume->escolaridade && $resume->escolaridade->tecnico_periodo === 'Integral') ? 'selected' : '' }}>Integral</option>                                            
+                                            <option value="Integral" {{ ($resume->escolaridade && $resume->escolaridade->tecnico_periodo === 'Integral') ? 'selected' : '' }}>Integral</option>
                                         </select>
                                         @error('tecnico_periodo') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
@@ -693,7 +980,7 @@
                                             <option value="Presencial" {{ ($resume->escolaridade && $resume->escolaridade->tecnico_modalidade === 'Presencial') ? 'selected' : '' }}>Presencial</option>
                                             <option value="EAD" {{ ($resume->escolaridade && $resume->escolaridade->tecnico_modalidade === 'EAD') ? 'selected' : '' }}>EAD</option>
                                             <option value="Híbrido" {{ ($resume->escolaridade && $resume->escolaridade->tecnico_modalidade === 'Híbrido') ? 'selected' : '' }}>Híbrido</option>
-                                            <option value="Outros" {{ ($resume->escolaridade && $resume->escolaridade->tecnico_modalidade === 'Outros') ? 'selected' : '' }}>Outros</option>                                            
+                                            <option value="Outros" {{ ($resume->escolaridade && $resume->escolaridade->tecnico_modalidade === 'Outros') ? 'selected' : '' }}>Outros</option>
                                         </select>
                                         @error('tecnico_modalidade') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
@@ -703,11 +990,11 @@
 
                             {{-- Superior --}}
                             <div class="form-check form-check">
-                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade8" value="Superior Completo" 
+                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade8" value="Superior Completo"
                                     @checked(in_array(
-                                        'Superior Completo', 
-                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade)) 
-                                            ? $resume->escolaridade->escolaridade 
+                                        'Superior Completo',
+                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade))
+                                            ? $resume->escolaridade->escolaridade
                                             : []
                                     ))>
                                 <label class="form-check-label" for="escolaridade8">
@@ -716,7 +1003,7 @@
                             </div>
 
                              {{-- Campos ocultos caso checkbox Superior Completo seja escolhido --}}
-                                        
+
                             <div class="col-12 form-campo check-superior-completo campo-escondido" id="superiorCompletoContainer" {!! is_array($resume->escolaridade?->escolaridade) ? ((in_array('Superior Completo', $resume->escolaridade?->escolaridade ?? [])) ? ' style="display:block"' : '') : ($resume->escolaridade?->escolaridade === 'Superior Completo' ? ' style="display:block"' : '') !!}>
                                 <div class="mb-3">
                                     <input  type="text" placeholder="Qual curso?" class="floatlabel form-control" id="superior_completo_curso" name="superior_completo_curso" value="{{ old('superior_completo_curso', $resume->escolaridade->superior_completo_curso)}}">
@@ -726,15 +1013,15 @@
                                 </div>
                                 <div class="mb-3">
                                     <input  type="text" placeholder="Qual data de conclusão?" class="floatlabel form-control" id="superior_completo_data_conclusao" name="superior_completo_data_conclusao" value="{{ old('superior_completo_data_conclusao', $resume->escolaridade->superior_completo_data_conclusao)}}">
-                                </div>                                                    
+                                </div>
                             </div>
 
                             <div class="form-check form-check">
-                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade9" value="Superior Cursando" 
+                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade9" value="Superior Cursando"
                                     @checked(in_array(
-                                        'Superior Cursando', 
-                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade)) 
-                                            ? $resume->escolaridade->escolaridade 
+                                        'Superior Cursando',
+                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade))
+                                            ? $resume->escolaridade->escolaridade
                                             : []
                                     ))>
                                 <label class="form-check-label" for="escolaridade9">
@@ -743,7 +1030,7 @@
                             </div>
 
                             {{-- Campos ocultos caso checkbox Superior Cursando seja escolhido --}}
-                    
+
                             <div class="col-12 form-campo check-superior-cursando campo-escondido" id="superiorCursandoContainer" {!! is_array($resume->escolaridade?->escolaridade) ? ((in_array('Superior Cursando', $resume->escolaridade?->escolaridade ?? [])) ? ' style="display:block"' : '') : ($resume->escolaridade?->escolaridade === 'Superior Cursando' ? ' style="display:block"' : '') !!}>
                                 <div class="mb-3">
                                     <input  type="text" placeholder="Qual curso?" class="floatlabel form-control" id="superior_curso" name="superior_curso" value="{{ old('superior_curso', $resume->escolaridade->superior_curso) }}">
@@ -762,7 +1049,7 @@
                                             <option value="Manhã" {{ ($resume->escolaridade && $resume->escolaridade->superior_periodo === 'Manhã') ? 'selected' : '' }}>Manhã</option>
                                             <option value="Tarde" {{ ($resume->escolaridade && $resume->escolaridade->superior_periodo === 'Tarde') ? 'selected' : '' }}>Tarde</option>
                                             <option value="Noite" {{ ($resume->escolaridade && $resume->escolaridade->superior_periodo === 'Noite') ? 'selected' : '' }}>Noite</option>
-                                            <option value="Integral" {{ ($resume->escolaridade && $resume->escolaridade->superior_periodo === 'Integral') ? 'selected' : '' }}>Integral</option>                                            
+                                            <option value="Integral" {{ ($resume->escolaridade && $resume->escolaridade->superior_periodo === 'Integral') ? 'selected' : '' }}>Integral</option>
                                         </select>
                                         @error('superior_periodo') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
@@ -776,7 +1063,7 @@
                                             <option value="Presencial" {{ ($resume->escolaridade && $resume->escolaridade->superior_semestre === 'Presencial') ? 'selected' : '' }}>Presencial</option>
                                             <option value="EAD" {{ ($resume->escolaridade && $resume->escolaridade->superior_semestre === 'EAD') ? 'selected' : '' }}>EAD</option>
                                             <option value="Híbrido" {{ ($resume->escolaridade && $resume->escolaridade->superior_semestre === 'Híbrido') ? 'selected' : '' }}>Híbrido</option>
-                                            <option value="Outros" {{ ($resume->escolaridade && $resume->escolaridade->superior_semestre === 'Outros') ? 'selected' : '' }}>Outros</option>                                            
+                                            <option value="Outros" {{ ($resume->escolaridade && $resume->escolaridade->superior_semestre === 'Outros') ? 'selected' : '' }}>Outros</option>
                                         </select>
                                         @error('superior_semestre') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
@@ -785,11 +1072,11 @@
 
                             {{-- Outro --}}
                             <div class="form-check form-check">
-                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade3" value="Outro" 
+                                <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade3" value="Outro"
                                 @checked(in_array(
-                                        'Outro', 
-                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade)) 
-                                            ? $resume->escolaridade->escolaridade 
+                                        'Outro',
+                                        (isset($resume->escolaridade->escolaridade) && is_array($resume->escolaridade->escolaridade))
+                                            ? $resume->escolaridade->escolaridade
                                             : []
                                     ))>
                                 <label class="form-check-label" for="escolaridade3">
@@ -808,7 +1095,7 @@
                                             <option value="Manhã" {{ ($resume->escolaridade && $resume->escolaridade->outro_periodo === 'Manhã') ? 'selected' : '' }}>Manhã</option>
                                             <option value="Tarde" {{ ($resume->escolaridade && $resume->escolaridade->outro_periodo === 'Tarde') ? 'selected' : '' }}>Tarde</option>
                                             <option value="Noite" {{ ($resume->escolaridade && $resume->escolaridade->outro_periodo === 'Noite') ? 'selected' : '' }}>Noite</option>
-                                            <option value="Integral" {{ ($resume->escolaridade && $resume->escolaridade->outro_periodo === 'Integral') ? 'selected' : '' }}>Integral</option>                                            
+                                            <option value="Integral" {{ ($resume->escolaridade && $resume->escolaridade->outro_periodo === 'Integral') ? 'selected' : '' }}>Integral</option>
                                         </select>
                                         @error('outro_periodo') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
@@ -822,7 +1109,7 @@
                                             <option value="Presencial" {{ ($resume->escolaridade && $resume->escolaridade->semestre === 'Presencial') ? 'selected' : '' }}>Presencial</option>
                                             <option value="EAD" {{ ($resume->escolaridade && $resume->escolaridade->semestre === 'EAD') ? 'selected' : '' }}>EAD</option>
                                             <option value="Híbrido" {{ ($resume->escolaridade && $resume->escolaridade->semestre === 'Híbrido') ? 'selected' : '' }}>Híbrido</option>
-                                            <option value="Outros" {{ ($resume->escolaridade && $resume->escolaridade->semestre === 'Outros') ? 'selected' : '' }}>Outros</option>                                            
+                                            <option value="Outros" {{ ($resume->escolaridade && $resume->escolaridade->semestre === 'Outros') ? 'selected' : '' }}>Outros</option>
                                         </select>
                                         @error('semestre') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
@@ -832,6 +1119,7 @@
                     </div>
 
                 </div>
+                -->
 
                 <div class="d-flex col-6 form-campo">
 
@@ -860,9 +1148,9 @@
 
                 </div>
 
-                
 
-               
+
+
                 <!-- Uniformes-->
                 {{-- <div class="d-flex col-6 form-campo">
 
@@ -1016,8 +1304,8 @@
 
                     </div>
 
-                </div>  
-                
+                </div>
+
                 <div class="d-flex col-6 form-campo">
                     <div class="mb-3 form-checkbox">
                         <label for="cras" class="form-label">Sua família é atendida por algum equipamento do governo?(CRAS/CREAS/BOLSA FAMÍLIA/AUX. BRASIL)</label>
@@ -1035,7 +1323,7 @@
                             <label class="form-check-label" for="cras2">
                             Não
                             </label>
-                        </div>                                  
+                        </div>
 
                     </div>
                 </div>
@@ -1045,7 +1333,7 @@
                         <label for="fonte" class="form-label">Como ficou sabendo do nosso programa?</label>
                         <input type="text" placeholder="Site/Google/Etc" class="floatlabel form-control" id="fonte" name="fonte" value="{{ $resume->fonte }}"  >
                     </div>
-                </div> 
+                </div>
 
             </div>
             @if ($editResume)
@@ -1054,7 +1342,7 @@
                     <a href="{{ route('resumes.index')}}" class="btn-padrao btn-cancelar ms-3">Cancelar</a>
 
                 </div>
-                
+
             @endif
 
 
@@ -1087,12 +1375,12 @@
 
                 @error('foto_candidato') <div class="alert alert-danger">{{ $message }}</div> @enderror
                 <span class="mensagem-arquivo">O arquivo deve ter o tamanho máximo de 2MB.</span>
-            </div>                                
+            </div>
             {{-- @endif --}}
 
                 @if ($resume->informacoesPessoais->foto_candidato_externa)
-                    <div class="mb-5 d-flex flex-column align-items-center">   
-                        <p class="fw-bold text-center">Foto armazenada no Drive</p>                                 
+                    <div class="mb-5 d-flex flex-column align-items-center">
+                        <p class="fw-bold text-center">Foto armazenada no Drive</p>
                     <a href="{{ $resume->informacoesPessoais->foto_candidato_externa }}" target="_blank" class="fw-bold text-center">Baixar Foto do Candidato</a>
                 </div>
             @endif
@@ -1133,17 +1421,17 @@
                 <span class="mensagem-arquivo">O arquivo deve ser no formato PDF e ter o tamanho máximo de 2MB.</span>
             </div>
 
-        
+
             @if($curriculo = null || $curriculo == '')
                 @if ($resume->curriculo_externo)
-                    <div class="mb-3 d-flex flex-column align-items-center">                                    
+                    <div class="mb-3 d-flex flex-column align-items-center">
                         <a href="{{ $resume->curriculo_externo }}" target="_blank" class="fw-bold text-center">Baixar Currículo Externo</a>
-                    </div>                    
-                @endif            
+                    </div>
+                @endif
             @endif
 
-            
 
-        </div>       
+
+        </div>
     </div>
 
