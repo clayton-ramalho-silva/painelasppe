@@ -8,15 +8,17 @@ use Illuminate\View\Component;
 
 class ResumeEditForm extends Component
 {
-    public $resume;    
+    public $resume;
     public $editResume;
+    public $academicData; // Adicione esta linha para armazenar os dados acadêmicos
     /**
      * Create a new component instance.
      */
-    public function __construct($resume, $editResume)
+    public function __construct($resume, $editResume, $academicData)
     {
-        $this->resume = $resume;        
+        $this->resume = $resume;
         $this->editResume = $editResume;
+        $this->academicData = $academicData;
     }
 
     /**

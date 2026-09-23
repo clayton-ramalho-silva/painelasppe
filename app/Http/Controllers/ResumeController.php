@@ -35,8 +35,8 @@ class ResumeController extends Controller
         // Busca rápida por nome - sem filtros e sem restrição de idade
         if ($request->filled('form_busca')) {
             $query = Resume::with([
-                    'informacoesPessoais:resume_id,data_nascimento,nome,cpf,cnh,tipo_cnh,nacionalidade,estado_civil,possui_filhos,filhos_sim,sexo,sexo_outro,pcd,pcd_sim,reservista,instagram,linkedin', 
-                    'contato:resume_id,logradouro,numero,bairro,cidade,uf,email,telefone_celular,telefone_residencial,nome_contato', 
+                    'informacoesPessoais:resume_id,data_nascimento,nome,cpf,cnh,tipo_cnh,nacionalidade,estado_civil,possui_filhos,filhos_sim,sexo,sexo_outro,pcd,pcd_sim,reservista,instagram,linkedin',
+                    'contato:resume_id,logradouro,numero,bairro,cidade,uf,email,telefone_celular,telefone_residencial,nome_contato',
                     'escolaridade:resume_id,escolaridade,escolaridade_outro,semestre,instituicao,superior_periodo,informatica,ingles'
                 ])
                 ->select('id','created_at','status','vagas_interesse','experiencia_profissional','foi_jovem_aprendiz','cras','fonte')
@@ -47,7 +47,7 @@ class ResumeController extends Controller
 
             $form_busca = $request->form_busca;
             $ordem = $request->get('ordem', 'desc');
-            
+
             if (!in_array($ordem, ['asc', 'desc'])) {
                 $ordem = 'desc';
             }
@@ -55,16 +55,16 @@ class ResumeController extends Controller
             $query->orderBy('created_at', $ordem);
             $resumes = $query->paginate(50)->appends($request->all());
             $cidades = $this->cidadeService->getCidades();
-            
+
             return view('resumes.index', compact('resumes', 'form_busca', 'ordem', 'cidades'));
         }
-      
 
-                
+
+
         // Busca com filtros - mantém restrição de idade de 24 anos
         $query = Resume::with([
-                'informacoesPessoais:resume_id,data_nascimento,nome,cpf,cnh,tipo_cnh,nacionalidade,estado_civil,possui_filhos,filhos_sim,sexo,sexo_outro,pcd,pcd_sim,reservista,instagram,linkedin', 
-                'contato:resume_id,logradouro,numero,bairro,cidade,uf,email,telefone_celular,telefone_residencial,nome_contato', 
+                'informacoesPessoais:resume_id,data_nascimento,nome,cpf,cnh,tipo_cnh,nacionalidade,estado_civil,possui_filhos,filhos_sim,sexo,sexo_outro,pcd,pcd_sim,reservista,instagram,linkedin',
+                'contato:resume_id,logradouro,numero,bairro,cidade,uf,email,telefone_celular,telefone_residencial,nome_contato',
                 'escolaridade:resume_id,escolaridade,escolaridade_outro,semestre,instituicao,superior_periodo,informatica,ingles'
             ])
             ->select('id','created_at','status','vagas_interesse','experiencia_profissional','foi_jovem_aprendiz','cras','fonte')
@@ -73,15 +73,15 @@ class ResumeController extends Controller
                 $q->whereNotNull('data_nascimento')
                 //->whereRaw('TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) < 23');
                 ->where('data_nascimento', '>=', now()->subYears(24)->toDateString());
-            });            
+            });
 
 
         $form_busca = '';
 
         // Agrupando filtros por relacionamentos: informacoesPessoais
-        $query->whereHas('informacoesPessoais', function ($q) use ($request){   
+        $query->whereHas('informacoesPessoais', function ($q) use ($request){
 
-            
+
             // Aplica os filtros somente quando fornecidos
             // Filtro por nome - Busca pelo nome do candidato
             if($request->filled('nome')) {
@@ -90,66 +90,66 @@ class ResumeController extends Controller
 
             // Filtro por cpf - Busca pelo nome do candidato
             if($request->filled('cpf')) {
-                //$q->where('cpf', 'like', '%' . $request->cpf . '%');   
-                $this->resumeService->applyCpfFilter($q, $request->cpf);             
+                //$q->where('cpf', 'like', '%' . $request->cpf . '%');
+                $this->resumeService->applyCpfFilter($q, $request->cpf);
             }
 
              // Filtro gênero- múltiplas seleções
             if ($request->filled('sexo') && is_array($request->sexo)) {
                 $opcoes = array_filter($request->sexo); // Remove valores vazios
-                
+
                 if (!empty($opcoes)) {
-                    $q->whereIn('sexo', $opcoes);                    
+                    $q->whereIn('sexo', $opcoes);
                 }
             }
 
              // Filtro cnh- múltiplas seleções
             if ($request->filled('cnh') && is_array($request->cnh)) {
                 $opcoes = array_filter($request->cnh); // Remove valores vazios
-                
+
                 if (!empty($opcoes)) {
-                    $q->whereIn('cnh', $opcoes);                   
+                    $q->whereIn('cnh', $opcoes);
                 }
             }
 
             // Filtro Reservista- múltiplas seleções
             if ($request->filled('reservista') && is_array($request->reservista)) {
                 $opcoes = array_filter($request->reservista); // Remove valores vazios
-                
+
                 if (!empty($opcoes)) {
-                    $q->whereIn('reservista', $opcoes);                      
+                    $q->whereIn('reservista', $opcoes);
                 }
             }
 
             if ($request->filled('foi_jovem_aprendiz') && is_array($request->foi_jovem_aprendiz)) {
                 $opcoes = array_filter($request->foi_jovem_aprendiz); // Remove valores vazios
-                
+
                 if (!empty($opcoes)) {
-                    $q->whereIn('foi_jovem_aprendiz', $opcoes);                    
+                    $q->whereIn('foi_jovem_aprendiz', $opcoes);
                 }
             }
 
             // Filtro Idade minima
             if ($request->filled('min_age')) {
                 $q->whereNotNull('data_nascimento')
-                    ->whereRaw('TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) >= ?', [$request->min_age]);                
+                    ->whereRaw('TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) >= ?', [$request->min_age]);
             }
 
             // Filtro Idade maxima
             if ($request->filled('max_age')) {
                 $q->whereNotNull('data_nascimento')
-                    ->whereRaw('TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) <= ?', [$request->max_age]);                
+                    ->whereRaw('TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) <= ?', [$request->max_age]);
             }
-        
-        });  
+
+        });
         // Filtro PCD - múltiplas seleções
         if ($request->filled('pcd') && is_array($request->pcd)) {
             $pcdSelecionados = array_filter($request->pcd);
-            
+
             if (!empty($pcdSelecionados)) {
                 $query->whereHas('informacoesPessoais', function($q) use ($pcdSelecionados) {
                     $q->where(function($subQuery) use ($pcdSelecionados) {
-                        
+
                         // Verifica se "Não" foi selecionado
                         if (in_array('Não', $pcdSelecionados)) {
                             $subQuery->where(function($naoQuery) {
@@ -158,7 +158,7 @@ class ResumeController extends Controller
                                         ->orWhere('pcd', '');
                             });
                         }
-                        
+
                         // Adiciona as outras opções selecionadas (Sim, com laudo. / Sim, sem laudo.)
                         $outrasOpcoes = array_diff($pcdSelecionados, ['Não']);
                         if (!empty($outrasOpcoes)) {
@@ -174,40 +174,40 @@ class ResumeController extends Controller
                 });
             }
         }
-        
-        
+
+
         // Agrupando filtros por relacionamentos: escolaridade
         $query->whereHas('escolaridade', function ($q) use ($request){
-            
+
             // Filtro Informatica - múltiplas seleções
             if ($request->filled('informatica') && is_array($request->informatica)) {
                 $opcoes = array_filter($request->informatica); // Remove valores vazios
-                
+
                 if (!empty($opcoes)) {
-                    $q->whereIn('informatica', $opcoes);                     
+                    $q->whereIn('informatica', $opcoes);
                 }
             }
 
             // Filtro Ingles - múltiplas seleções
             if ($request->filled('ingles') && is_array($request->ingles)) {
                 $opcoes = array_filter($request->ingles); // Remove valores vazios
-                
+
                 if (!empty($opcoes)) {
-                    $q->whereIn('ingles', $opcoes);                     
+                    $q->whereIn('ingles', $opcoes);
                 }
-            }   
-        });  
+            }
+        });
 
         // Agrupando filtros por relacionamentos: contato
         $query->whereHas('contato', function ($q) use ($request){
-            
+
            // Filtro Cidade - múltiplas seleções
             if ($request->filled('cidade') && is_array($request->cidade)) {
                 $opcoes = array_filter($request->cidade); // Remove valores vazios
-                
+
                 if (!empty($opcoes)) {
-                    $q->whereIn('cidade', $opcoes);  
-                   
+                    $q->whereIn('cidade', $opcoes);
+
                 }
             }
 
@@ -221,37 +221,37 @@ class ResumeController extends Controller
             //dd($request->celular);
             if ($request->filled('celular') && strlen($request->celular) >= 4) {
                 $ultimosDigitos = substr($request->celular, -4);
-                $q->where('telefone_celular', 'like', '%' . $ultimosDigitos);               
-                
+                $q->where('telefone_celular', 'like', '%' . $ultimosDigitos);
+
             }
 
             // Filtro Telefone Contato
 
             if ($request->filled('telefone_contato') && strlen($request->telefone_contato) >= 4) {
                 $ultimosDigitos = substr($request->telefone_contato, -4);
-                $q->where('telefone_residencial', 'like', '%' . $ultimosDigitos);                
-                
+                $q->where('telefone_residencial', 'like', '%' . $ultimosDigitos);
+
             }
-        });  
-        
-       
+        });
+
+
         // Filtro Status - múltiplas seleções
         if ($request->filled('status') && is_array($request->status)) {
             $statusSelecionados = array_filter($request->status, function($item) {
                 return $item !== '' && $item !== 'Todos';
             });
-            
+
             if (!empty($statusSelecionados)) {
                 $query->whereIn('status', $statusSelecionados);
             }
         }
-      
+
 
         if ($request->filled('escolaridade') && is_array($request->escolaridade)) {
-            $escolaridades = array_filter($request->escolaridade, fn($item) => 
+            $escolaridades = array_filter($request->escolaridade, fn($item) =>
                 $item !== '' && $item !== 'Todos'
             );
-            
+
             if (!empty($escolaridades)) {
                 $query->whereHas('escolaridade', function($q) use ($escolaridades) {
                     // Remove as validações daqui
@@ -269,7 +269,7 @@ class ResumeController extends Controller
                 });
             }
         }
-        
+
         // Filtro Vagas Interesse
         if ($request->filled('vagas_interesse')) {
             foreach ($request->vagas_interesse as $vaga) {
@@ -307,7 +307,7 @@ class ResumeController extends Controller
 
         if($request->filled('data_max')){
             $query->whereDate('created_at', '<=', $request->data_max);
-        } 
+        }
 
         //Filtro Já foi jovem aprendiz
         if ($request->filled('cras') && $request->cras !== "cras") {
@@ -316,7 +316,7 @@ class ResumeController extends Controller
 
         //NOVA FUNCIONALIDADE: Filtro de Ordenação
         $ordem = $request->get('ordem', 'desc'); // Por padrão será 'desc' (mais recente primeiro)
-        
+
         // Validar se a ordem é válida
         if (!in_array($ordem, ['asc', 'desc'])) {
             $ordem = 'desc';
@@ -325,12 +325,12 @@ class ResumeController extends Controller
         $query->orderBy('created_at', $ordem);
 
         // Implementar paginação
-        $resumes = $query->paginate(50)->appends($request->all()); // Ajustar o numero coforme necessário.  
-        
+        $resumes = $query->paginate(50)->appends($request->all()); // Ajustar o numero coforme necessário.
+
         $cidades = $this->cidadeService->getCidades();
-                    
+
         return view('resumes.index', compact('resumes', 'form_busca','ordem', 'cidades'));
-            
+
     }
 
     public function show(Resume $resume)
@@ -362,7 +362,7 @@ class ResumeController extends Controller
 
     public function store(StoreResumeRequest $request)
     {
-        
+
 
        // dd($request->all());
 
@@ -472,7 +472,7 @@ class ResumeController extends Controller
             'tecnico_completo_curso' => $data['tecnico_completo_curso'] ?? '', // Criar coluna no BD
             'tecnico_completo_instituicao' => $data['tecnico_completo_instituicao'] ?? '', // Criar coluna no BD
             'tecnico_completo_data_conclusao' => $data['tecnico_completo_data_conclusao'] ?? '', // Criar coluna no BD
-            
+
              // Superior Cursando
             'superior_curso' => $data['superior_curso'] ?? '', // Curso
             'superior_termo' => $data['superior_termo'] ?? '', // usado para campo semestre. Criar no BD
@@ -510,7 +510,6 @@ class ResumeController extends Controller
 
     public function edit(Resume $resume)
     {
-
         $user = Auth::user();
         $resume->load(['jobs', 'selections']);
 
@@ -532,15 +531,23 @@ class ResumeController extends Controller
         //     });
         // }
 
-        // $jobs = $jobsQuery->get();   
-        $jobs = Job::where('status', 'aberta')->get();        
+        // $jobs = $jobsQuery->get();
+        $jobs = Job::where('status', 'aberta')->get();
 
         $jobsAssociados = $resume->jobs;
 
 
         //dd($jobs);
 
-        return view('resumes.edit', compact('resume', 'jobs'));
+        $academicData = $this->resumeService->prepareAcademicDataForView($resume);
+
+
+
+         return view('resumes.edit', [
+            'resume' => $resume,
+            'jobs' => $jobs, // ou $jobsAssociados, conforme seu código
+            'academicData' => $academicData // Dados mastigados
+        ]);
     }
 
     public function update(UpdateResumeRequest $request, Resume $resume, ResumeService $service)
@@ -558,7 +565,7 @@ class ResumeController extends Controller
     public function destroy(Resume $resume)
     {
         //dd($resume);
-        
+
         // if (Auth::user()->role !== 'admin') {
         //     return redirect()->back()->with('danger', 'Permissão negada! Entre em contato com Adminstrador.');
         // }
@@ -616,7 +623,7 @@ class ResumeController extends Controller
 
         // Removendo associaç~eos com jobs
         $resume->jobs()->detach();
-    
+
         $resume->delete();
 
         // Salvando Log de criação
@@ -688,7 +695,7 @@ class ResumeController extends Controller
         return redirect()->back()->with('success', 'Observação cadastrada com sucesso!');
     }
 
-    public function updateStatus(Request $request, $id) 
+    public function updateStatus(Request $request, $id)
     {
         //dd($request->all());
         $resume = Resume::findOrfail($id);
@@ -716,7 +723,7 @@ class ResumeController extends Controller
      * Opção 3: Direto da tabela ContactResume (mais simples ainda)
      */
     public function getCidadesFromContact()
-    {        
+    {
         $cidades = ContactResume::whereNotNull('cidade')
             ->where('cidade', '!=', '')
             ->distinct()
@@ -736,23 +743,23 @@ class ResumeController extends Controller
     private function normalizarCidade($cidade)
     {
         if (!$cidade) return null;
-        
+
         // Remove espaços extras e quebras de linha
         $cidade = trim($cidade);
-        
+
         if (empty($cidade)) return null;
-        
+
         // Separa por espaços
         $parts = explode(' ', $cidade);
         $normalized = [];
-        
+
         foreach ($parts as $part) {
             $part = trim($part);
             if (!empty($part)) {
                 $normalized[] = ucfirst(strtolower($part));
             }
         }
-        
+
         return implode(' ', $normalized);
     }
 

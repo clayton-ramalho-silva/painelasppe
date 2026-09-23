@@ -1,0 +1,19 @@
+ast@nostromo:~$ ssh flav6095@162.241.203.66
+(flav6095@162.241.203.66) Password: @ASPPE25$
+
+# 1. Acesse o diretório do projeto:  
+cd ~/public_html/seu-site.com.br  
+
+# 2. Atualize o código (sempre na branch main):  
+git stash                         # Guarda alterações não commitadas (ex: .env)  
+git fetch origin                  # Busca as atualizações  
+git reset --hard origin/main      # Alinha exatamente com o GitHub  
+
+# 3. Restaure configurações e dependências:  
+cp .env.backup .env               # Restaura seu .env (se necessário)  
+composer install --no-dev         # Instala dependências  
+php artisan migrate --force       # Roda migrações (se houver)  
+php artisan optimize:clear        # Limpa cache  
+
+# 4. Verifique:  
+git log --oneline -n 3            # Confirma os últimos commits  

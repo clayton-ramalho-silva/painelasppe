@@ -5,10 +5,10 @@
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{{ route('resumes.index') }}">Currículos</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Editar Currículo: {{ $resume->informacoesPessoais->nome }} </li>          
+          <li class="breadcrumb-item active" aria-current="page">Editar Currículo: {{ $resume->informacoesPessoais->nome }} </li>
         </ol>
       </nav>
-      
+
 
       {{--Componente Botão voltar --}}
       @php
@@ -19,18 +19,18 @@
       <x-voltar :rota="$rota"/>
       {{--Componente Botão voltar --}}
 
-      
-</section>   
+
+</section>
 
 {{-- Botões Ação --}}
 <section class="mb-5">
     <div class="container">
         <div class="row">
             <div class="col d-flex">
-                @if (!$resume->interview()->exists())         
+                @if (!$resume->interview()->exists())
                     <!--<div class="box-entrevistar"> -->
-                        <a href="{{ route('interviews.interviewResume', $resume) }}#form-interview"  class="link-entrevista d-flex align-items-center" >Iniciar Entrevista</a>       
-                    <!--</div>-->   
+                        <a href="{{ route('interviews.interviewResume', $resume) }}#form-interview"  class="link-entrevista d-flex align-items-center" >Iniciar Entrevista</a>
+                    <!--</div>-->
                  @endif
             </div>
             @if(!$resume->jobs()->exists())
@@ -42,16 +42,16 @@
                 @include('components.modal-associar-vaga')
             </div>
             @endif
-            
-            
+
+
             {{-- @if (Auth::user()->role === 'admin') --}}
             <div class="col">
 
                 <form action="{{ route('resumes.destroy', $resume) }}" method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn-padrao btn-cancelar ms-3 d-flex align-items-center justify-content-center" 
-                            onclick="return confirm('Tem certeza que deseja deletar este currículo? Esta ação não pode ser desfeita.')" 
+                    <button type="submit" class="btn-padrao btn-cancelar ms-3 d-flex align-items-center justify-content-center"
+                            onclick="return confirm('Tem certeza que deseja deletar este currículo? Esta ação não pode ser desfeita.')"
                             id="delete-resume">
                         Deletar Currículo
                     </button>
@@ -67,7 +67,7 @@
 
 
 <section class="sessao">
-    
+
     {{-- Sessão Edição Currículo --}}
     <article class="f1 container-form-create">
 
@@ -79,31 +79,31 @@
                         <div class="col-12 d-flex justify-content-between mb-4">
                             <h4 class="fw-normal">Cadastro de Currículo</h4>
 
-                            
+
                             <p class="fw-bold">Data do cadastro: {{ $resume->created_at ? \Carbon\Carbon::parse($resume->created_at)->format('d/m/Y') : '—' }}</p>
                         </div>
-                        
+
                     </div>
-                    
+
                      {{-- Botão mudar status --}}
                      {{-- {{ dd($resume)}} --}}
-                            
-                    <x-status-button :resume="$resume" :status="$resume->status" />                                           
-                            {{-- Fim Botão mudar status --}} 
+
+                    <x-status-button :resume="$resume" :status="$resume->status" />
+                            {{-- Fim Botão mudar status --}}
                     {{-- Botão mudar status --}}
                     {{-- <div class="col-9 bloco-ativo d-flex mb-3">
                         <h5>Status</h5>
-                                                            
+
                             <form id="statusForm" action="{{ route('resumes.updateStatus', $resume->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
-                                
+
                                 <!-- Campo hidden para armazenar o status -->
                                 <input type="hidden" name="status" id="statusInput" value="{{ $resume->status }}">
-                                
+
                                 <div class="btn-group">
                                     <!-- Botão principal que mostra o status atual -->
-                                    <button type="button" class="btn 
+                                    <button type="button" class="btn
                                         @if($resume->status == 'ativo') status-ativo
                                         @elseif($resume->status == 'inativo') status-inativo
                                         @elseif($resume->status == 'processo') status-processo
@@ -111,64 +111,65 @@
                                         @endif">
                                         {{ ucfirst($resume->status) }}
                                     </button>
-                                    
+
                                     <!-- Botão do dropdown -->
-                                    <button type="button" id="btn-dropdown-toggle" class="btn 
+                                    <button type="button" id="btn-dropdown-toggle" class="btn
                                         @if($resume->status == 'ativo') status-ativo
                                         @elseif($resume->status == 'inativo') status-inativo
                                         @elseif($resume->status == 'processo') status-processo
                                         @elseif($resume->status == 'contratado') status-contratado
                                         @endif
-                                        dropdown-toggle dropdown-toggle-split" 
+                                        dropdown-toggle dropdown-toggle-split"
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         <span class="visually-hidden">Toggle Dropdown</span>
                                         <svg style="width: 13px;{{ $resume->status == 'processo'? 'fill:#000' : 'fill:#fff' }}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 386.257 386.257" style="enable-background:new 0 0 386.257 386.257;" xml:space="preserve"><polygon points="0,96.879 193.129,289.379 386.257,96.879 "></polygon><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>                                            </button>
-                                    
+
                                     <!-- Itens do dropdown -->
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="dropdown-item @if($resume->status == 'ativo') active status-ativo @endif" 
+                                            <a class="dropdown-item @if($resume->status == 'ativo') active status-ativo @endif"
                                             href="#" onclick="updateStatus('ativo')">Ativo</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item @if($resume->status == 'inativo') active status-inativo @endif" 
+                                            <a class="dropdown-item @if($resume->status == 'inativo') active status-inativo @endif"
                                             href="#" onclick="updateStatus('inativo')">Inativo</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item @if($resume->status == 'processo') active status-processo @endif" 
+                                            <a class="dropdown-item @if($resume->status == 'processo') active status-processo @endif"
                                             href="#" onclick="updateStatus('processo')">Em processo</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item @if($resume->status == 'contratado') active status-contratado @endif" 
+                                            <a class="dropdown-item @if($resume->status == 'contratado') active status-contratado @endif"
                                             href="#" onclick="updateStatus('contratado')">Contratado</a>
                                         </li>
                                     </ul>
                                 </div>
                             </form>
-                        
-                    </div>   
+
+                    </div>
                      --}}
                     {{-- Fim Botão mudar status --}}
-                   
-        
-                    {{-- Formulário Edição Currículo --}}   
+
+
+                    {{-- Formulário Edição Currículo --}}
                     <form class="form-padrao" id="form-companies-create" action="{{ route('resumes.update', $resume) }}" method="post" enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')                 
-                        <x-resume-edit-form 
-                            :resume="$resume"                            
-                            :editResume="true" 
+                        @method('PUT')
+                        <x-resume-edit-form
+                            :resume="$resume"
+                            :academicData="$academicData"
+                            :editResume="true"
                         />
                     </form>
                     {{-- Fim Formulário Edição Currículo --}}
-                   
+
                 </div>
-                
+
                  {{-- Formulário Observação Currículo --}}
-                <div class="col-12 border-top py-0 ps-5 form-r bloco-obs pt-5">                   
-        
+                <div class="col-12 border-top py-0 ps-5 form-r bloco-obs pt-5">
+
                     <div class="row mb-3 mt-3 bloco-observacoes">
-        
+
                         <div class="card">
                             <div class="card-header bg-transparent">
                             <p>Observações:</p>
@@ -181,32 +182,32 @@
                                 @else
                                     Nenhuma observação.
                                 @endif
-        
+
                             </div>
                         </div>
-        
+
                     </div>
-        
-        
+
+
                     <div class="row">
-        
+
                         <form class="form-padrao d-flex justify-content-center" action="{{ route('resumes.storeHistory', $resume->id)}}" method="post">
-        
+
                             @csrf
                             <div class="floatlabel-wrapper form-textarea">
                                 <label for="beneficios" class="label-floatlabel" class="form-label floatlabel-label">Escreva sua observação</label>
                                 <textarea name="observacao" id="observacao" class="form-control"></textarea>
                             </div>
                             <button class="btn-padrao btn-cadastrar mt-3" type="submit">Salvar</button>
-        
+
                         </form>
-        
+
                     </div>
-        
+
                 </div>
                 {{-- Fim Formulário Observação Currículo --}}
             </div>
-            
+
         </div>
 
     </article>
@@ -217,13 +218,12 @@
 
     {{-- Fim Componente Tabela Vagas Associadas --}}
 
-   
+
     {{-- Componente Tabela Processos Seletivos --}}
     <x-resume-selections-table :resume="$resume" />
-    {{-- Fim Componente Tabela Processos Seletivos --}}  
+    {{-- Fim Componente Tabela Processos Seletivos --}}
 
 </section>
-
 
 @endsection
 
@@ -285,6 +285,39 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("preview-doc").style.display = "block";
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Função genérica para toggle
+    function toggleVisibility(checkboxId, containerSelector) {
+        const checkbox = document.getElementById(checkboxId);
+        const container = document.querySelector(containerSelector);
+
+        if (checkbox && container) {
+            // Define o estado inicial
+            container.style.display = checkbox.checked ? 'block' : 'none';
+
+            // Adiciona o listener
+            checkbox.addEventListener('change', function() {
+                container.style.display = this.checked ? 'block' : 'none';
+            });
+        }
+    }
+
+    // Aplica para cada caso
+    toggleVisibility('escolaridade5', '#fundamentalCursandoContainer');
+    toggleVisibility('escolaridade1', '#medioCursandoContainer'); // Médio Cursando
+    toggleVisibility('escolaridade6', '#tecnicoCompletoContainer');
+    toggleVisibility('escolaridade7', '#tecnicoCursandoContainer');
+    toggleVisibility('escolaridade8', '#superiorCompletoContainer');
+    toggleVisibility('escolaridade9', '#superiorCursandoContainer');
+    toggleVisibility('escolaridade3', '.check-escolaridade'); // Outro
+});
+
+
+
+
+
+
 
 $('#uf').select2({
     placeholder: "Selecione",
@@ -469,20 +502,20 @@ $(document).find('.select2').each(function(){
 // Atualização de status
 function updateStatus(newStatus) {
     const statusInput = document.getElementById('statusInput');
-    
+
     // Se for mudar para inativo, pede confirmação especial
     if (newStatus === 'inativo') {
         if (!confirm("Se o currículo estiver associado a alguma vaga, será automaticamente desassociado. Deseja continuar?")) {
             return false; // Cancela se o usuário não confirmar
         }
     }
-    
+
     // Atualiza o valor do campo hidden
     statusInput.value = newStatus;
-    
+
     // Envia o formulário
     document.getElementById('statusForm').submit();
-    
+
     return true;
 }
 
@@ -513,7 +546,7 @@ function updateStatus(newStatus) {
 
 .link-entrevista:hover{
     background-color: #ffab2e;
-    color: #fff;    
+    color: #fff;
 }
 
 .table-container.lista-processos-seletivos .col4,
@@ -527,25 +560,25 @@ function updateStatus(newStatus) {
 
 .form-padrao .bloco-obs .bloco-observacoes .card-text{
     font-size: 15px !important;
-    color: #333 !important; 
+    color: #333 !important;
     font-weight: 400 !important;
 }
 
 .form-padrao .bloco-obs .bloco-observacoes .card-text b{
     font-size: 13px !important;
-    color: #287FC0 !important; 
+    color: #287FC0 !important;
     font-weight: bold !important;
 }
 
 
 .status-ativo,
 .status-ativo:hover{
-color: #fff;    
+color: #fff;
 background-color: gray !important;
 }
 
 .status-ativo.dropdown-toggle-split:hover{
-color: #fff;    
+color: #fff;
 background-color: rgb(94, 94, 94) !important;
 }
 
@@ -553,34 +586,34 @@ background-color: rgb(94, 94, 94) !important;
 
 .status-processo,
 .status-processo:hover {
-    color: #000; 
+    color: #000;
 background-color: yellow !important;
 }
 .status-processo.dropdown-toggle-split:hover{
-color: #fff;    
+color: #fff;
 background-color: rgb(228, 228, 0) !important;
 }
 
 .status-contratado,
 .status-contratado:hover{
-    color: #fff; 
+    color: #fff;
 background-color: green !important;
 }
 
 .status-contratado.dropdown-toggle-split:hover{
-color: #fff;    
+color: #fff;
 background-color: rgb(0, 105, 0) !important;
 }
 
 
 .status-inativo,
 .status-inativo:hover{
-    color: #fff; 
+    color: #fff;
     background-color: red !important;
 }
 
 .status-contratado.dropdown-toggle-split:hover{
-color: #fff;    
+color: #fff;
 background-color: rgb(225, 0, 0) !important;
 }
 
