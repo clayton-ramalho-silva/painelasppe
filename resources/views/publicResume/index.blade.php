@@ -25,7 +25,7 @@
     .file-input {
         display: none;
     }
-    
+
     /* Estiliza o botão */
     .file-label {
         display: inline-block;
@@ -37,25 +37,25 @@
         cursor: pointer;
         transition: background 0.3s;
     }
-    
+
     /* Efeito hover */
     .file-label:hover {
         background-color: #0056b3;
     }
-    
+
     /* Estiliza o texto do nome do arquivo */
     .file-name {
         margin-left: 10px;
         font-size: 14px;
         color: #333;
     }
-    
+
     /* Estiliza a prévia da imagem */
     .preview-container {
         text-align: center;
         margin-top: 15px;
     }
-    
+
     .preview-image {
         display: block;
         max-width: 200px;
@@ -66,7 +66,7 @@
         border: 2px solid #ddd;
         box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     }
-    
+
     /* Estilo para documentos */
     .preview-doc {
         text-align: center;
@@ -74,41 +74,41 @@
         color: #333;
         margin-top: 10px;
     }
-    
+
     .btn-select-file{
         background-color: gray;
     }
-    
+
     .btn-select-file:hover{
         background-color: #a7a7a7;
     }
-    
+
     /*Botãos submit e cancelar*/
     .btn-cadastrar{
         background-color: #0056b3;
         padding: 10px 50px;
     }
-    
+
     .btn-cadastrar:hover{
         background-color: #046dde;
     }
-    
-    
+
+
             /*Cabeçario*/
     .breadcrumb-item{
         font-size: 23px;
         font-weight: 500;
     }
-    
+
     .breadcrumb-item a{
-    
+
         color: grey !important;
     }
-    
+
     .breadcrumb-item.active{
         color: #009cff !important;
     }
-    
+
     article.container-form-create{
         box-shadow: none;
         padding: 0;
@@ -133,14 +133,14 @@
         justify-content: center;
         width: 100%;
     }
-    
+
     .container-logo .logo{
         font-size: 0;
     }
 
     .header p{
         width: 100%;
-        text-align: center;        
+        text-align: center;
     }
 
     #bloco-submit-mobile{
@@ -150,14 +150,14 @@
     #bloco-submit-desktop{
         display: flex;
     }
-    
+
     .label-autorizacao{
         font-size: 13px;
         letter-spacing: 1px;
         margin-top: 3px;
         font-weight: 500;
     }
-    
+
     .titulo-autorizacao{
         font-size: 13px;
         font-weight: bold;
@@ -174,7 +174,7 @@
     }
 
     /* Estilos para dispositivos móveis */
-    
+
 
 
 
@@ -205,7 +205,7 @@
             padding-left: 0 !important;
         }
 
-       
+
     }
 </style>
 
@@ -256,23 +256,23 @@
             <a href="https://painelasppe.com.br/cadastro-curriculo" class="logo">ASPPE - Sistema</a>
 
         </div>
-        <p class="mb-2 mt-3">Cadastre seu currículo.</p> 
+        <p class="mb-2 mt-3">Cadastre seu currículo.</p>
         <p>Entraremos em contato assim que encontrarmos a vaga ideal para você.</p>
     </div>
     <main>
         <section class="sessao">
-    
+
             <article class="f1 container-form-create">
-        
+
                 <div class="container">
-        
+
                     <h4 class="fw-normal mb-4">Cadastro de Currículo</h4>
-        
+
                     <form class="form-padrao" id="form-companies-create" action="{{ route('publicResume.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-        
-                            
+
+
                             <div class="col-9 py-0 pe-5 form-l">
 
                                 <div class="row">
@@ -298,7 +298,7 @@
                                             <input type="text" placeholder="RG" class="floatlabel form-control" id="rg" name="rg" value="{{ old('rg')}}" >
                                             @error('rg') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
-                                    </div>   
+                                    </div>
 
                                     <!-- CNH -->
                                     <div class="col-6 form-campo">
@@ -310,7 +310,7 @@
                                                     <option value="Sim"  {{ old('cnh') == 'Sim' ? 'selected' : ''}}> Sim</option>
                                                     <option value="Não"  {{ old('cnh') == 'Não' ? 'selected' : ''}}> Não</option>
                                                     <option value="Em andamento"  {{ old('cnh') == 'Em andamento' ? 'selected' : ''}}> Em andamento</option>
-                                                </select>                                        
+                                                </select>
                                                 @error('cnh') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                             </div>
                                         </div>
@@ -344,11 +344,11 @@
                                                 @error('data_nascimento') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                             </div>
                                         </div>
-                                    </div>                                             
+                                    </div>
 
                                     <!-- Nacionalidade teste -->
                                     @php
-                                        $paises = getPaises();                                
+                                        $paises = getPaises();
                                     @endphp
                                     <div class="col-6 form-campo">
                                         <div class="mb-3">
@@ -357,7 +357,7 @@
                                                 <select name="nacionalidade" id="nacionalidade" class="form-select active-floatlabel" required>
                                                     <option></option>
                                                     @foreach ($paises as $pais)
-                                                        <option value="{{ $pais }}" {{ old('nacionalidade') ==  "$pais"  ? 'selected' : ''}}> {{ $pais }}</option>                                                                                        
+                                                        <option value="{{ $pais }}" {{ old('nacionalidade') ==  "$pais"  ? 'selected' : ''}}> {{ $pais }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('nacionalidade') <div class="alert alert-danger">{{ $message }}</div> @enderror
@@ -375,7 +375,7 @@
                                                     <option value="Solteiro" {{ old('estado_civil') == 'Solteiro' ? 'selected' : ''}}> Solteiro</option>
                                                     <option value="Casado" {{ old('estado_civil') == 'Casado' ? 'selected' : ''}}> Casado</option>
                                                     <option value="Divorciado" {{ old('estado_civil') == 'Divorciado' ? 'selected' : ''}}> Divorciado</option>
-                                                    <option value="Viúvo" {{ old('estado_civil') == 'Viúvo' ? 'selected' : ''}}> Viúvo</option>                                            
+                                                    <option value="Viúvo" {{ old('estado_civil') == 'Viúvo' ? 'selected' : ''}}> Viúvo</option>
                                                 </select>
                                                 @error('estado_civil') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                             </div>
@@ -391,12 +391,12 @@
                                                     <option></option>
                                                     <option value="Sim" {{ old('reservista') == 'Sim' ? 'selected' : ''}}> Sim</option>
                                                     <option value="Não" {{ old('reservista') == 'Não' ? 'selected' : ''}}> Não</option>
-                                                    <option value="Em andamento" {{ old('reservista') == 'Em andamento' ? 'selected' : ''}}> Em andamento</option>                                            
+                                                    <option value="Em andamento" {{ old('reservista') == 'Em andamento' ? 'selected' : ''}}> Em andamento</option>
                                                 </select>
                                                 @error('reservista') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                             </div>
                                         </div>
-                                    </div>                                    
+                                    </div>
 
                                     {{-- Possui Filhos? --}}
                                     <div class="col-4 form-campo">
@@ -438,7 +438,7 @@
                                                 <label for="sexo" class="label-floatlabel" class="form-label floatlabel-label">Gênero</label>
                                                 <select name="sexo" id="sexo" class="form-select active-floatlabel" required>
                                                     <option></option>
-                                                    <option value="Mulher" {{ old('sexo') == 'Mulher' ? 'selected' : ''}}> Feminino</option>                                            
+                                                    <option value="Mulher" {{ old('sexo') == 'Mulher' ? 'selected' : ''}}> Feminino</option>
                                                     <option value="Homem" {{ old('sexo') == 'Homem' ? 'selected' : ''}}> Masculino</option>
                                                     <option value="Outro" {{ old('sexo') == 'Outro' ? 'selected' : ''}}> Outro</option>
                                                 </select>
@@ -455,7 +455,7 @@
                                                 @error('sexo_outro') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
 
                                     {{-- PCD  --}}
                                     <div class="col-6 form-campo">
@@ -481,7 +481,7 @@
                                                 @error('pcd_sim') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                             </div>
                                         </div>
-                                    </div>                     
+                                    </div>
 
                                     <h4 class="fw-normal mb-4 mt-4">Endereço</h4>
 
@@ -540,7 +540,7 @@
                                             @error('uf') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
-                                
+
                                     <h4 class="fw-normal mb-4 mt-4">Informações Contato</h4>
 
                                     <div class="col-6 form-campo">
@@ -562,7 +562,7 @@
                                             <input type="text" placeholder="LinkedIn (opcional)" class="floatlabel form-control" id="linkedin" value="{{ old('linkedin')}}" name="linkedin">
                                             @error('linkedin') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
-                                    </div> 
+                                    </div>
 
                                     <div class="col-4 form-campo">
                                         <div class="mb-3">
@@ -593,20 +593,20 @@
                                             <label for="email" class="form-label">Em quais vagas você está interessado?</label>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="vagas_interesse2" value="Administrativo" name="vagas_interesse[]"
-                                                @if(old('vagas_interesse') && in_array('Administrativo', old('vagas_interesse'))) checked @endif>                                        
+                                                @if(old('vagas_interesse') && in_array('Administrativo', old('vagas_interesse'))) checked @endif>
                                                 <label class="form-check-label" for="vagas_interesse2">
                                                     Administrativo
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="vagas_interesse5" value="Atendente de Lojas e Mercados (Comércio & Varejo)" name="vagas_interesse[]" 
-                                                @if(old('vagas_interesse') && in_array('Atendente de Lojas e Mercados (Comércio & Varejo)', old('vagas_interesse'))) checked @endif>                                        
+                                                <input class="form-check-input" type="checkbox" id="vagas_interesse5" value="Atendente de Lojas e Mercados (Comércio & Varejo)" name="vagas_interesse[]"
+                                                @if(old('vagas_interesse') && in_array('Atendente de Lojas e Mercados (Comércio & Varejo)', old('vagas_interesse'))) checked @endif>
                                                 <label class="form-check-label" for="vagas_interesse5">
                                                     Atendente de Lojas e Mercados
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="vagas_interesse3" value="Camareiro(a) de Hotel" name="vagas_interesse[]" 
+                                                <input class="form-check-input" type="checkbox" id="vagas_interesse3" value="Camareiro(a) de Hotel" name="vagas_interesse[]"
                                                 @if(old('vagas_interesse') && in_array('Camareiro(a) de Hotel', old('vagas_interesse'))) checked @endif>
                                                 <label class="form-check-label" for="vagas_interesse3">
                                                     Camareiro(a)/Mensageiro em Hotéis
@@ -620,34 +620,34 @@
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="vagas_interesse1" value="Copa & Cozinha" name="vagas_interesse[]" 
+                                                <input class="form-check-input" type="checkbox" id="vagas_interesse1" value="Copa & Cozinha" name="vagas_interesse[]"
                                                 @if(old('vagas_interesse') && in_array('Copa & Cozinha', old('vagas_interesse'))) checked @endif>
                                                 <label class="form-check-label" for="vagas_interesse1">
                                                     Copa & Cozinha
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="vagas_interesse6" value="Construção e Reparos" name="vagas_interesse[]" 
+                                                <input class="form-check-input" type="checkbox" id="vagas_interesse6" value="Construção e Reparos" name="vagas_interesse[]"
                                                 @if(old('vagas_interesse') && in_array('Construção e Reparos', old('vagas_interesse'))) checked @endif>
                                                 <label class="form-check-label" for="vagas_interesse6">
                                                     Manutenção/Construção e Reparos
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="vagas_interesse4" value="Recepcionista" name="vagas_interesse[]" 
+                                                <input class="form-check-input" type="checkbox" id="vagas_interesse4" value="Recepcionista" name="vagas_interesse[]"
                                                 @if(old('vagas_interesse') && in_array('Recepcionista', old('vagas_interesse'))) checked @endif>
                                                 <label class="form-check-label" for="vagas_interesse4">
                                                     Recepção
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="vagas_interesse8" value="Garçom/Cumim" name="vagas_interesse[]" 
+                                                <input class="form-check-input" type="checkbox" id="vagas_interesse8" value="Garçom/Cumim" name="vagas_interesse[]"
                                                 @if(old('vagas_interesse') && in_array('Garçom/Cumim', old('vagas_interesse'))) checked @endif>
                                                 <label class="form-check-label" for="vagas_interesse8">
                                                     Garçom/Cumim
                                                 </label>
                                             </div>
-                                            
+
                                             @error('vagas_interesse') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
@@ -656,70 +656,70 @@
                                         <div class="mb-3 form-checkbox">
                                             <label for="telefone_residencial" class="form-label">Já possui alguma experiência profissional?</label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional3" value="Administrativo" name="experiencia_profissional[]" 
+                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional3" value="Administrativo" name="experiencia_profissional[]"
                                                 @if(old('experiencia_profissional') && in_array('Administrativo', old('experiencia_profissional'))) checked @endif>
                                                 <label class="form-check-label" for="experiencia_profissional3">
                                                     Administrativo
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional6" value="Atendente de Lojas e Mercados (Comércio & Varejo)" name="experiencia_profissional[]" 
+                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional6" value="Atendente de Lojas e Mercados (Comércio & Varejo)" name="experiencia_profissional[]"
                                                 @if(old('experiencia_profissional') && in_array('Atendente de Lojas e Mercados (Comércio & Varejo)', old('experiencia_profissional'))) checked @endif>
                                                 <label class="form-check-label" for="experiencia_profissional6">
                                                     Atendente de Lojas e Mercados
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional4" value="Camareiro(a) de Hotel" name="experiencia_profissional[]" 
+                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional4" value="Camareiro(a) de Hotel" name="experiencia_profissional[]"
                                                 @if(old('experiencia_profissional') && in_array('Camareiro(a) de Hotel', old('experiencia_profissional'))) checked @endif>
                                                 <label class="form-check-label" for="experiencia_profissional4">
                                                     Camareiro(a)/Mensageiro em Hotéis
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional9" value="Conservação e Limpeza" name="experiencia_profissional[]" 
+                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional9" value="Conservação e Limpeza" name="experiencia_profissional[]"
                                                 @if(old('experiencia_profissional') && in_array('Conservação e Limpeza', old('experiencia_profissional'))) checked @endif>
                                                 <label class="form-check-label" for="experiencia_profissional9">
                                                     Conservação e Limpeza
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional2" value="Copa & Cozinha" name="experiencia_profissional[]" 
+                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional2" value="Copa & Cozinha" name="experiencia_profissional[]"
                                                 @if(old('experiencia_profissional') && in_array('Copa & Cozinha', old('experiencia_profissional'))) checked @endif>
                                                 <label class="form-check-label" for="experiencia_profissional2">
                                                     Copa & Cozinha
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional8" value="Construção e Reparos" name="experiencia_profissional[]" 
+                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional8" value="Construção e Reparos" name="experiencia_profissional[]"
                                                 @if(old('experiencia_profissional') && in_array('Construção e Reparos', old('experiencia_profissional'))) checked @endif>
                                                 <label class="form-check-label" for="experiencia_profissional8">
                                                     Manutenção/Construção e Reparos
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional5" value="Recepcionista" name="experiencia_profissional[]" 
+                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional5" value="Recepcionista" name="experiencia_profissional[]"
                                                 @if(old('experiencia_profissional') && in_array('Recepcionista', old('experiencia_profissional'))) checked @endif>
                                                 <label class="form-check-label" for="experiencia_profissional5">
                                                     Recepção
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional7" value="Garçon/Cumim" name="experiencia_profissional[]" 
+                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional7" value="Garçon/Cumim" name="experiencia_profissional[]"
                                                 @if(old('experiencia_profissional') && in_array('Garçon/Cumim', old('experiencia_profissional'))) checked @endif>
                                                 <label class="form-check-label" for="experiencia_profissional7">
                                                     Garçom/Cumim
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional1" value="Nenhuma por enquanto" name="experiencia_profissional[]" 
+                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional1" value="Nenhuma por enquanto" name="experiencia_profissional[]"
                                                 @if(old('experiencia_profissional') && in_array('Nenhuma por enquanto', old('experiencia_profissional'))) checked @endif>
                                                 <label class="form-check-label" for="experiencia_profissional1">
                                                     Nenhuma Experiencia Profissional
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional10" value="Outro" name="experiencia_profissional[]" 
+                                                <input class="form-check-input" type="checkbox" id="experiencia_profissional10" value="Outro" name="experiencia_profissional[]"
                                                 @if(old('experiencia_profissional') && in_array('Outro', old('experiencia_profissional'))) checked @endif>
                                                 <label class="form-check-label" for="experiencia_profissional10">
                                                     Outro
@@ -737,21 +737,21 @@
                                             <label for="telefone_celular" class="form-label">Formação/Escolaridade*
                                                 (Especifique no campo "OUTRO" caso tenha Ensino Superior, Técnico ou outro)</label>
                                                 <div class="form-check form-check">
-                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade4" value="Ensino Fundamental Completo" 
+                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade4" value="Ensino Fundamental Completo"
                                                     @if(old('escolaridade') && in_array('Ensino Fundamental Completo', old('escolaridade'))) checked @endif>
                                                     <label class="form-check-label" for="escolaridade4">
                                                         Ensino Fundamental Completo
                                                     </label>
                                                 </div>
                                                 <div class="form-check form-check">
-                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade5" value="Ensino Fundamental Cursando" 
+                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade5" value="Ensino Fundamental Cursando"
                                                     @if(old('escolaridade') && in_array('Ensino Fundamental Cursando', old('escolaridade'))) checked @endif>
                                                     <label class="form-check-label" for="escolaridade5">
                                                         Ensino Fundamental Cursando
                                                     </label>
                                                 </div>
                                                 {{-- Campos ocultos caso checkbox Fundamental Cursando seja escolhido --}}
-                                        
+
                                                 <div class="col-12 form-campo check-fundamental-cursando" id="fundamentalCursandoContainer" style="display: none;">
                                                     <div class="mb-3">
                                                         <div class="floatlabel-wrapper">
@@ -761,7 +761,7 @@
                                                                 <option value="Manhã" {{ old('fundamental_periodo') == 'Manhã' ? 'selected' : ''}}>Manhã</option>
                                                                 <option value="Tarde" {{ old('fundamental_periodo') == 'Tarde' ? 'selected' : ''}}>Tarde</option>
                                                                 <option value="Noite" {{ old('fundamental_periodo') == 'Noite' ? 'selected' : ''}}>Noite</option>
-                                                                <option value="Integral" {{ old('fundamental_periodo') == 'Integral' ? 'selected' : ''}}>Integral</option>                                                                                                                
+                                                                <option value="Integral" {{ old('fundamental_periodo') == 'Integral' ? 'selected' : ''}}>Integral</option>
                                                             </select>
                                                             @error('fundamental_periodo') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                         </div>
@@ -777,7 +777,7 @@
                                                                 <option value="Presencial" {{ old('fundamental_modalidade') == 'Presencial' ? 'selected' : ''}}>Presencial</option>
                                                                 <option value="EAD" {{ old('fundamental_modalidade') == 'EAD' ? 'selected' : ''}}>EAD</option>
                                                                 <option value="Híbrido" {{ old('fundamental_modalidade') == 'Híbrido' ? 'selected' : ''}}>Híbrido</option>
-                                                                <option value="Outros" {{ old('fundamental_modalidade') == 'Outros' ? 'selected' : ''}}>Outros</option>                                                        
+                                                                <option value="Outros" {{ old('fundamental_modalidade') == 'Outros' ? 'selected' : ''}}>Outros</option>
                                                             </select>
                                                             @error('fundamental_modalidade') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                         </div>
@@ -786,21 +786,21 @@
 
                                                 {{-- Ensino Médio --}}
                                                 <div class="form-check form-check">
-                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade2" value="Ensino Médio Completo" 
+                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade2" value="Ensino Médio Completo"
                                                     @if(old('escolaridade') && in_array('Ensino Médio Completo', old('escolaridade'))) checked @endif>
                                                     <label class="form-check-label" for="escolaridade2">
                                                         Ensino Médio Completo
                                                     </label>
                                                 </div>
                                                 <div class="form-check form-check">
-                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade1" value="Ensino Médio Incompleto" 
+                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade1" value="Ensino Médio Incompleto"
                                                     @if(old('escolaridade') && in_array('Ensino Médio Incompleto', old('escolaridade'))) checked @endif>
                                                     <label class="form-check-label" for="escolaridade1">
                                                         Ensino Médio Cursando
                                                     </label>
                                                 </div>
                                                 {{-- Campos ocultos caso checkbox Medio Cursando seja escolhido --}}
-                                        
+
                                                 <div class="col-12 form-campo check-medio-cursando" id="medioCursandoContainer" style="display: none;">
                                                     <div class="mb-3">
                                                         <div class="floatlabel-wrapper">
@@ -810,7 +810,7 @@
                                                                 <option value="Manhã" {{ old('medio_periodo') == 'Manhã' ? 'selected' : ''}}>Manhã</option>
                                                                 <option value="Tarde" {{ old('medio_periodo') == 'Tarde' ? 'selected' : ''}}>Tarde</option>
                                                                 <option value="Noite" {{ old('medio_periodo') == 'Noite' ? 'selected' : ''}}>Noite</option>
-                                                                <option value="Integral" {{ old('medio_periodo') == 'Integral' ? 'selected' : ''}}>Integral</option>                                                                                                                
+                                                                <option value="Integral" {{ old('medio_periodo') == 'Integral' ? 'selected' : ''}}>Integral</option>
                                                             </select>
                                                             @error('medio_periodo') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                         </div>
@@ -826,7 +826,7 @@
                                                                 <option value="Presencial" {{ old('medio_modalidade') == 'Presencial' ? 'selected' : ''}}>Presencial</option>
                                                                 <option value="EAD" {{ old('medio_modalidade') == 'EAD' ? 'selected' : ''}}>EAD</option>
                                                                 <option value="Híbrido" {{ old('medio_modalidade') == 'Híbrido' ? 'selected' : ''}}>Híbrido</option>
-                                                                <option value="Outros" {{ old('medio_modalidade') == 'Outros' ? 'selected' : ''}}>Outros</option>                                                        
+                                                                <option value="Outros" {{ old('medio_modalidade') == 'Outros' ? 'selected' : ''}}>Outros</option>
                                                             </select>
                                                             @error('medio_modalidade') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                         </div>
@@ -835,7 +835,7 @@
 
                                                 {{-- Técnico Completo --}}
                                                 <div class="form-check form-check">
-                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade6" value="Ensino Técnico Completo" 
+                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade6" value="Ensino Técnico Completo"
                                                     @if(old('escolaridade') && in_array('Ensino Técnico Completo', old('escolaridade'))) checked @endif>
                                                     <label class="form-check-label" for="escolaridade6">
                                                         Ensino Técnico Completo
@@ -843,7 +843,7 @@
                                                 </div>
 
                                                 {{-- Campos ocultos caso checkbox Tecnico Completo seja escolhido --}}
-                                        
+
                                                 <div class="col-12 form-campo check-tecnico-completo" id="tecnicoCompletoContainer" style="display: none;">
                                                     <div class="mb-3">
                                                         <input  type="text" placeholder="Qual curso?" class="floatlabel form-control" id="tecnico_completo_curso" name="tecnico_completo_curso" value="{{ old('tecnico_completo_curso')}}">
@@ -853,12 +853,12 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <input  type="text" placeholder="Qual data de conclusão?" class="floatlabel form-control" id="tecnico_completo_data_conclusao" name="tecnico_completo_data_conclusao" value="{{ old('tecnico_completo_data_conclusao')}}">
-                                                    </div>                                                    
+                                                    </div>
                                                 </div>
 
                                                 {{-- Técnico Cursando --}}
                                                 <div class="form-check form-check">
-                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade7" value="Ensino Técnico Cursando" 
+                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade7" value="Ensino Técnico Cursando"
                                                     @if(old('escolaridade') && in_array('Ensino Técnico Cursando', old('escolaridade'))) checked @endif>
                                                     <label class="form-check-label" for="escolaridade7">
                                                         Ensino Técnico Cursando
@@ -866,7 +866,7 @@
                                                 </div>
 
                                                 {{-- Campos ocultos caso checkbox Tecnico Cursando seja escolhido --}}
-                                        
+
                                                 <div class="col-12 form-campo check-tecnico-cursando" id="tecnicoCursandoContainer" style="display: none;">
                                                     <div class="mb-3">
                                                         <input  type="text" placeholder="Qual curso?" class="floatlabel form-control" id="tecnico_curso" name="tecnico_curso" value="{{ old('tecnico_curso')}}">
@@ -885,7 +885,7 @@
                                                                 <option value="Manhã" {{ old('tecnico_periodo') == 'Manhã' ? 'selected' : ''}}>Manhã</option>
                                                                 <option value="Tarde" {{ old('tecnico_periodo') == 'Tarde' ? 'selected' : ''}}>Tarde</option>
                                                                 <option value="Noite" {{ old('tecnico_periodo') == 'Noite' ? 'selected' : ''}}>Noite</option>
-                                                                <option value="Integral" {{ old('tecnico_periodo') == 'Integral' ? 'selected' : ''}}>Integral</option>                                                                                                                
+                                                                <option value="Integral" {{ old('tecnico_periodo') == 'Integral' ? 'selected' : ''}}>Integral</option>
                                                             </select>
                                                             @error('tecnico_periodo') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                         </div>
@@ -901,7 +901,7 @@
                                                                 <option value="Presencial" {{ old('tecnico_modalidade') == 'Presencial' ? 'selected' : ''}}>Presencial</option>
                                                                 <option value="EAD" {{ old('tecnico_modalidade') == 'EAD' ? 'selected' : ''}}>EAD</option>
                                                                 <option value="Híbrido" {{ old('tecnico_modalidade') == 'Híbrido' ? 'selected' : ''}}>Híbrido</option>
-                                                                <option value="Outros" {{ old('tecnico_modalidade') == 'Outros' ? 'selected' : ''}}>Outros</option>                                                        
+                                                                <option value="Outros" {{ old('tecnico_modalidade') == 'Outros' ? 'selected' : ''}}>Outros</option>
                                                             </select>
                                                             @error('tecnico_modalidade') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                         </div>
@@ -910,7 +910,7 @@
 
                                                 {{-- Superior --}}
                                                 <div class="form-check form-check">
-                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade8" value="Superior Completo" 
+                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade8" value="Superior Completo"
                                                     @if(old('escolaridade') && in_array('Superior Completo', old('escolaridade'))) checked @endif>
                                                     <label class="form-check-label" for="escolaridade8">
                                                         Superior Completo
@@ -918,7 +918,7 @@
                                                 </div>
 
                                                 {{-- Campos ocultos caso checkbox Superior Completo seja escolhido --}}
-                                        
+
                                                 <div class="col-12 form-campo check-superior-completo" id="superiorCompletoContainer" style="display: none;">
                                                     <div class="mb-3">
                                                         <input  type="text" placeholder="Qual curso?" class="floatlabel form-control" id="superior_completo_curso" name="superior_completo_curso" value="{{ old('superior_completo_curso')}}">
@@ -928,18 +928,18 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <input  type="text" placeholder="Qual data de conclusão?" class="floatlabel form-control" id="superior_completo_data_conclusao" name="superior_completo_data_conclusao" value="{{ old('superior_completo_data_conclusao')}}">
-                                                    </div>                                                    
+                                                    </div>
                                                 </div>
 
                                                 <div class="form-check form-check">
-                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade9" value="Superior Cursando" 
+                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade9" value="Superior Cursando"
                                                     @if(old('escolaridade') && in_array('Superior Cursando', old('escolaridade'))) checked @endif>
                                                     <label class="form-check-label" for="escolaridade9">
                                                         Superior Cursando
                                                     </label>
                                                 </div>
                                                 {{-- Campos ocultos caso checkbox Superior Cursando seja escolhido --}}
-                                        
+
                                                 <div class="col-12 form-campo check-superior-cursando" id="superiorCursandoContainer" style="display: none;">
                                                     <div class="mb-3">
                                                         <input  type="text" placeholder="Qual curso?" class="floatlabel form-control" id="superior_curso" name="superior_curso" value="{{ old('superior_curso')}}">
@@ -958,11 +958,11 @@
                                                                 <option value="Manhã" {{ old('superior_periodo') == 'Manhã' ? 'selected' : ''}}>Manhã</option>
                                                                 <option value="Tarde" {{ old('superior_periodo') == 'Tarde' ? 'selected' : ''}}>Tarde</option>
                                                                 <option value="Noite" {{ old('superior_periodo') == 'Noite' ? 'selected' : ''}}>Noite</option>
-                                                                <option value="Integral" {{ old('superior_periodo') == 'Integral' ? 'selected' : ''}}>Integral</option>                                                        
+                                                                <option value="Integral" {{ old('superior_periodo') == 'Integral' ? 'selected' : ''}}>Integral</option>
                                                             </select>
                                                             @error('superior_periodo') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                         </div>
-                                                    </div>                                            
+                                                    </div>
                                                     <div class="mb-3">
                                                         <div class="floatlabel-wrapper">
                                                             <label for="superior_select_modalidade" class="label-floatlabel">Modalidade</label>
@@ -971,18 +971,18 @@
                                                                 <option value="Presencial" {{ old('superior_semestre') == 'Presencial' ? 'selected' : ''}}>Presencial</option>
                                                                 <option value="EAD" {{ old('superior_semestre') == 'EAD' ? 'selected' : ''}}>EAD</option>
                                                                 <option value="Híbrido" {{ old('superior_semestre') == 'Híbrido' ? 'selected' : ''}}>Híbrido</option>
-                                                                <option value="Outros" {{ old('superior_semestre') == 'Outros' ? 'selected' : ''}}>Outros</option>                                                        
+                                                                <option value="Outros" {{ old('superior_semestre') == 'Outros' ? 'selected' : ''}}>Outros</option>
                                                             </select>
                                                             @error('superior_semestre') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                         </div>
                                                     </div>
-                                                    
+
                                                 </div>
 
 
                                                 {{-- Campo Outro --}}
                                                 <div class="form-check form-check">
-                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade3" value="Outro" 
+                                                    <input class="form-check-input" type="checkbox" name="escolaridade[]" id="escolaridade3" value="Outro"
                                                     @if(old('escolaridade') && in_array('Outro', old('escolaridade'))) checked @endif>
                                                     <label class="form-check-label" for="escolaridade3">
                                                     Outro
@@ -991,7 +991,7 @@
 
                                                 {{-- Campos ocultos caso checkbox Outro seja escolhido --}}
                                                 <div class="campo-escondido check-escolaridade">
-                                                    <input type="text" placeholder="Qual curso?" class="floatlabel form-control" id="escolaridade_outro" name="escolaridade_outro" value="{{ old('escolaridade_outro')}}">                                            
+                                                    <input type="text" placeholder="Qual curso?" class="floatlabel form-control" id="escolaridade_outro" name="escolaridade_outro" value="{{ old('escolaridade_outro')}}">
                                                     <input type="text" placeholder="Qual Instituição?" class="floatlabel form-control" id="instituicao" name="instituicao" value="{{ old('instituicao')}}">
                                                     <div class="mb-3">
                                                         <div class="floatlabel-wrapper">
@@ -1001,11 +1001,11 @@
                                                                 <option value="Manhã" {{ old('outro_periodo') == 'Manhã' ? 'selected' : ''}}>Manhã</option>
                                                                 <option value="Tarde" {{ old('outro_periodo') == 'Tarde' ? 'selected' : ''}}>Tarde</option>
                                                                 <option value="Noite" {{ old('outro_periodo') == 'Noite' ? 'selected' : ''}}>Noite</option>
-                                                                <option value="Integral" {{ old('outro_periodo') == 'Integral' ? 'selected' : ''}}>Integral</option>                                                        
+                                                                <option value="Integral" {{ old('outro_periodo') == 'Integral' ? 'selected' : ''}}>Integral</option>
                                                             </select>
                                                             @error('outro_periodo') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                         </div>
-                                                    </div>                                            
+                                                    </div>
                                                     <div class="mb-3">
                                                         <div class="floatlabel-wrapper">
                                                             <label for="outro_select_modalidade" class="label-floatlabel">Modalidade</label>
@@ -1014,7 +1014,7 @@
                                                                 <option value="Presencial" {{ old('semestre') == 'Presencial' ? 'selected' : ''}}>Presencial</option>
                                                                 <option value="EAD" {{ old('semestre') == 'EAD' ? 'selected' : ''}}>EAD</option>
                                                                 <option value="Híbrido" {{ old('semestre') == 'Híbrido' ? 'selected' : ''}}>Híbrido</option>
-                                                                <option value="Outros" {{ old('semestre') == 'Outros' ? 'selected' : ''}}>Outros</option>                                                        
+                                                                <option value="Outros" {{ old('semestre') == 'Outros' ? 'selected' : ''}}>Outros</option>
                                                             </select>
                                                             @error('semestre') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                                         </div>
@@ -1048,7 +1048,7 @@
                                             </div>
                                             @error('foi_jovem_aprendiz') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
-                                    </div>                               
+                                    </div>
 
                                     <div class="d-flex col-6 form-campo">
 
@@ -1147,18 +1147,18 @@
                                                 <label class="form-check-label" for="cras2">
                                                 Não
                                                 </label>
-                                            </div>                                  
+                                            </div>
 
                                         </div>
-                                    </div>     
-                                    
+                                    </div>
+
                                     <div class="d-flex col-6 form-campo">
                                         <div class="mb-3 form-checkbox pb-3">
                                             <label for="fonte" class="form-label">Como ficou sabendo do nosso programa?</label>
                                             <input type="text" placeholder="Site/Google/Etc" class="floatlabel form-control" id="fonte" name="fonte" {{ old('fonte')}} required>
                                             @error('fonte') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
-                                    </div>  
+                                    </div>
 
                                 </div>
 
@@ -1171,10 +1171,10 @@ Declaro estar ciente de que essas informações serão utilizadas apenas no cont
 Estou ciente de que essa autorização não se estende a divulgação pública e que a imagem será utilizada apenas nos registros internos da instituição.</p>
                                         <!-- Checkbox de autorização (obrigatório para todos) -->
                                         <div class="form-check mb-3">
-                                            <input type="checkbox" 
-                                                id="autorizacao_uso_dados" 
-                                                name="autorizacao_uso_dados" 
-                                                class="form-check-input" 
+                                            <input type="checkbox"
+                                                id="autorizacao_uso_dados"
+                                                name="autorizacao_uso_dados"
+                                                class="form-check-input"
                                                 required
                                                 value="1">
                                             <label for="autorizacao_uso_dados" class="form-check-label label-autorizacao">
@@ -1187,9 +1187,9 @@ Estou ciente de que essa autorização não se estende a divulgação pública e
 
                                         <!-- Checkbox condicional para menores (só aparece se menor de idade) -->
                                         <div class="form-check mb-3" id="autorizacao-responsavel-container" style="display: none;">
-                                            <input type="checkbox" 
-                                                id="autorizacao_responsavel_menor" 
-                                                name="autorizacao_responsavel_menor" 
+                                            <input type="checkbox"
+                                                id="autorizacao_responsavel_menor"
+                                                name="autorizacao_responsavel_menor"
                                                 class="form-check-input"
                                                 value="1">
                                             <label for="autorizacao_responsavel_menor" class="form-check-label label-autorizacao">
@@ -1206,11 +1206,11 @@ Estou ciente de que essa autorização não se estende a divulgação pública e
 
                                 <div id="bloco-submit-desktop" class="col-9 bloco-submit d-flex mt-3">
                                     <button type="submit" class="btn-padrao btn-cadastrar">Cadastrar</button>
-                                    <a href="{{ route('resumes.index')}}" class="btn-padrao btn-cancelar ms-3">Cancelar</a>                                   
+                                    <a href="{{ route('resumes.index')}}" class="btn-padrao btn-cancelar ms-3">Cancelar</a>
                                 </div>
 
                             </div>
-                        
+
                             <div class="col-3 border-start py-0 ps-5 form-r">
 
                                 <div class="mb-3">
@@ -1218,28 +1218,28 @@ Estou ciente de que essa autorização não se estende a divulgação pública e
                                     <input class="form-control form-control-sm" type="file" accept=".pdf"  id="formFile" name="curriculo_doc" required>
                                     @error('curriculo_doc') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     <span class="mensagem-arquivo text-center">O arquivo deve ser no formato PDF e ter o tamanho máximo de 2MB.</span>
-                                 
+
                                 </div>
-        
+
                                 {{-- <div class="mb-3 d-flex flex-column align-items-center">
                                     <p class="fw-bold text-center">Faça Upload do Currículo</p>
                                      --}}
-        
+
                                     {{-- Aceita apenas pdf --}}
                                     {{-- <input type="file" id="" class=""
                                         accept=".pdf" name="curriculo_doc" required> --}}
-                                        
-{{--         
+
+{{--
                                     <div class="preview-container mb-3">
-        
+
                                         <div id="preview-doc" class="preview-doc" style="display: none;">
                                             <p id="file-name"></p>
                                             <a id="file-download" href="#" target="_blank" class="btn btn-sm btn-primary">Baixar</a>
                                         </div>
                                     </div>
-        
+
                                     <label for="file-upload" class="btn-select-file btn-padrao">Selecionar</label>                                     --}}
-        
+
                                     {{-- @error('curriculo_doc') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     <span class="mensagem-arquivo">O arquivo deve ser no formato PDF e ter o tamanho máximo de 2MB.</span>
                                 </div>                                 --}}
@@ -1249,14 +1249,14 @@ Estou ciente de que essa autorização não se estende a divulgação pública e
                                 <button type="submit" class="btn-padrao btn-cadastrar">Cadastrar</button>
                                 <a href="#" class="btn-padrao btn-cancelar ms-3">Cancelar</a>
                             </div>
-        
+
                         </div>
-        
+
                     </form>
                 </div>
-        
+
             </article>
-        
+
         </section>
 
     </main>
@@ -1285,34 +1285,39 @@ Estou ciente de que essa autorização não se estende a divulgação pública e
         }
     };
 
+    document.getElementById('form-companies-create').addEventListener('submit', function (e) {
+        const btn = e.submitter;
+        if (btn) btn.disabled = true;
+    });
+
 
 document.addEventListener("DOMContentLoaded", function () {
     // const fileUpload = document.getElementById('file-upload');
-    
+
     // // Evento change para quando um arquivo for selecionado
     // fileUpload.addEventListener('change', function (event) {
     //     // Remover mensagem de erro se existir
     //     removeErrorMessage();
-        
+
     //     if (event.target.files.length === 0) {
     //         return; // Sai da função se nenhum arquivo for selecionado
     //     }
-        
+
     //     const file = event.target.files[0]; // Obtém o arquivo selecionado
-        
+
     //     // Verifica se o arquivo é um PDF
     //     if (file.type !== "application/pdf") {
     //         showErrorMessage("Por favor, selecione um arquivo PDF.");
     //         event.target.value = ""; // Limpa o campo
     //         return;
     //     }
-        
+
     //     // Atualiza a prévia do documento
     //     document.getElementById("file-name").textContent = file.name;
     //     document.getElementById("file-download").href = URL.createObjectURL(file);
     //     document.getElementById("preview-doc").style.display = "block";
     // });
-    
+
     // Validação no envio do formulário
     // const form = fileUpload.closest('form');
     // form.addEventListener('submit', function(event) {
@@ -1323,22 +1328,22 @@ document.addEventListener("DOMContentLoaded", function () {
     //         fileUpload.scrollIntoView({ behavior: 'smooth', block: 'center' });
     //     }
     // });
-    
+
     // Função para mostrar mensagem de erro
     // function showErrorMessage(message) {
     //     // Remover mensagem anterior se existir
     //     removeErrorMessage();
-        
+
     //     // Criar e inserir nova mensagem de erro após o botão de seleção
     //     const errorDiv = document.createElement('div');
     //     errorDiv.id = 'curriculo-error';
     //     errorDiv.className = 'alert alert-danger mt-2';
     //     errorDiv.textContent = message;
-        
+
     //     const labelElement = document.querySelector('label[for="file-upload"]');
     //     labelElement.insertAdjacentElement('afterend', errorDiv);
     // }
-    
+
     // Função para remover mensagem de erro
     // function removeErrorMessage() {
     //     const errorElement = document.getElementById('curriculo-error');
@@ -1355,29 +1360,29 @@ document.addEventListener("DOMContentLoaded", function () {
         const loader = document.getElementById('loader');
         loader.style.display = 'flex';
     });
-    
+
     // Esconder o loader quando a página termina de carregar
     window.addEventListener('load', function () {
         const loader = document.getElementById('loader');
         loader.style.display = 'none';
     });
-    
+
     // Esconder o loader quando usar o botão voltar/avançar
     window.addEventListener('pageshow', function (event) {
         const loader = document.getElementById('loader');
-        
+
         // event.persisted indica que a página foi carregada do cache (botão voltar/avançar)
         if (event.persisted) {
             loader.style.display = 'none';
         }
     });
-    
+
     // Botão voltar do navegador (histórico)
     window.addEventListener('popstate', function () {
         const loader = document.getElementById('loader');
         loader.style.display = 'none';
     });
-    
+
     // Medida de segurança: esconder o loader após 5 segundos caso algo dê errado
     document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
@@ -1536,7 +1541,7 @@ $("#form-companies-create").validate({
         informatica:"required",
         ingles:"required",
         cras:"required",
-        fonte:"required",        
+        fonte:"required",
         //rg:"required",
         //tamanho_uniforme:"required",
     }
@@ -1547,17 +1552,17 @@ $("#form-companies-create").validate({
 function validarCPF(cpf) {
     // Remove caracteres não numéricos
     cpf = cpf.replace(/[^\d]/g, '');
-    
+
     // Verifica se tem 11 dígitos
     if (cpf.length !== 11) {
         return false;
     }
-    
+
     // Verifica se todos os dígitos são iguais (ex: 111.111.111-11)
     if (/^(\d)\1+$/.test(cpf)) {
         return false;
     }
-    
+
     // Validação do primeiro dígito verificador
     let soma = 0;
     for (let i = 0; i < 9; i++) {
@@ -1565,11 +1570,11 @@ function validarCPF(cpf) {
     }
     let resto = 11 - (soma % 11);
     let digitoVerificador1 = resto === 10 || resto === 11 ? 0 : resto;
-    
+
     if (digitoVerificador1 !== parseInt(cpf.charAt(9))) {
         return false;
     }
-    
+
     // Validação do segundo dígito verificador
     soma = 0;
     for (let i = 0; i < 10; i++) {
@@ -1577,23 +1582,23 @@ function validarCPF(cpf) {
     }
     resto = 11 - (soma % 11);
     let digitoVerificador2 = resto === 10 || resto === 11 ? 0 : resto;
-    
+
     return digitoVerificador2 === parseInt(cpf.charAt(10));
 }
 
 // Aplicar validação ao campo CPF
 $(document).ready(function() {
     $('#cpf').mask('000.000.000-00');
-    
+
     // Validação quando o formulário for enviado
     $('form').submit(function(event) {
         const cpf = $('#cpf').val();
-        
+
         if (!validarCPF(cpf)) {
             event.preventDefault();
             // Adiciona classe de erro e mensagem
             $('#cpf').addClass('is-invalid');
-            
+
             // Verifica se já existe uma mensagem de erro
             if ($('#cpf-error').length === 0) {
                 $('#cpf').after('<div id="cpf-error" class="alert alert-danger">CPF inválido. Por favor, verifique.</div>');
@@ -1605,11 +1610,11 @@ $(document).ready(function() {
             $('#cpf-error').remove();
         }
     });
-    
+
     // Validação em tempo real (opcional)
     $('#cpf').on('blur', function() {
         const cpf = $(this).val();
-        
+
         // Só valida se o campo estiver completo
         if (cpf.length === 14) {
             if (!validarCPF(cpf)) {
@@ -1678,7 +1683,7 @@ $(document).ready(function() {
         if (!config) return;
 
         const container = $(config.container);
-        
+
         if (marcarObrigatorio) {
             container.show();
             config.campos.forEach(campo => {
@@ -1715,7 +1720,7 @@ $(document).ready(function() {
     // Validação customizada no submit do formulário
     $('form').on('submit', function(e) {
         let camposInvalidos = [];
-        
+
         Object.keys(escolaridadeConfig).forEach(checkboxId => {
             const checkbox = $(`#${checkboxId}`);
             if (checkbox.is(':checked')) {
@@ -1753,24 +1758,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const dataNascimento = document.getElementById('data_nascimento');
     const responsavelContainer = document.getElementById('autorizacao-responsavel-container');
     const checkboxResponsavel = document.getElementById('autorizacao_responsavel_menor');
-    
+
     function calcularIdade(dataNasc) {
         const hoje = new Date();
         const nascimento = new Date(dataNasc);
         let idade = hoje.getFullYear() - nascimento.getFullYear();
         const mes = hoje.getMonth() - nascimento.getMonth();
-        
+
         if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
             idade--;
         }
-        
+
         return idade;
     }
-    
+
     function verificarMenorIdade() {
         if (dataNascimento.value) {
             const idade = calcularIdade(dataNascimento.value);
-            
+
             if (idade < 18) {
                 responsavelContainer.style.display = 'block';
                 checkboxResponsavel.required = true;
@@ -1781,12 +1786,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
-    
+
     // Verificar ao carregar a página (para casos de retorno com erro)
     if (dataNascimento.value) {
         verificarMenorIdade();
     }
-    
+
     // Verificar quando a data é alterada
     dataNascimento.addEventListener('change', verificarMenorIdade);
 
@@ -1795,16 +1800,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Remover a clase form-control do campo data de nascimento quando em mobile
     function ajustarDataNascimento() {
         const larguraTela = window.innerWidth;
-        const campoData = document.getElementById('data_nascimento');       
+        const campoData = document.getElementById('data_nascimento');
 
         if (larguraTela <= 560) { // Largura típica para mobile
             if (campoData) {
                 campoData.classList.remove('form-control');
-            }            
+            }
         } else {
             if (campoData) {
                 campoData.classList.add('form-control');
-            }          
+            }
         }
     }
     // Ajustar ao carregar a página
