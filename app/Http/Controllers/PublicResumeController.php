@@ -91,7 +91,7 @@ class PublicResumeController extends Controller
             'ingles' => $data['ingles'],
             'obs_ingles' => $data['obs_ingles'] ?? '',
             'fundamental_periodo' => $data['fundamental_periodo'] ?? '',
-            'fundamental_modalidade' => $data['fundamental_modalidade'] ?? '',            
+            'fundamental_modalidade' => $data['fundamental_modalidade'] ?? '',
             'medio_periodo' => $data['medio_periodo'] ?? '',
             'medio_modalidade' => $data['medio_modalidade'] ?? '',
 
@@ -140,7 +140,12 @@ class PublicResumeController extends Controller
         // Salvando Log de criação
         $this->logAction('create', 'resume', $resume->id, 'Currículo cadastrado pelo candidado com sucesso.');
 
-        
+
+        return redirect()->route('publicResume.confirmacao')->with('success', 'Currículo cadastrado com sucesso!');
+    }
+
+    public function confirmacao()
+    {
         return view('publicResume.confirmacao');
     }
 }

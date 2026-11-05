@@ -42,14 +42,15 @@ Route::redirect('/', '/dashboard');
 // Cadastro curriculo url publica
 Route::get('cadastro-curriculo', [PublicResumeController::class, 'create'])->name('publicResume.create');
 Route::post('cadastro-curriculo', [PublicResumeController::class, 'store'])->name('publicResume.store');
+Route::get('curriculo-cadastrado/confirmacao', [PublicResumeController::class, 'confirmacao'])->name('publicResume.confirmacao');
 
 
-/** Rotas Privadas */ 
+/** Rotas Privadas */
 
 
 Route::middleware(['auth', 'perf.monitor'])->group(function(){
     // Jobs
-    
+
     Route::put('/jobs/{job}/updateDataEntrevistaEmpresa', [JobController::class, 'updateDataEntrevistaEmpresa'])->name('jobs.updateDataEntrevistaEmpresa');
     Route::post('/jobs/startContraction/{jobId}', [JobController::class, 'startContraction'])->name('jobs.startContraction');
     Route::post('/jobs/endContraction/{jobId}', [JobController::class, 'endContraction'])->name('jobs.endContraction');
@@ -68,17 +69,17 @@ Route::middleware(['auth', 'perf.monitor'])->group(function(){
     Route::post('/resumes/storeHistory/{resumebId}',[ResumeController::class, 'storeHistory'])->name('resumes.storeHistory');
     Route::get('/resumes/deleteTeste', [ResumeController::class, 'deleteTeste']);
     Route::resource('resumes', ResumeController::class);
-    
+
     // Interviews
     Route::get('/interviews/resume/showDev/{resumeId}',[InterviewController::class, 'showDev'])->name('interviews.showDev');
     Route::post('/interviews/resume/associarVaga', [InterviewController::class, 'associarVaga'])->name('interviews.associarVaga');
-    Route::post('/interview/resume/desassociarVaga', [InterviewController::class, 'desassociarVaga'])->name('interviews.desassociarVaga');    
+    Route::post('/interview/resume/desassociarVaga', [InterviewController::class, 'desassociarVaga'])->name('interviews.desassociarVaga');
     Route::get('/interviews/resume/{resumeId}',[InterviewController::class, 'interviewResume'])->name('interviews.interviewResume');
-    Route::put('/interviews/{jobId}/{resumeId}/status', [InterviewController::class, 'updateStatus'])->name('interviews.updateStatus');    
+    Route::put('/interviews/{jobId}/{resumeId}/status', [InterviewController::class, 'updateStatus'])->name('interviews.updateStatus');
     Route::resource('interviews', InterviewController::class);
     Route::get('/dashboard', [DashboardControler::class, 'index'])->name('dashboard');
     Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
-    
+
     // Company
     Route::put('companies/{companyId}/status', [CompanyController::class, 'updateStatus'])->name('companies.updateStatus');
     Route::resource('companies', CompanyController::class);
