@@ -726,7 +726,7 @@
                                                 </label>
                                             </div>
                                             <div class="campo-escondido check-experiencia">
-                                                <input type="text" placeholder="Qual?" class="floatlabel form-control" id="experiencia_profissional_outro" name="experiencia_profissional_outro" {{ old('experiencia_profissional_outro')}}>
+                                                <input type="text" placeholder="Qual?" class="floatlabel form-control" id="experiencia_profissional_outro" name="experiencia_profissional_outro" value="{{ old('experiencia_profissional_outro')}}">
                                             </div>
                                             @error('experiencia_profissional') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
@@ -1079,9 +1079,9 @@
                                             </div>
 
                                             <div class="form-check form-check">
-                                                <input class="form-check-input" type="radio" name="informatica" id="informatica3" value="Nenhum" {{ old('informatica') == 'Nenhum' ? 'checked' : ''}}>
+                                                <input class="form-check-input" type="radio" name="informatica" id="informatica4" value="Nenhum" {{ old('informatica') == 'Nenhum' ? 'checked' : ''}}>
                                                 @error('informatica') <div class="alert alert-danger">{{ $message }}</div> @enderror
-                                                <label class="form-check-label" for="informatica3">
+                                                <label class="form-check-label" for="informatica4">
                                                 Nenhum / Inexistente
                                                 </label>
                                             </div>
@@ -1155,7 +1155,7 @@
                                     <div class="d-flex col-6 form-campo">
                                         <div class="mb-3 form-checkbox pb-3">
                                             <label for="fonte" class="form-label">Como ficou sabendo do nosso programa?</label>
-                                            <input type="text" placeholder="Site/Google/Etc" class="floatlabel form-control" id="fonte" name="fonte" {{ old('fonte')}} required>
+                                            <input type="text" placeholder="Site/Google/Etc" class="floatlabel form-control" id="fonte" name="fonte" value="{{ old('fonte')}}" required>
                                             @error('fonte') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
@@ -1285,538 +1285,321 @@ Estou ciente de que essa autorização não se estende a divulgação pública e
         }
     };
 
-    document.getElementById('form-companies-create').addEventListener('submit', function (e) {
-        const btn = e.submitter;
-        if (btn) btn.disabled = true;
-    });
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    // const fileUpload = document.getElementById('file-upload');
-
-    // // Evento change para quando um arquivo for selecionado
-    // fileUpload.addEventListener('change', function (event) {
-    //     // Remover mensagem de erro se existir
-    //     removeErrorMessage();
-
-    //     if (event.target.files.length === 0) {
-    //         return; // Sai da função se nenhum arquivo for selecionado
-    //     }
-
-    //     const file = event.target.files[0]; // Obtém o arquivo selecionado
-
-    //     // Verifica se o arquivo é um PDF
-    //     if (file.type !== "application/pdf") {
-    //         showErrorMessage("Por favor, selecione um arquivo PDF.");
-    //         event.target.value = ""; // Limpa o campo
-    //         return;
-    //     }
-
-    //     // Atualiza a prévia do documento
-    //     document.getElementById("file-name").textContent = file.name;
-    //     document.getElementById("file-download").href = URL.createObjectURL(file);
-    //     document.getElementById("preview-doc").style.display = "block";
-    // });
-
-    // Validação no envio do formulário
-    // const form = fileUpload.closest('form');
-    // form.addEventListener('submit', function(event) {
-    //     if (!fileUpload.value) {
-    //         event.preventDefault(); // Impede o envio do formulário
-    //         showErrorMessage("O currículo é obrigatório. Por favor, selecione um arquivo PDF.");
-    //         // Fazer scroll para o campo de upload para chamar atenção do usuário
-    //         fileUpload.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    //     }
-    // });
-
-    // Função para mostrar mensagem de erro
-    // function showErrorMessage(message) {
-    //     // Remover mensagem anterior se existir
-    //     removeErrorMessage();
-
-    //     // Criar e inserir nova mensagem de erro após o botão de seleção
-    //     const errorDiv = document.createElement('div');
-    //     errorDiv.id = 'curriculo-error';
-    //     errorDiv.className = 'alert alert-danger mt-2';
-    //     errorDiv.textContent = message;
-
-    //     const labelElement = document.querySelector('label[for="file-upload"]');
-    //     labelElement.insertAdjacentElement('afterend', errorDiv);
-    // }
-
-    // Função para remover mensagem de erro
-    // function removeErrorMessage() {
-    //     const errorElement = document.getElementById('curriculo-error');
-    //     if (errorElement) {
-    //         errorElement.remove();
-    //     }
-    // }
-
-
-
-    // Loader
-     // Mostrar o loader quando estiver saindo da página
+    // ---------- Loader ----------
     window.addEventListener('beforeunload', function () {
-        const loader = document.getElementById('loader');
-        loader.style.display = 'flex';
+        document.getElementById('loader').style.display = 'flex';
     });
-
-    // Esconder o loader quando a página termina de carregar
+    window.addEventListener('pageshow', function () {
+        document.getElementById('loader').style.display = 'none';
+    });
     window.addEventListener('load', function () {
-        const loader = document.getElementById('loader');
-        loader.style.display = 'none';
+        document.getElementById('loader').style.display = 'none';
+    });
+    window.addEventListener('popstate', function () {
+        document.getElementById('loader').style.display = 'none';
     });
 
-    // Esconder o loader quando usar o botão voltar/avançar
-    window.addEventListener('pageshow', function (event) {
-        const loader = document.getElementById('loader');
+$(function () {
+    var $form = $('#form-companies-create');
 
-        // event.persisted indica que a página foi carregada do cache (botão voltar/avançar)
-        if (event.persisted) {
-            loader.style.display = 'none';
+    /* =========================================================
+     * Utilitários
+     * ========================================================= */
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/\D/g, '');
+        if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+        var soma = 0, resto, i;
+        for (i = 0; i < 9; i++) soma += parseInt(cpf.charAt(i)) * (10 - i);
+        resto = 11 - (soma % 11);
+        if ((resto >= 10 ? 0 : resto) !== parseInt(cpf.charAt(9))) return false;
+
+        soma = 0;
+        for (i = 0; i < 10; i++) soma += parseInt(cpf.charAt(i)) * (11 - i);
+        resto = 11 - (soma % 11);
+        return (resto >= 10 ? 0 : resto) === parseInt(cpf.charAt(10));
+    }
+
+    // new Date('YYYY-MM-DD') é lido como UTC e erra o dia no Brasil; por isso lemos as partes
+    function calcularIdade(iso) {
+        var p = iso.split('-').map(Number);
+        var hoje = new Date(), idade = hoje.getFullYear() - p[0], m = hoje.getMonth() + 1;
+        if (m < p[1] || (m === p[1] && hoje.getDate() < p[2])) idade--;
+        return idade;
+    }
+
+    /* =========================================================
+     * Máscaras
+     * ========================================================= */
+    $('#cpf').mask('000.000.000-00');
+    $('#rg').mask('00.000.000-A');
+    $('#cep').mask('00000-000');
+    $('#telefone_celular').mask('(00) 00000-0000');
+    $('#telefone_residencial').mask(SPMaskBehavior, spOptions);
+    $('#tecnico_completo_data_conclusao, #superior_completo_data_conclusao').mask('00/00/0000');
+
+    /* =========================================================
+     * Select2
+     * ========================================================= */
+    $('#uf, #estado_civil, #possui_filhos, #sexo, #cnh, #tipo_cnh, #nacionalidade, #pcd, #reservista').select2({
+        placeholder: 'Selecione', width: '100%'
+    });
+    $('#fundamental_select_periodo, #fundamental_select_modalidade, #medio_select_periodo, #medio_select_modalidade, #tecnico_select_periodo, #tecnico_select_modalidade, #superior_select_periodo, #superior_select_modalidade, #outro_select_periodo, #outro_select_modalidade').select2({
+        placeholder: 'Selecione', width: '100%'
+    });
+
+    /* =========================================================
+     * Campos condicionais
+     *   visível  => display block + habilitado (+ required, quando aplicável)
+     *   escondido => display none  + disabled  (não valida e não é enviado)
+     * O display é aplicado com !important para vencer CSS/JS antigos.
+     * Os containers são localizados pelo campo (closest) ou pelas
+     * classes originais, então o HTML/layout não muda.
+     * ========================================================= */
+    function aplicar($g, show, required, clear) {
+        $g.each(function () {
+            this.style.setProperty('display', show ? 'block' : 'none', 'important');
+        });
+
+        $g.find('input, select, textarea').each(function () {
+            var $el = $(this);
+            $el.prop('disabled', !show);
+            $el.prop('required', show && required);
+
+            if (!show) {
+                $el.removeClass('error is-invalid');
+                if (clear) {
+                    if ($el.is(':checkbox, :radio')) {
+                        $el.prop('checked', false);
+                    } else if ($el.val()) {
+                        // change.select2: atualiza o select2 sem disparar os handlers deste form (evita loop)
+                        $el.val('').trigger('change.select2');
+                    }
+                }
+            }
+        });
+
+        if (!show) $g.find('label.error').remove();
+    }
+
+    var G = {
+        tipoCnh:   $('#tipo_cnh').closest('.form-campo'),
+        filhos:    $('#filhos_qtd, #filhos_sim').closest('.form-campo'),
+        sexoOutro: $('#sexo_outro').closest('.form-campo'),
+        cid:       $('#pcd_sim').closest('.form-campo'),
+        expOutro:  $('.check-experiencia'),
+        resp:      $('#autorizacao-responsavel-container')
+    };
+
+    // checkbox de escolaridade => classe do container dos subcampos (as mesmas do HTML original)
+    var escolaridadeGrupos = {
+        escolaridade5: '.check-fundamental-cursando',
+        escolaridade1: '.check-medio-cursando',
+        escolaridade6: '.check-tecnico-completo',
+        escolaridade7: '.check-tecnico-cursando',
+        escolaridade8: '.check-superior-completo',
+        escolaridade9: '.check-superior-cursando',
+        escolaridade3: '.check-escolaridade'
+    };
+
+    function sincronizar(clear) {
+        var cnh = $('#cnh').val() || '';
+        var pcd = $('#pcd').val() || '';
+        var nasc = $('#data_nascimento').val();
+
+        // Tipo de CNH: aparece (e é obrigatório) se possui CNH ou está em andamento
+        aplicar(G.tipoCnh, cnh === 'Sim' || cnh === 'Em andamento', true, clear);
+
+        // Filhos: quantidade + idade
+        aplicar(G.filhos, $('#possui_filhos').val() === 'Sim', true, clear);
+
+        // Gênero "Outro": campo para informar
+        aplicar(G.sexoOutro, $('#sexo').val() === 'Outro', true, clear);
+
+        // PCD "Sim": aparece o CID; só é obrigatório quando é "com laudo"
+        aplicar(G.cid, pcd.indexOf('Sim') === 0, pcd === 'Sim, com laudo.', clear);
+
+        // Experiência "Outro"
+        aplicar(G.expOutro, $('input[name="experiencia_profissional[]"][value="Outro"]').is(':checked'), true, clear);
+
+        // Escolaridade: subcampos obrigatórios quando a opção está marcada
+        $.each(escolaridadeGrupos, function (id, seletor) {
+            aplicar($(seletor), $('#' + id).is(':checked'), true, clear);
+        });
+
+        // Responsável legal: só para menores de 18
+        aplicar(G.resp, !!nasc && calcularIdade(nasc) < 18, true, clear);
+    }
+
+    // roda DEPOIS de qualquer outro handler (ex.: do main.js), por isso o setTimeout
+    function agendar() { setTimeout(function () { sincronizar(true); }, 0); }
+    $form.on('change select2:select select2:unselect select2:clear', 'select, input[type="checkbox"], input[type="date"]', agendar);
+
+    // "Nenhuma experiência" é exclusiva
+    $('input[name="experiencia_profissional[]"]').on('change', function () {
+        if (!this.checked) return;
+        if ($(this).is('[data-none]') || this.value === 'Nenhuma por enquanto') {
+            $('input[name="experiencia_profissional[]"]').not(this).prop('checked', false);
+        } else {
+            $('input[name="experiencia_profissional[]"][value="Nenhuma por enquanto"]').prop('checked', false);
         }
     });
 
-    // Botão voltar do navegador (histórico)
-    window.addEventListener('popstate', function () {
-        const loader = document.getElementById('loader');
-        loader.style.display = 'none';
+    /* =========================================================
+     * Validação (jQuery Validate)
+     * Regra: tudo obrigatório, exceto RG, Instagram, LinkedIn (e complemento).
+     * Os campos simples usam o atributo "required" do HTML; aqui entram
+     * os grupos de checkbox/radio e regras extras.
+     * ========================================================= */
+    $.extend($.validator.messages, {
+        required: 'Campo obrigatório.',
+        email: 'Informe um e-mail válido.',
+        minlength: $.validator.format('Informe pelo menos {0} caracteres.')
     });
 
-    // Medida de segurança: esconder o loader após 5 segundos caso algo dê errado
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-            const loader = document.getElementById('loader');
-            if (loader.style.display === 'flex') {
-                loader.style.display = 'none';
+    $.validator.addMethod('cpf', function (value, el) {
+        return this.optional(el) || validarCPF(value);
+    }, 'CPF inválido.');
+
+    $.validator.addMethod('pdfFile', function (value, el) {
+        return this.optional(el) || (el.files.length > 0 && el.files[0].type === 'application/pdf');
+    }, 'Envie um arquivo no formato PDF.');
+
+    $.validator.addMethod('maxSizeKb', function (value, el, kb) {
+        return this.optional(el) || (el.files.length > 0 && el.files[0].size <= kb * 1024);
+    }, 'O arquivo deve ter no máximo 2MB.');
+
+    $form.validate({
+        ignore: [],
+        rules: {
+            nome: 'required',
+            cpf: { required: true, cpf: true },
+            cnh: 'required',
+            data_nascimento: 'required',
+            nacionalidade: 'required',
+            estado_civil: 'required',
+            reservista: 'required',
+            possui_filhos: 'required',
+            sexo: 'required',
+            pcd: 'required',
+            cep: { required: true, minlength: 9 },
+            logradouro: 'required',
+            numero: 'required',
+            bairro: 'required',
+            cidade: 'required',
+            uf: 'required',
+            email: { required: true, email: true },
+            telefone_celular: { required: true, minlength: 14 },
+            telefone_residencial: { required: true, minlength: 14 },
+            nome_contato: 'required',
+            'vagas_interesse[]': 'required',
+            'experiencia_profissional[]': 'required',
+            'escolaridade[]': 'required',
+            foi_jovem_aprendiz: 'required',
+            informatica: 'required',
+            ingles: 'required',
+            cras: 'required',
+            fonte: 'required',
+            autorizacao_uso_dados: 'required',
+            curriculo_doc: { required: true, pdfFile: true, maxSizeKb: 2048 }
+            // rg, instagram, linkedin e complemento: opcionais
+        },
+        messages: {
+            'vagas_interesse[]': 'Selecione ao menos uma vaga.',
+            'experiencia_profissional[]': 'Selecione ao menos uma opção.',
+            'escolaridade[]': 'Selecione ao menos uma opção.',
+            foi_jovem_aprendiz: 'Selecione uma opção.',
+            informatica: 'Selecione uma opção.',
+            ingles: 'Selecione uma opção.',
+            cras: 'Selecione uma opção.',
+            telefone_celular: { minlength: 'Telefone incompleto.' },
+            telefone_residencial: { minlength: 'Telefone incompleto.' },
+            cep: { minlength: 'CEP incompleto.' },
+            autorizacao_uso_dados: 'É necessário autorizar para continuar.',
+            autorizacao_responsavel_menor: 'É necessário declarar a ciência do responsável.'
+        },
+        errorPlacement: function (error, el) {
+            error.addClass('text-danger').css({ display: 'block', fontSize: '13px' });
+            if (el.is(':checkbox, :radio')) {
+                var holder = el.closest('.form-checkbox');
+                (holder.length ? holder : el.closest('.form-check')).append(error);
+            } else if (el.hasClass('select2-hidden-accessible')) {
+                error.insertAfter(el.next('.select2'));
+            } else {
+                error.insertAfter(el);
             }
-        }, 5000);
+        },
+        invalidHandler: function (event, v) {
+            if (!v.errorList.length) return;
+            var $alvo = $(v.errorList[0].element).closest('.form-campo, .form-check');
+            if ($alvo.length) $('html, body').animate({ scrollTop: Math.max($alvo.offset().top - 120, 0) }, 250);
+        },
+        // Só chega aqui com tudo válido: aí sim trava o botão e envia
+        submitHandler: function (form) {
+            $(form).find('button[type="submit"]').prop('disabled', true);
+            document.getElementById('loader').style.display = 'flex';
+            form.submit();
+        }
     });
 
+    // Re-valida selects com erro assim que o usuário escolhe um valor (select2 não dispara click)
+    $form.on('change', 'select', function () {
+        if ($(this).hasClass('error')) $(this).valid();
+    });
 
-
-});
-
-$('#tecnico_completo_data_conclusao, #superior_completo_data_conclusao').mask('00/00/0000');
-
-
-$('#uf').select2({
-    placeholder: "Selecione",
-});
-$('#estado_civil').select2({
-    placeholder: "Selecione",
-});
-$('#possui_filhos').select2({
-    placeholder: "Selecione",
-});
-$('#sexo').select2({
-    placeholder: "Selecione",
-});
-$('#cnh').select2({
-    placeholder: "Selecione",
-});
-$('#tipo_cnh').select2({
-    placeholder: "Selecione",
-});
-$('#informatica').select2({
-    placeholder: "Selecione",
-});
-$('#ingles').select2({
-    placeholder: "Selecione",
-});
-$('#tamanho_uniforme').select2({
-    placeholder: "Selecione",
-});
-$('#nacionalidade').select2({
-    placeholder: "Selecione",
-});
-$('#pcd').select2({
-    placeholder: "Selecione",
-});
-$('#reservista').select2({
-    placeholder: "Selecione",
-});
-
-// $('#fundamental_periodo').select2({
-//     placeholder: "Selecione",
-// });
-// $('#medio_periodo').select2({
-//     placeholder: "Selecione",
-// });
-// $('#tecnico_periodo').select2({
-//     placeholder: "Selecione",
-// });
-
-// $('#superior_periodo').select2({
-//     placeholder: "Selecione",
-// });
-
-$('#fundamental_select_periodo, #fundamental_select_modalidade, #medio_select_periodo, #medio_select_modalidade, #tecnico_select_periodo, #tecnico_select_modalidade, #superior_select_periodo, #superior_select_modalidade, #outro_select_periodo, #outro_select_modalidade ').select2({
-    placeholder: "Selecione",
-});
-
-$('#rg').mask('00.000.000-A');
-$('#cep').mask('00000-000');
-$('#telefone_celular').mask('(00) 00000-0000');
-$('#telefone_residencial').mask(SPMaskBehavior, spOptions);
-
-$('#cep').on('input', function(){
-
-    var cep     = $(this).val(),
-        digitos = cep.length;
-
-    if(digitos === 9){
+    /* =========================================================
+     * CEP -> preenche endereço
+     * ========================================================= */
+    $('#cep').on('input', function () {
+        var cep = $(this).val();
+        if (cep.length !== 9) return;
 
         $('.fa-spinner').show();
 
         $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            url : "{{ url('getCep') }}",
-            data : {'cep': cep},
-            type : 'POST',
-            dataType : 'json',
-            success : function(result){
-
+            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            url: "{{ url('getCep') }}",
+            data: { 'cep': cep },
+            type: 'POST',
+            dataType: 'json',
+            success: function (result) {
                 $('.fa-spinner').hide();
 
-                if(result.msg === '1'){
-
+                if (result.msg === '1') {
                     $('#cidade').val(result.cidade);
                     $('#bairro').val(result.bairro);
-                    //$('#uf').val(result.uf);
                     $('#uf').val(result.uf).trigger('change');
-
                     $('#logradouro').val(result.rua);
 
-                    setTimeout(function(){
-                        $('.floatlabel').trigger('change');
-                    }, 150)
-
-                } else if(result.msg === '3'){
-
+                    setTimeout(function () { $('.floatlabel').trigger('change'); }, 150);
+                    $('#cidade, #bairro, #logradouro').filter('.error').valid();
+                } else if (result.msg === '3') {
                     $.message('CEP inválido, por favor verifique o número informado', 2);
-
                 } else {
-
                     $.message('CEP não encontrado, por favor verifique o número informado', 2);
-
                 }
-
-            }
-        });
-
-    }
-
-});
-
-$("#form-companies-create").validate({
-    ignore: [],
-    rules:{
-        nome:"required",
-        cpf:"required",
-        cnh:"required",
-        data_nascimento:"required",
-        nacionalidade:"required",
-        estado_civil:"required",
-        reservista:"required",
-        possui_filhos:"required",
-        sexo:"required",
-        pcd:"required",
-        cep:"required",
-        logradouro:"required",
-        numero:"required",
-        escolaridade:"required",
-        experiencia_profissional:"required",
-        //complemento:"required",
-        bairro:"required",
-        cidade:"required",
-        uf:"required",
-        email:"required",
-        telefone_celular:"required",
-        telefone_residencial:"required",
-        nome_contato:"required",
-        foi_jovem_aprendiz:"required",
-        informatica:"required",
-        ingles:"required",
-        cras:"required",
-        fonte:"required",
-        //rg:"required",
-        //tamanho_uniforme:"required",
-    }
-});
-
-
-// Função para validar CPF
-function validarCPF(cpf) {
-    // Remove caracteres não numéricos
-    cpf = cpf.replace(/[^\d]/g, '');
-
-    // Verifica se tem 11 dígitos
-    if (cpf.length !== 11) {
-        return false;
-    }
-
-    // Verifica se todos os dígitos são iguais (ex: 111.111.111-11)
-    if (/^(\d)\1+$/.test(cpf)) {
-        return false;
-    }
-
-    // Validação do primeiro dígito verificador
-    let soma = 0;
-    for (let i = 0; i < 9; i++) {
-        soma += parseInt(cpf.charAt(i)) * (10 - i);
-    }
-    let resto = 11 - (soma % 11);
-    let digitoVerificador1 = resto === 10 || resto === 11 ? 0 : resto;
-
-    if (digitoVerificador1 !== parseInt(cpf.charAt(9))) {
-        return false;
-    }
-
-    // Validação do segundo dígito verificador
-    soma = 0;
-    for (let i = 0; i < 10; i++) {
-        soma += parseInt(cpf.charAt(i)) * (11 - i);
-    }
-    resto = 11 - (soma % 11);
-    let digitoVerificador2 = resto === 10 || resto === 11 ? 0 : resto;
-
-    return digitoVerificador2 === parseInt(cpf.charAt(10));
-}
-
-// Aplicar validação ao campo CPF
-$(document).ready(function() {
-    $('#cpf').mask('000.000.000-00');
-
-    // Validação quando o formulário for enviado
-    $('form').submit(function(event) {
-        const cpf = $('#cpf').val();
-
-        if (!validarCPF(cpf)) {
-            event.preventDefault();
-            // Adiciona classe de erro e mensagem
-            $('#cpf').addClass('is-invalid');
-
-            // Verifica se já existe uma mensagem de erro
-            if ($('#cpf-error').length === 0) {
-                $('#cpf').after('<div id="cpf-error" class="alert alert-danger">CPF inválido. Por favor, verifique.</div>');
-            }
-            return false;
-        } else {
-            // Remove mensagens de erro se o CPF for válido
-            $('#cpf').removeClass('is-invalid');
-            $('#cpf-error').remove();
-        }
-    });
-
-    // Validação em tempo real (opcional)
-    $('#cpf').on('blur', function() {
-        const cpf = $(this).val();
-
-        // Só valida se o campo estiver completo
-        if (cpf.length === 14) {
-            if (!validarCPF(cpf)) {
-                $(this).addClass('is-invalid');
-                if ($('#cpf-error').length === 0) {
-                    $(this).after('<div id="cpf-error" class="alert alert-danger">CPF inválido. Por favor, verifique.</div>');
-                }
-            } else {
-                $(this).removeClass('is-invalid');
-                $('#cpf-error').remove();
-            }
-        }
-    });
-});
-
-
-
-// Se o campo PCD for "Sim. Com Laudo" o campo CID deve ser obrigatório
-$(document).ready(function() {
-    $('#pcd').change(function() {
-        if ($(this).val() === 'Sim, com laudo.') {
-            $('#pcd_sim').prop('required', true);
-        } else {
-            $('#pcd_sim').prop('required', false);
-            $('#pcd_sim').val(''); // Limpa o campo se não for obrigatório
-        }
-    });
-});
-
-$(document).ready(function() {
-    // Mapear checkboxes com seus containers e campos obrigatórios
-    const escolaridadeConfig = {
-        'escolaridade5': { // Fundamental Cursando
-            container: '.check-fundamental-cursando',
-            campos: ['fundamental_periodo', 'fundamental_modalidade']
-        },
-        'escolaridade1': { // Médio Cursando
-            container: '.check-medio-cursando',
-            campos: ['medio_periodo', 'medio_modalidade']
-        },
-        'escolaridade6': { // Técnico Completo
-            container: '.check-tecnico-completo',
-            campos: ['tecnico_completo_curso', 'tecnico_completo_instituicao', 'tecnico_completo_data_conclusao']
-        },
-        'escolaridade7': { // Técnico Cursando
-            container: '.check-tecnico-cursando',
-            campos: ['tecnico_curso', 'tecnico_semestre', 'tecnico_instituicao', 'tecnico_periodo', 'tecnico_modalidade']
-        },
-        'escolaridade8': { // Superior Completo
-            container: '.check-superior-completo',
-            campos: ['superior_completo_curso', 'superior_completo_instituicao', 'superior_completo_data_conclusao']
-        },
-        'escolaridade9': { // Superior Cursando
-            container: '.check-superior-cursando',
-            campos: ['superior_curso', 'superior_termo', 'superior_instituicao', 'superior_periodo', 'superior_semestre']
-        },
-        'escolaridade3': { // Outro
-            container: '.check-escolaridade',
-            campos: ['escolaridade_outro', 'instituicao', 'outro_periodo', 'semestre']
-        }
-    };
-
-    // Função para tornar campos obrigatórios ou não
-    function toggleCamposObrigatorios(checkboxId, marcarObrigatorio) {
-        const config = escolaridadeConfig[checkboxId];
-        if (!config) return;
-
-        const container = $(config.container);
-
-        if (marcarObrigatorio) {
-            container.show();
-            config.campos.forEach(campo => {
-                const elemento = $(`#${campo}, [name="${campo}"]`);
-                elemento.prop('required', true);
-                elemento.attr('required', 'required');
-            });
-        } else {
-            container.hide();
-            config.campos.forEach(campo => {
-                const elemento = $(`#${campo}, [name="${campo}"]`);
-                elemento.prop('required', false);
-                elemento.removeAttr('required');
-                elemento.val(''); // Limpa o valor ao desmarcar
-            });
-        }
-    }
-
-    // Inicializar estado dos campos ao carregar a página
-    Object.keys(escolaridadeConfig).forEach(checkboxId => {
-        const checkbox = $(`#${checkboxId}`);
-        if (checkbox.is(':checked')) {
-            toggleCamposObrigatorios(checkboxId, true);
-        }
-    });
-
-    // Adicionar evento de mudança para cada checkbox
-    Object.keys(escolaridadeConfig).forEach(checkboxId => {
-        $(`#${checkboxId}`).on('change', function() {
-            toggleCamposObrigatorios(checkboxId, $(this).is(':checked'));
+            },
+            error: function () { $('.fa-spinner').hide(); }
         });
     });
 
-    // Validação customizada no submit do formulário
-    $('form').on('submit', function(e) {
-        let camposInvalidos = [];
+    /* =========================================================
+     * Data de nascimento em mobile (comportamento original)
+     * ========================================================= */
+    var campoData = document.getElementById('data_nascimento');
+    if (campoData) {
+        if (window.innerWidth <= 560) campoData.classList.remove('form-control');
+        else campoData.classList.add('form-control');
+    }
 
-        Object.keys(escolaridadeConfig).forEach(checkboxId => {
-            const checkbox = $(`#${checkboxId}`);
-            if (checkbox.is(':checked')) {
-                const config = escolaridadeConfig[checkboxId];
-                config.campos.forEach(campo => {
-                    const elemento = $(`#${campo}, [name="${campo}"]`);
-                    if (elemento.prop('required') && !elemento.val()) {
-                        camposInvalidos.push(elemento);
-                    }
-                });
-            }
-        });
-
-        if (camposInvalidos.length > 0) {
-            e.preventDefault();
-            // Focar no primeiro campo inválido
-            camposInvalidos[0].focus();
-            // Adicionar classe de erro visual
-            camposInvalidos.forEach(campo => {
-                campo.addClass('is-invalid');
-            });
-            alert('Por favor, preencha todos os campos obrigatórios da escolaridade selecionada.');
-            return false;
-        }
-    });
-
-    // Remover classe de erro ao preencher
-    $('input, select').on('change input', function() {
-        $(this).removeClass('is-invalid');
-    });
+    /* =========================================================
+     * Estado inicial (restaura old() após erro do servidor).
+     * Roda de novo após o load para prevalecer sobre scripts antigos.
+     * ========================================================= */
+    sincronizar(false);
+    $(window).on('load', function () { sincronizar(false); });
+    setTimeout(function () { sincronizar(false); }, 300);
 });
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const dataNascimento = document.getElementById('data_nascimento');
-    const responsavelContainer = document.getElementById('autorizacao-responsavel-container');
-    const checkboxResponsavel = document.getElementById('autorizacao_responsavel_menor');
-
-    function calcularIdade(dataNasc) {
-        const hoje = new Date();
-        const nascimento = new Date(dataNasc);
-        let idade = hoje.getFullYear() - nascimento.getFullYear();
-        const mes = hoje.getMonth() - nascimento.getMonth();
-
-        if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
-            idade--;
-        }
-
-        return idade;
-    }
-
-    function verificarMenorIdade() {
-        if (dataNascimento.value) {
-            const idade = calcularIdade(dataNascimento.value);
-
-            if (idade < 18) {
-                responsavelContainer.style.display = 'block';
-                checkboxResponsavel.required = true;
-            } else {
-                responsavelContainer.style.display = 'none';
-                checkboxResponsavel.required = false;
-                checkboxResponsavel.checked = false;
-            }
-        }
-    }
-
-    // Verificar ao carregar a página (para casos de retorno com erro)
-    if (dataNascimento.value) {
-        verificarMenorIdade();
-    }
-
-    // Verificar quando a data é alterada
-    dataNascimento.addEventListener('change', verificarMenorIdade);
-
-
-
-    // Remover a clase form-control do campo data de nascimento quando em mobile
-    function ajustarDataNascimento() {
-        const larguraTela = window.innerWidth;
-        const campoData = document.getElementById('data_nascimento');
-
-        if (larguraTela <= 560) { // Largura típica para mobile
-            if (campoData) {
-                campoData.classList.remove('form-control');
-            }
-        } else {
-            if (campoData) {
-                campoData.classList.add('form-control');
-            }
-        }
-    }
-    // Ajustar ao carregar a página
-    ajustarDataNascimento();
-
-});
-
 </script>
 
 </body>
