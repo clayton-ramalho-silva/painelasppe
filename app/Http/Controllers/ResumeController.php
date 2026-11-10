@@ -271,16 +271,29 @@ class ResumeController extends Controller
         }
 
         // Filtro Vagas Interesse
-        if ($request->filled('vagas_interesse')) {
-            foreach ($request->vagas_interesse as $vaga) {
-                $query->whereJsonContains('vagas_interesse', $vaga);
+        // Filtro Vagas Interesse (qualquer uma das selecionadas)
+        if ($request->filled('vagas_interesse') && is_array($request->vagas_interesse)) {
+            $vagas = array_filter($request->vagas_interesse);
+
+            if (!empty($vagas)) {
+                $query->where(function ($q) use ($vagas) {
+                    foreach ($vagas as $vaga) {
+                        $q->orWhereJsonContains('resumes.vagas_interesse', $vaga);
+                    }
+                });
             }
         }
 
-        // Filtro Experiência Profissional
-        if ($request->filled('experiencia_profissional')) {
-            foreach ($request->experiencia_profissional as $exp) {
-                $query->whereJsonContains('experiencia_profissional', $exp);
+        // Filtro Experiência Profissional (mesmo padrão)
+        if ($request->filled('experiencia_profissional') && is_array($request->experiencia_profissional)) {
+            $experiencias = array_filter($request->experiencia_profissional);
+
+            if (!empty($experiencias)) {
+                $query->where(function ($q) use ($experiencias) {
+                    foreach ($experiencias as $exp) {
+                        $q->orWhereJsonContains('resumes.experiencia_profissional', $exp);
+                    }
+                });
             }
         }
 
