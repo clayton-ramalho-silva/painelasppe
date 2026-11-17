@@ -708,7 +708,7 @@ class ResumeController extends Controller
         return redirect()->back()->with('success', 'Observação cadastrada com sucesso!');
     }
 
-    // Atualização de uma observação do candidato.
+    // Atualização de uma observação do candidato (ajax, com fallback por redirect).
     public function updateHistory(Request $request, Resume $resume, $historyId)
     {
         $data = $request->validate([
@@ -721,13 +721,32 @@ class ResumeController extends Controller
             'observacao' => $data['observacao'],
         ]);
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Observação atualizada com sucesso!',
+                'observacao' => [
+                    'id' => $observacao->id,
+                    'observacao' => $observacao->observacao,
+                    'data' => $observacao->created_at->format('d/m/y'),
+                ],
+            ]);
+        }
+
         return redirect()->back()->with('success', 'Observação atualizada com sucesso!');
     }
 
-    // Exclusão de uma observação do candidato.
-    public function deleteHistory(Resume $resume, $historyId)
+    // Exclusão de uma observação do candidato (ajax, com fallback por redirect).
+    public function deleteHistory(Request $request, Resume $resume, $historyId)
     {
         $resume->observacoes()->findOrFail($historyId)->delete();
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Observação excluída com sucesso!',
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Observação excluída com sucesso!');
     }

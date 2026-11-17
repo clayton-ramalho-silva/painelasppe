@@ -67,8 +67,8 @@ Route::middleware(['auth', 'perf.monitor'])->group(function(){
     // Resumes
     Route::put('/resumes/upadate-status/{id}', [ResumeController::class, 'updateStatus'])->name('resumes.updateStatus');
     Route::post('/resumes/storeHistory/{resumebId}',[ResumeController::class, 'storeHistory'])->name('resumes.storeHistory');
-    Route::put('/resumes/{resume}/history/{historyId}', [ResumeController::class, 'updateHistory'])->name('resumes.updateHistory');
-    Route::delete('/resumes/{resume}/history/{historyId}', [ResumeController::class, 'deleteHistory'])->name('resumes.deleteHistory');
+    Route::put('/resumes/{resume}/observacoes/{historyId}', [ResumeController::class, 'updateHistory'])->name('resumes.observacoes.update');
+    Route::delete('/resumes/{resume}/observacoes/{historyId}', [ResumeController::class, 'deleteHistory'])->name('resumes.observacoes.destroy');
     Route::get('/resumes/deleteTeste', [ResumeController::class, 'deleteTeste']);
     Route::resource('resumes', ResumeController::class);
 
