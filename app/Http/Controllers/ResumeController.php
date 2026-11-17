@@ -708,6 +708,30 @@ class ResumeController extends Controller
         return redirect()->back()->with('success', 'Observação cadastrada com sucesso!');
     }
 
+    // Atualização de uma observação do candidato.
+    public function updateHistory(Request $request, Resume $resume, $historyId)
+    {
+        $data = $request->validate([
+            'observacao' => 'required|string',
+        ]);
+
+        $observacao = $resume->observacoes()->findOrFail($historyId);
+
+        $observacao->update([
+            'observacao' => $data['observacao'],
+        ]);
+
+        return redirect()->back()->with('success', 'Observação atualizada com sucesso!');
+    }
+
+    // Exclusão de uma observação do candidato.
+    public function deleteHistory(Resume $resume, $historyId)
+    {
+        $resume->observacoes()->findOrFail($historyId)->delete();
+
+        return redirect()->back()->with('success', 'Observação excluída com sucesso!');
+    }
+
     public function updateStatus(Request $request, $id)
     {
         //dd($request->all());
