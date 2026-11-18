@@ -12,6 +12,7 @@
                 <li class="col5">Associador</li>
                 <li class="col5">Recrutador</li>
                 <li class="col6">Status</li>
+                <li class="col-data">Data</li>
                 @if (Auth::user()->role == 'admin')
                     <li class="col7">Ações</li>
                 @endif
@@ -81,6 +82,10 @@
                         <li class="col6">
                             <b>Status</b>
                             <button disabled="disabled" class="btn btn-success">Contratado</button>
+                        </li>
+                        <li class="col-data" data-bs-toggle="tooltip" data-bs-placement="top" title="Criado em {{ optional($selection->created_at)->format('d/m/Y H:i') }} | Atualizado em {{ optional($selection->updated_at)->format('d/m/Y H:i') }}">
+                            <b>Data</b>
+                            {{ optional($selection->updated_at ?? $selection->created_at)->format('d/m/Y') ?? '—' }}
                         </li>
 
                     </ul>
@@ -315,6 +320,10 @@
 
 
                             </li>
+                            <li class="col-data" data-bs-toggle="tooltip" data-bs-placement="top" title="Criado em {{ optional($selecao->created_at)->format('d/m/Y H:i') }} | Atualizado em {{ optional($selecao->updated_at)->format('d/m/Y H:i') }}">
+                                <b>Data</b>
+                                {{ optional($selecao->updated_at ?? $selecao->created_at)->format('d/m/Y') ?? '—' }}
+                            </li>
                             @if (Auth::user()->role == 'admin')
                             <li class="col7">
                                 <b>Ações</b>
@@ -492,11 +501,11 @@
 <style>
 
 .lista-processos-seletivos ul .col1{
-width: 30% !important;
+width: 24% !important;
 }
 
 .lista-processos-seletivos ul .col2{
-width: 20% !important;
+width: 16% !important;
 }
 .lista-processos-seletivos ul .col3{
 width: 5% !important;
@@ -508,6 +517,9 @@ width: 10% !important;
 width: 10% !important;
 }
 .lista-processos-seletivos ul .col6{
+width: 10% !important;
+}
+.lista-processos-seletivos ul .col-data{
 width: 10% !important;
 }
 
