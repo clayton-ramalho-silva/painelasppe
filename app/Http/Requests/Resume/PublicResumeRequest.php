@@ -89,7 +89,24 @@ class PublicResumeRequest extends FormRequest
             'instagram' => 'nullable|string|max:255', // opcional
             'linkedin' => 'nullable|string|max:255', // opcional
             'telefone_celular' => 'required|string|max:255',
-            'telefone_residencial' => 'required|string|max:255', // Telefone de recado
+            'telefone_residencial' => [
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail): void {
+                    $telefoneCelular = $this->input('telefone_celular');
+                    if (!is_scalar($value) || !is_scalar($telefoneCelular)) {
+                        return;
+                    }
+
+                    $digitosRecado = preg_replace('/\D/', '', (string) $value);
+                    $digitosCelular = preg_replace('/\D/', '', (string) $telefoneCelular);
+
+                    if ($digitosRecado !== '' && $digitosRecado === $digitosCelular) {
+                        $fail('O telefone para recado deve ser diferente do telefone celular (WhatsApp).');
+                    }
+                },
+            ], // Telefone de recado
             'nome_contato' => 'required|string|max:255',
 
             // ---------- Vagas / experiência ----------
