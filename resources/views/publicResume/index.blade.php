@@ -1542,6 +1542,27 @@ $(function () {
         }
     });
 
+    function validarTelefonesDiferentes() {
+        var celular = ($('#telefone_celular').val() || '').replace(/\D/g, '');
+        var recado = ($('#telefone_residencial').val() || '').replace(/\D/g, '');
+        var $alerta = $('#telefone-diferente-alert');
+
+        if (celular.length >= 10 && celular === recado) {
+            if (!$alerta.length) {
+                $alerta = $('<div>', {
+                    id: 'telefone-diferente-alert',
+                    class: 'alert alert-danger mt-2',
+                    role: 'alert',
+                    text: 'O telefone para recado deve ser diferente do telefone celular (WhatsApp).'
+                }).insertAfter($('#telefone_residencial').closest('.mb-3'));
+            }
+        } else {
+            $alerta.remove();
+        }
+    }
+
+    $('#telefone_celular, #telefone_residencial').on('input change', validarTelefonesDiferentes);
+
     // Re-valida selects com erro assim que o usuário escolhe um valor (select2 não dispara click)
     $form.on('change', 'select', function () {
         if ($(this).hasClass('error')) $(this).valid();
